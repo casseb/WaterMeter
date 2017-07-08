@@ -420,7 +420,7 @@ public abstract class Dialog {
 	 */
 	protected void prepareKeyboard(List<String> strings, int n) {
 		if(strings.size()==0) {
-			answer.append("Nenhum registro localizado");
+			answer.append("\nNenhum registro localizado");
 		}else {
 		
 			int linha = 0;
@@ -465,7 +465,7 @@ public abstract class Dialog {
 	 */
 	protected void prepareKeyboard(List<String> strings) {
 		if(strings.size()==0) {
-			answer.append("Nenhum registro localizado");
+			answer.append("\nNenhum registro localizado");
 		}else {
 			int linha = 0;
 			int item = 0;
