@@ -1,0 +1,42 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+
+		<property name="hibernate.connection.url"> jdbc:postgresql://</property> 
+		<property name="hibernate.connection.username"></property> 
+		<property name="hibernate.connection.password"></property>
+	 		
+
+		<property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.max_size">10</property>
+		<property name="hibernate.c3p0.timeout">30000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">30000</property>
+
+		<property name="hibernate.c3p0.acquire_increment">3</property>
+		<property name="hibernate.c3p0.validate">true</property>
+		<property name="hibernate.c3p0.acquireRetryAttempts">3</property>
+		<property name="hibernate.c3p0.acquireRetryDelay">250</property>
+
+		<property name="hibernate.c3p0.preferredTestQuery">select 1</property>
+        <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
+		
+		
+		<property name="hibernate.connection.pool_size">10</property>
+		<property name="show_sql">true</property>
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<mapping class="objects.Person" />
+		<mapping class="objects.Route" />
+		<mapping class="objects.Project" />
+		<mapping class="objects.BoxFileObject" />
+		<mapping class="objects.BoxFolderObject" />
+		<mapping class="objects.MessageLog" />
+		<mapping class="objects.ScheduleMessage" />
+	</session-factory>
+</hibernate-configuration>
