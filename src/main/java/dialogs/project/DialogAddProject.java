@@ -1,7 +1,8 @@
-package dialogs;
+package dialogs.project;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Project;

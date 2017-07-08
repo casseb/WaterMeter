@@ -1,4 +1,4 @@
-package dialogs;
+package dialogs.basic;
 
 import org.json.JSONObject;
 
@@ -6,6 +6,12 @@ import com.pengrad.telegrambot.*;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
 
+import dialogs.client.DialogAddClient;
+import dialogs.information.DialogTermos;
+import dialogs.project.DialogAddProject;
+import dialogs.project.DialogEditProject;
+import dialogs.project.DialogRemoveProject;
+import dialogs.project.DialogShowProject;
 import mvc.Model;
 import objects.Person;
 import objects.Route;
@@ -76,9 +82,6 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Projeto - Adicionar")){
 					return new DialogAddProject(bot,person,route,model,message);
-				}
-				if((completeRoute).equals("Administrativo - Remover Usuário")){
-					return new DialogRemoveUser(bot,person,route,model,message);
 				}
 				if((completeRoute).equals("Projeto - Excluir")){
 					return new DialogRemoveProject(bot,person,route,model,message);

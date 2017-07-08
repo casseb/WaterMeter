@@ -16,8 +16,8 @@ import com.pengrad.telegrambot.TelegramBotAdapter;
 import com.pengrad.telegrambot.request.SendMessage;
 
 import access.AccessConfiguration;
-import dialogs.Dialog;
-import dialogs.DialogEditLogin;
+import dialogs.basic.Dialog;
+import dialogs.basic.DialogEditLogin;
 import objects.Person;
 import objects.PersonType;
 import objects.Project;

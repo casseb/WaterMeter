@@ -1,8 +1,9 @@
-package dialogs;
+package dialogs.information;
 
 import com.pengrad.telegrambot.*;
 import com.pengrad.telegrambot.request.SendMessage;
 
+import dialogs.basic.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;

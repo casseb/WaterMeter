@@ -1,4 +1,4 @@
-package dialogs;
+package dialogs.basic;
 
 import java.util.List;
 

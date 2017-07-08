@@ -1,15 +1,16 @@
-package dialogs;
+package dialogs.project;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Project;
 import objects.Route;
 
-public class DialogEditTypeProject extends Dialog {
+public class DialogEditDescProject extends Dialog {
 
-	public DialogEditTypeProject(TelegramBot bot, Person person, Route route, Model model, String message) {
+	public DialogEditDescProject(TelegramBot bot, Person person, Route route, Model model, String message) {
 		super(bot, person, route, model, message);
 		// TODO Auto-generated constructor stub
 	}
@@ -17,20 +18,18 @@ public class DialogEditTypeProject extends Dialog {
 	@Override
 	public Dialog action() {
 		if(nextStep()){
-			answer.append("Pressione o novo tipo");
-			prepareKeyboard(model.showProjectTypes());
+			answer.append("Digite a nova descrição");
 			return finishStep();
 		}
 		if(nextStep()){
-			if(model.projectType.locateProjectTypeByDesc(message) == null) return messageInvalid(); 
-			addComplementString("type");
+			addComplementString("desc");
 			messageConfirmation();
 			return finishStep();
 		}
 		if(nextStep()){
 			if(isConfirmated()){
 				Project project = model.locateProjectByString(getComplementString("id"));
-				project.setType(model.projectType.locateProjectTypeByDesc(getComplementString("type")));
+				project.setDesc(getComplementString("desc"));
 				model.editProject(project);
 				return finishHim(null);
 			}else{

@@ -1,15 +1,16 @@
-package dialogs;
+package dialogs.project;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Project;
 import objects.Route;
 
-public class DialogEditStatusProject extends Dialog {
+public class DialogEditTypeProject extends Dialog {
 
-	public DialogEditStatusProject(TelegramBot bot, Person person, Route route, Model model, String message) {
+	public DialogEditTypeProject(TelegramBot bot, Person person, Route route, Model model, String message) {
 		super(bot, person, route, model, message);
 		// TODO Auto-generated constructor stub
 	}
@@ -17,20 +18,20 @@ public class DialogEditStatusProject extends Dialog {
 	@Override
 	public Dialog action() {
 		if(nextStep()){
-			answer.append("Pressione o novo status");
-			prepareKeyboard(model.showProjectStatus());
+			answer.append("Pressione o novo tipo");
+			prepareKeyboard(model.showProjectTypes());
 			return finishStep();
 		}
 		if(nextStep()){
-			if(model.projectStatus.locateProjectStatusByString(message)==null) return messageInvalid(); 
-			addComplementString("status");
+			if(model.projectType.locateProjectTypeByDesc(message) == null) return messageInvalid(); 
+			addComplementString("type");
 			messageConfirmation();
 			return finishStep();
 		}
 		if(nextStep()){
 			if(isConfirmated()){
 				Project project = model.locateProjectByString(getComplementString("id"));
-				project.setStatus(model.projectStatus.locateProjectStatusByDesc(getComplementString("status")));
+				project.setType(model.projectType.locateProjectTypeByDesc(getComplementString("type")));
 				model.editProject(project);
 				return finishHim(null);
 			}else{

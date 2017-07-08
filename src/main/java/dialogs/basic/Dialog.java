@@ -1,4 +1,4 @@
-package dialogs;
+package dialogs.basic;
 
 import java.io.File;
 import java.time.LocalDate;

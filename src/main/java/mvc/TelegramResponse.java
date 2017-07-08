@@ -7,9 +7,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
 
 import access.AccessConfiguration;
-import dialogs.Dialog;
-import dialogs.DialogCommands;
-import dialogs.DialogGenerator;
+import dialogs.basic.Dialog;
+import dialogs.basic.DialogCommands;
+import dialogs.basic.DialogGenerator;
 import objects.MessageLog;
 
 import org.eclipse.jetty.server.Request;

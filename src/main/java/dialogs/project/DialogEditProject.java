@@ -1,10 +1,11 @@
-package dialogs;
+package dialogs.project;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;

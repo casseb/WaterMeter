@@ -1,4 +1,4 @@
-package dialogs;
+package dialogs.basic;
 
 import com.pengrad.telegrambot.TelegramBot;
 
