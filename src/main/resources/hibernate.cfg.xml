@@ -9,7 +9,6 @@
 		<property name="hibernate.connection.username">jfbefyvaagufnu</property> 
 		<property name="hibernate.connection.password">a0f7c0b854f5f8ed655719b906f79500921a3045a90935f27c982722e766a031</property>
 	 		
-
 		<property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
 		<property name="hibernate.c3p0.min_size">5</property>
 		<property name="hibernate.c3p0.max_size">10</property>
