@@ -29,6 +29,8 @@ public class DialogActiveUser extends Dialog {
 			}
 			persons.removeAll(trash);
 			prepareKeyboard(model.showPersons(persons));
+			if(persons.size()==0)
+				return finishHim();
 			return finishStep();
 		}
 		
