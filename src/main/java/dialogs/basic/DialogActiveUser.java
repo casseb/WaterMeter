@@ -20,14 +20,14 @@ public class DialogActiveUser extends Dialog {
 		if(nextStep()){
 			answer.append("Pressione qual usuário deseja ativar");
 			List<Person> persons = model.persons;
-			if(persons == null) {
-				answer.append("Nenhum usuário desativado");
-				return finishHim();
-			}
 			for (Person person : persons) {
 				if(person.isActive()){
 					persons.remove(person);
 				}
+			}
+			if(persons == null) {
+				answer.append("Nenhum usuário desativado");
+				return finishHim();
 			}
 			prepareKeyboard(model.showPersons(persons));
 			return finishStep();

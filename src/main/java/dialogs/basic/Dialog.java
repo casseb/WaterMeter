@@ -419,34 +419,39 @@ public abstract class Dialog {
 	 * @param n
 	 */
 	protected void prepareKeyboard(List<String> strings, int n) {
-		int linha = 0;
-		int item = 0;
-		// Caso a lista seja menor que a quantidade de colunas
-		if (n > strings.size()) {
-			String[] conteudoUnico = new String[strings.size()];
-			for (int i = 0; i < strings.size(); i++) {
-				conteudoUnico[i] = strings.get(item++);
-			}
-			map.put(linha++, conteudoUnico);
-		} else {
-			// Caso haja sobra na distribuição dos botões
-			if (strings.size() % n != 0) {
-				int sobra = strings.size() % n;
-				if (sobra > 0) {
-					String[] conteudoSobra = new String[sobra];
-					for (int i = 0; i < sobra; i++) {
-						conteudoSobra[i] = strings.get(item++);
+		if(strings == null) {
+			answer.append("Nenhum registro localizado");
+		}else {
+		
+			int linha = 0;
+			int item = 0;
+			// Caso a lista seja menor que a quantidade de colunas
+			if (n > strings.size()) {
+				String[] conteudoUnico = new String[strings.size()];
+				for (int i = 0; i < strings.size(); i++) {
+					conteudoUnico[i] = strings.get(item++);
+				}
+				map.put(linha++, conteudoUnico);
+			} else {
+				// Caso haja sobra na distribuição dos botões
+				if (strings.size() % n != 0) {
+					int sobra = strings.size() % n;
+					if (sobra > 0) {
+						String[] conteudoSobra = new String[sobra];
+						for (int i = 0; i < sobra; i++) {
+							conteudoSobra[i] = strings.get(item++);
+						}
+						map.put(linha++, conteudoSobra);
 					}
-					map.put(linha++, conteudoSobra);
 				}
-			}
-			// Distribuição final
-			while (item < strings.size()) {
-				String[] conteudo = new String[n];
-				for (int i = 0; i < n; i++) {
-					conteudo[i] = strings.get(item++);
+				// Distribuição final
+				while (item < strings.size()) {
+					String[] conteudo = new String[n];
+					for (int i = 0; i < n; i++) {
+						conteudo[i] = strings.get(item++);
+					}
+					map.put(linha++, conteudo);
 				}
-				map.put(linha++, conteudo);
 			}
 		}
 	}
@@ -459,64 +464,69 @@ public abstract class Dialog {
 	 * @param strings
 	 */
 	protected void prepareKeyboard(List<String> strings) {
-		int linha = 0;
-		int item = 0;
+		if(strings == null) {
+			answer.append("Nenhum registro localizado");
+		}else {
+			int linha = 0;
+			int item = 0;
 
-		int biggerString = biggerString(strings);
+			int biggerString = biggerString(strings);
 
-		int size1 = 32;
-		int size2 = 15;
-		int size3 = 9;
-		int size4 = 5;
+			int size1 = 32;
+			int size2 = 15;
+			int size3 = 9;
+			int size4 = 5;
 
-		int n;
+			int n;
 
-		if (biggerString >= size1) {
-			n = 1;
-		} else {
-			if (biggerString >= size2) {
+			if (biggerString >= size1) {
 				n = 1;
 			} else {
-				if (biggerString >= size3) {
-					n = 2;
+				if (biggerString >= size2) {
+					n = 1;
 				} else {
-					if (biggerString >= size4) {
-						n = 3;
+					if (biggerString >= size3) {
+						n = 2;
 					} else {
-						n = 4;
+						if (biggerString >= size4) {
+							n = 3;
+						} else {
+							n = 4;
+						}
 					}
 				}
 			}
-		}
 
-		// Caso a lista seja menor que a quantidade de colunas
-		if (n > strings.size()) {
-			String[] conteudoUnico = new String[strings.size()];
-			for (int i = 0; i < strings.size(); i++) {
-				conteudoUnico[i] = strings.get(item++);
-			}
-			map.put(linha++, conteudoUnico);
-		} else {
-			// Caso haja sobra na distribuição dos botões
-			if (strings.size() % n != 0) {
-				int sobra = strings.size() % n;
-				if (sobra > 0) {
-					String[] conteudoSobra = new String[sobra];
-					for (int i = 0; i < sobra; i++) {
-						conteudoSobra[i] = strings.get(item++);
+			// Caso a lista seja menor que a quantidade de colunas
+			if (n > strings.size()) {
+				String[] conteudoUnico = new String[strings.size()];
+				for (int i = 0; i < strings.size(); i++) {
+					conteudoUnico[i] = strings.get(item++);
+				}
+				map.put(linha++, conteudoUnico);
+			} else {
+				// Caso haja sobra na distribuição dos botões
+				if (strings.size() % n != 0) {
+					int sobra = strings.size() % n;
+					if (sobra > 0) {
+						String[] conteudoSobra = new String[sobra];
+						for (int i = 0; i < sobra; i++) {
+							conteudoSobra[i] = strings.get(item++);
+						}
+						map.put(linha++, conteudoSobra);
 					}
-					map.put(linha++, conteudoSobra);
+				}
+				// Distribuição final
+				while (item < strings.size()) {
+					String[] conteudo = new String[n];
+					for (int i = 0; i < n; i++) {
+						conteudo[i] = strings.get(item++);
+					}
+					map.put(linha++, conteudo);
 				}
 			}
-			// Distribuição final
-			while (item < strings.size()) {
-				String[] conteudo = new String[n];
-				for (int i = 0; i < n; i++) {
-					conteudo[i] = strings.get(item++);
-				}
-				map.put(linha++, conteudo);
-			}
-		}
+		}	
+		
 	}
 
 	private int biggerString(List<String> strings) {
