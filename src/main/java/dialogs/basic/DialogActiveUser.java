@@ -1,5 +1,6 @@
 package dialogs.basic;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.pengrad.telegrambot.TelegramBot;
@@ -20,15 +21,13 @@ public class DialogActiveUser extends Dialog {
 		if(nextStep()){
 			answer.append("Pressione qual usuário deseja ativar");
 			List<Person> persons = model.persons;
+			List<Person> trash = new LinkedList<>();
 			for (Person person : persons) {
 				if(person.isActive()){
-					persons.remove(person);
+					trash.add(person);
 				}
 			}
-			if(persons == null) {
-				answer.append("Nenhum usuário desativado");
-				return finishHim();
-			}
+			persons.removeAll(trash);
 			prepareKeyboard(model.showPersons(persons));
 			return finishStep();
 		}
