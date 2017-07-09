@@ -24,6 +24,8 @@ public class DialogEditProject extends Dialog{
 			prepareKeyboard((model.showProjects(model.locateAllProjects())));
 			return finishStep();
 		}
+		
+		/*
 		if(nextStep()){
 			if(model.locateProjectByString(message) == null) return messageInvalid();
 			addComplementString("id");
@@ -62,7 +64,9 @@ public class DialogEditProject extends Dialog{
 				return finishHim(newDialog);
 			}
 			
+			
 		}
+		*/
 		
 		return null;
 	}

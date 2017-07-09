@@ -20,18 +20,14 @@ public class DialogActiveUser extends Dialog {
 	public Dialog action() {
 		if(nextStep()){
 			answer.append("Pressione qual usuário deseja ativar");
-			List<Person> persons = new LinkedList<>();
-			List<Person> trash = new LinkedList<>();
-			persons.addAll(model.persons);
-			for (Person person : persons) {
+			objects.addAll(model.persons);
+			for (Person person : model.persons) {
 				if(person.isActive()){
 					trash.add(person);
 				}
 			}
-			persons.removeAll(trash);
-			prepareKeyboard(model.showPersons(persons));
-			if(persons.size()==0)
-				return finishHim();
+			emptyTrash();
+			prepareKeyboard(model.showPersons(objects));
 			return finishStep();
 		}
 		

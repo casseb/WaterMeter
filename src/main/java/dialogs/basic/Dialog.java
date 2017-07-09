@@ -1,7 +1,6 @@
 package dialogs.basic;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -13,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 import org.json.JSONObject;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.request.ChatAction;
-import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendDocument;
@@ -22,8 +19,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
 
 import access.AccessConfiguration;
-import lombok.Getter;
-import lombok.Setter;
 import mvc.Model;
 import objects.BoxFileObject;
 import objects.BoxFolderObject;
@@ -58,8 +53,8 @@ public abstract class Dialog {
 	protected Model model;
 
 	/**
-	 * Instâcia que representa uma pessoa dentro do bot, nela o principal dado
-	 * usado é o atributo idTelegram.
+	 * Instâcia que representa uma pessoa dentro do bot, nela o principal dado usado
+	 * é o atributo idTelegram.
 	 */
 	protected Person person;
 
@@ -73,89 +68,84 @@ public abstract class Dialog {
 	 */
 	protected int step;
 
-	protected int stepControl;
-
 	/**
 	 * Mensagem enviado pelo usuário.
 	 */
 	protected String message;
 
 	/**
-	 * JSON que armazena os dados que o usuário esta inserindo no dialog,
-	 * ficando temporariamente na instância do Dialog, sendo necessário ainda no
-	 * diálogo persistir em um banco final.
+	 * JSON que armazena os dados que o usuário esta inserindo no dialog, ficando
+	 * temporariamente na instância do Dialog, sendo necessário ainda no diálogo
+	 * persistir em um banco final.
 	 */
 	protected JSONObject complement;
 
 	/**
-	 * Define que o Dialog esta ativo eu se já esta finalizado.
-	 */
-	protected boolean finish;
-
-	/**
 	 * StringBuilder que armazena a resposta que o bot vai dar ao usuário. Esta
-	 * resposta é enviada ao executar o método finishStep pu finishHim.
+	 * resposta é enviada ao executar o método finishStep ou finishHim.
 	 */
 	protected StringBuilder answer = new StringBuilder();
 
 	/**
-	 * Lista de String para adicionar os submenus de um dialog, encapsulando a
-	 * tratativa de criação de novos dialogs a partir de um dialog original.
+	 * Lista objetos aleatório para uso dentro do diálogo
 	 */
-	protected List<String> subMenus = new LinkedList<>();
+	protected List objects = new LinkedList<>();
 
+	/**
+	 * Lista de conteudos que serão eliminados da lista objects ao executar o médodo
+	 * emptyTrash
+	 */
+	protected List trash = new LinkedList<>();
+
+	/**
+	 * Controlador interno para saber se a lista foi esvaziada para finalizar o
+	 * dialogo em caso positivo
+	 */
+	private boolean isEmpty = false;
+
+	/**
+	 * Controlador interno que armazena parte do contador de passos
+	 */
+	private int stepControl;
+
+	/**
+	 * Define que o Dialog está ativo ou se já esta finalizado.
+	 */
+	private boolean finish;
+
+	/**
+	 * Map de strings para ser criado o keyboard
+	 */
 	private Map<Integer, String[]> map = new HashMap<Integer, String[]>();
-	
+
+	/**
+	 * Recupera do TelegramReponse o nome do arquivo sugerido pelo usuário ou o
+	 * original (arquivo novo)
+	 */
 	public String fileName;
 
+	/**
+	 * Armazena se foi solicitado a necessidade de um arquivo no próximo passo para
+	 * as tratativas de arquivos válidos
+	 */
 	private boolean needAFile = false;
 
 	/**
-	 * Solicita ao usuário o envio de um arquivo
-	 * 
-	 * @param folder
-	 *            Nome da pasta que será salvo o arquivo
+	 * Instancia de BoxFileObject para uso interno
 	 */
-	public void iNeedAFile(String... folder) {
-		model.inicializeBox();
-		answer.append("Envie um arquivo a seguir\n");
-		this.needAFile = true;
-		BoxFolderObject currentFolder = null;
-		BoxFolderObject rootFolder = null;
+	private BoxFileObject boxFileObject;
 
-		for (String string : folder) {
-			currentFolder = model.locateBoxFolderObjectByName(string);
-			if (currentFolder == null) {
-				currentFolder = new BoxFolderObject(string, model, rootFolder);
-			}
-			rootFolder = currentFolder;
-		}
+	/**
+	 * Instancia de BoxFolderObject para uso interno
+	 */
+	private BoxFolderObject boxFolderObject;
 
-		this.boxFolderObject = currentFolder;
-	}
-	
-	public void iNeedAFile(boolean defineFileName, String fileName, String... folder) {
-		iNeedAFile(folder);
-		this.fileName = fileName;
-	}
+	/**
+	 * Instância dos dados customizados de acesso
+	 */
+	private AccessConfiguration access = new AccessConfiguration();
 
-	protected void sendFile(File file) {
-		bot.execute(new SendDocument(person.getIdTelegram(), file));
-	}
-
-	public boolean isNeedAFile() {
-		return needAFile;
-	}
-
-	public void setNeedAFile(boolean needAFile) {
-		this.needAFile = needAFile;
-	}
-
-	protected BoxFileObject boxFileObject;
-	protected BoxFolderObject boxFolderObject;
-	
-	AccessConfiguration access = new AccessConfiguration();
-
+	// Construtor
 	public Dialog(TelegramBot bot, Person person, Route route, Model model, String message) {
 		super();
 		this.bot = bot;
@@ -169,260 +159,56 @@ public abstract class Dialog {
 		this.message = message;
 	}
 
+	// Inicio dos métodos protected--------------------------------------------------------------
+	
+	//Ciclos dentro do dialogo-------------------------------------------------------------------
 	/**
-	 * Adiciona um complemento String na instância do diálogo. Automaticamente
-	 * pega o conteúdo digitado pelo usuário, sendo necessario informar somente
-	 * a chave usada.
-	 * 
-	 * @param key
-	 *            Chave usada para recuperar o dado quando necessário.
-	 * @return Sem retorno.
-	 * 
-	 *         <blockquote>
+	 * Usado dentro de um if para que seja utilizado o bloco responsável por um passo.
+	 * <blockquote>
 	 * 
 	 *         <pre>
-	 *Exemplo:
-	 *
-	 *addComplementString("usuario");
-	 *
-	 *Armazenado o que foi digitado pelo usuário na chave 
-	 *"usuario" da instância do dialogo.
+	 *         if(nextStep()){
+	 *         		Instruções do passo 1
+	 *         }
+	 *         if(nextStep()){
+	 *         		Instruções do passo 2
+	 *         }
 	 *         </pre>
-	 * 
-	 * 		</blockquote>
+	 * </blockquote>
+	 * @return
 	 */
-	public JSONObject addComplementString(String key) {
-		if (!message.equals("Voltar")) {
-			this.complement.put(key, message);
-		}
-		return this.complement;
-	}
-
-	/**
-	 * Adiciona um complemento String na instância do diálogo. Pode ser
-	 * customizada, podendo receber uma string tratada como conteúdo.
-	 * 
-	 * @param key
-	 *            Chave usada para recuperar o dado quando necessário.
-	 * @param content
-	 *            Conteúdo String do complemento.
-	 * @return Sem retorno.
-	 * 
-	 *         <blockquote>
-	 * 
-	 *         <pre>
-	 *Exemplo:
-	 *
-	 *addCustomComplementString("usuario","teste");
-	 *
-	 *Armazenado a palavra "teste" na chave 
-	 *"usuario" da instância do dialogo.
-	 *         </pre>
-	 * 
-	 * 		</blockquote>
-	 */
-	public JSONObject addComplementString(String key, String content) {
-		if (!message.equals("Voltar")) {
-			this.complement.put(key, content);
-		}
-		return this.complement;
-	}
-
-	/**
-	 * Recupera o conteúdo inserido pelo <code> addComplementString </code> ou
-	 * <code> addCustomComplementString </code>.
-	 * 
-	 * @param key
-	 *            Chave usada na criação para identificar o que deseja ser
-	 *            retornado.
-	 * @return String gravada anteriormente.
-	 * 
-	 *         <blockquote>
-	 * 
-	 *         <pre>
-	 *Exemplo:
-	 *
-	 *String resultado = getComplementString("usuario");
-	 *
-	 *A String resultado acaba recebendo o conteudo armazenado
-	 *na chave "usuario".
-	 *         </pre>
-	 * 
-	 * 		</blockquote>
-	 */
-	public String getComplementString(String key) {
-		try {
-			return this.complement.getString(key);
-		} catch (Exception e) {
-			return null;
+	protected boolean nextStep() {
+		if (stepControl == step) {
+			return true;
+		} else {
+			stepControl++;
+			return false;
 		}
 	}
-
+	
 	/**
 	 * Define manualmente qual o step do dialog. <br>
 	 * <b>Atenção</b><br>
-	 * Cuidado ao usar este recurso, pois um dialog pode estar capturando dados
-	 * do usuário, se for adiantado algum step sem estes dados, sua lógica pode
-	 * não funcionar.
+	 * Cuidado ao usar este recurso, pois um dialog pode estar capturando dados do
+	 * usuário, se for adiantado algum step sem estes dados, sua lógica pode não
+	 * funcionar.
 	 * 
 	 * @param step
 	 *            int - Coloque o número do step que deseja avançar.
 	 */
-	public void setStep(int step) {
+	protected void setStep(int step) {
 		this.step = step;
 	}
-
+	
 	/**
-	 * Recupera o objeto Person do usuário que está interagindo com o bot.
-	 * 
-	 * @return Person - Instância direata de Person.
-	 */
-	public Person getPerson() {
-		return person;
-	}
-
-	/**
-	 * Sobrescreve a mensagem que o usuário digitou para o bot. <br>
-	 * <b>Atenção</b><br>
-	 * Cuidado ao utiliza-lo para não perder a referência do que o usuário
-	 * digitou.
-	 * 
-	 * @param message
-	 *            String - Mensagem que será considerada no bot.
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public Dialog finishHim(Dialog dialog) {
-		map.put(map.size() + 1, new String[] { "Menu" });
-		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
-				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		this.finish = true;
-		this.step++;
-		map = new HashMap<>();
-		return dialog;
-	}
-
-	public Dialog finishHim() {
-		map.put(map.size() + 1, new String[] { "Menu" });
-		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
-				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		this.finish = true;
-		this.step++;
-		map = new HashMap<>();
-		return null;
-	}
-
-	/**
-	 * Método que verifica se uma instância de Dialog já foi finalizada.
-	 * 
-	 * @return true - Já finalizado<br>
-	 *         false - Não finalizado
-	 */
-	public boolean isFinish() {
-		return this.finish;
-	}
-
-	private void answer(String message) {
-		bot.execute(new SendMessage(person.getIdTelegram(), message));
-	}
-
-	/**
-	 * Faz o bot enviar uma mensagem a alguem customizado.
-	 * 
-	 * @param person
-	 *            - Objeto Person do destinatário da mensagem.
-	 * @param message
-	 *            - String da Mensagem que deseja enviar
-	 */
-	protected void answer(Person person, String message) {
-		bot.execute(new SendMessage(person.getIdTelegram(), message));
-	}
-
-	/**
-	 * Finaliza abruptamente uma instância de Dialog, ao usuário enviar
-	 * "/desisto" ao bot.
-	 */
-	public void quit() {
-		if (message.equals("Menu")) {
-			this.step = 0;
-			this.finish = true;
-		}
-	}
-
-	/**
-	 * Retorno utilizado quando o usuário envia um conteúdo inválido.
-	 * 
-	 * @return True - Utilizado para finalizar o passo sem avança-lo, forçando o
-	 *         usuário a tentar novamente.
-	 * 
-	 * 
-	 */
-	protected Dialog messageInvalid() {
-		answer("Conteúdo inválido, tente novamente");
-		return null;
-	}
-
-	/**
-	 * Método que retorna a forma padrão de pedir alguma confirmação ao usuário
-	 * Já esta no padrão de linkagem do telegram para que o usuário possa
-	 * pressionar o link.
-	 * 
-	 * @return
-	 */
-	protected void messageConfirmation() {
-		answer.append("\n\nDeseja Confirmar esta ação?");
-		map.put(map.size() + 1, new String[] { "Sim", "Não" });
-	}
-
-	/**
-	 * Encapsulamento da confimação final do usuário, antes de efetivar a ação
-	 * do usuário
-	 * 
-	 * @return true quando o usuário confirmar a ação e false quando ele recusar
-	 */
-	protected boolean isConfirmated() {
-		if (!message.equals("Sim")) {
-			answer.append("Ação cancelada\n");
-			return false;
-		} else {
-			answer.append("Ação concluída com sucesso\n");
-			return true;
-		}
-	}
-
-	/**
-	 * Adiciona na resposta do bot uma lista com as opções de submenu
-	 * adicionadas
-	 */
-	protected void messageSubMenus() {
-		for (String string : subMenus) {
-			answer.append("\n" + string);
-		}
-	}
-
-	protected boolean isSubMenuValid(String string) {
-		for (String subMenu : subMenus) {
-			if (subMenu.equals(string)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Prepara o keyboard de resposta com n colunas, fornecido por parametro
-	 * para a definição manual do mesmo.
+	 * Prepara o keyboard de resposta com n colunas, fornecido por parametro para a
+	 * definição manual do mesmo.
 	 * 
 	 * @param strings
 	 * @param n
 	 */
 	protected void prepareKeyboard(List<String> strings, int n) {
-		if(strings.size()==0) {
-			answer.append("\nNenhum registro localizado");
-		}else {
-		
+		if (strings.size() != 0) {
 			int linha = 0;
 			int item = 0;
 			// Caso a lista seja menor que a quantidade de colunas
@@ -457,16 +243,14 @@ public abstract class Dialog {
 	}
 
 	/**
-	 * Método que, baseado no tamanho da maior string da lista fornecida,
-	 * prepara um keyboard definindo uma melhor quantidade de colunas mantendo
-	 * mais agradável o uso.
+	 * Método que, baseado no tamanho da maior string da lista fornecida, prepara um
+	 * keyboard definindo uma melhor quantidade de colunas mantendo mais agradável o
+	 * uso.
 	 * 
 	 * @param strings
 	 */
 	protected void prepareKeyboard(List<String> strings) {
-		if(strings.size()==0) {
-			answer.append("\nNenhum registro localizado");
-		}else {
+		if (strings.size() != 0) {
 			int linha = 0;
 			int item = 0;
 
@@ -525,21 +309,18 @@ public abstract class Dialog {
 					map.put(linha++, conteudo);
 				}
 			}
-		}	
-		
-	}
-
-	private int biggerString(List<String> strings) {
-		int result = 0;
-		for (String string : strings) {
-			if (string.length() > result) {
-				result = string.length();
-			}
 		}
-		return result;
-	}
 
+	}
+	
+	/**
+	 * Finaliza o passo, colocando false no parametro ele não irá mostrar o menu
+	 * @param menu
+	 * @return
+	 */
 	protected Dialog finishStep(boolean menu) {
+		if (isEmpty)
+			return finishHim();
 		if (menu) {
 			if (step != 1) {
 				map.put(map.size() + 1, new String[] { "Voltar", "Menu" });
@@ -549,7 +330,7 @@ public abstract class Dialog {
 		}
 		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
 				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		model.addMessageLog(new MessageLog(person, answer.toString(),"Enviado pelo Bot"));
+		model.addMessageLog(new MessageLog(person, answer.toString(), "Enviado pelo Bot"));
 		answer = new StringBuilder();
 		++this.step;
 		this.stepControl = 1;
@@ -557,34 +338,382 @@ public abstract class Dialog {
 		return null;
 	}
 
+	/**
+	 * Finliza o passo
+	 * @return
+	 */
 	protected Dialog finishStep() {
+		if (isEmpty)
+			return finishHim();
 		internalFinishStep();
 		++this.step;
 		return null;
 	}
 
+	/**
+	 * Finaliza o passo sendo informado manualmente o numero do passo que ele deve ir.
+	 * @param step
+	 * @return
+	 */
 	protected Dialog finishStep(int step) {
 		internalFinishStep();
 		this.step = step;
 		return null;
 	}
-
-	private void internalFinishStep() {
-		if (step != 1) {
-			map.put(map.size() + 1, new String[] { "Voltar", "Menu" });
-		} else {
-			map.put(map.size() + 1, new String[] { "Menu" });
-		}
+	
+	/**
+	 * Finaliza o diálogo enviando como retorno um novo diálogo. Usado para quando é
+	 * necessário continuar o processo por um novo diálogo
+	 * 
+	 * @param dialog
+	 *            Nova instância de dialogo criado manualmente para tomar o lugar da
+	 *            que esta sendo finalizada
+	 * @return Retorna a nova instância
+	 */
+	protected Dialog finishHim(Dialog dialog) {
+		map.put(map.size() + 1, new String[] { "Menu" });
 		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
 				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		model.addMessageLog(new MessageLog(person, answer.toString(),"Enviado pelo Bot"));
-		answer = new StringBuilder();
-		this.stepControl = 1;
+		this.finish = true;
+		this.step++;
 		map = new HashMap<>();
-		
-		
+		return dialog;
+	}
+	
+	/**
+	 * Finaliza o diálogo (Sem criação de novo diálogo)
+	 * @return
+	 */
+	protected Dialog finishHim() {
+		map.put(map.size() + 1, new String[] { "Menu" });
+		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
+				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+		this.finish = true;
+		this.step++;
+		map = new HashMap<>();
+		return null;
 	}
 
+	//Listas temporárias---------------------------------------------------------------------
+	
+	/**
+	 * Adiciona um complemento String na instância do diálogo. Automaticamente pega
+	 * o conteúdo digitado pelo usuário, sendo necessario informar somente a chave
+	 * usada.
+	 * 
+	 * @param key
+	 *            Chave usada para recuperar o dado quando necessário.
+	 * @return Sem retorno.
+	 * 
+	 *         <blockquote>
+	 * 
+	 *         <pre>
+	 *Exemplo:
+	 *
+	 *addComplementString("usuario");
+	 *
+	 *Armazenado o que foi digitado pelo usuário na chave 
+	 *"usuario" da instância do dialogo.
+	 *         </pre>
+	 * 
+	 *         </blockquote>
+	 */
+	protected JSONObject addComplementString(String key) {
+		if (!message.equals("Voltar")) {
+			this.complement.put(key, message);
+		}
+		return this.complement;
+	}
+
+	/**
+	 * Adiciona um complemento String na instância do diálogo. Pode ser customizada,
+	 * podendo receber uma string tratada como conteúdo.
+	 * 
+	 * @param key
+	 *            Chave usada para recuperar o dado quando necessário.
+	 * @param content
+	 *            Conteúdo String do complemento.
+	 * @return Sem retorno.
+	 * 
+	 *         <blockquote>
+	 * 
+	 *         <pre>
+	 *Exemplo:
+	 *
+	 *addCustomComplementString("usuario","teste");
+	 *
+	 *Armazenado a palavra "teste" na chave 
+	 *"usuario" da instância do dialogo.
+	 *         </pre>
+	 * 
+	 *         </blockquote>
+	 */
+	protected JSONObject addComplementString(String key, String content) {
+		if (!message.equals("Voltar")) {
+			this.complement.put(key, content);
+		}
+		return this.complement;
+	}
+
+	/**
+	 * Recupera o conteúdo inserido pelo <code> addComplementString </code> ou
+	 * <code> addCustomComplementString </code>.
+	 * 
+	 * @param key
+	 *            Chave usada na criação para identificar o que deseja ser
+	 *            retornado.
+	 * @return String gravada anteriormente.
+	 * 
+	 *         <blockquote>
+	 * 
+	 *         <pre>
+	 *Exemplo:
+	 *
+	 *String resultado = getComplementString("usuario");
+	 *
+	 *A String resultado acaba recebendo o conteudo armazenado
+	 *na chave "usuario".
+	 *         </pre>
+	 * 
+	 *         </blockquote>
+	 */
+	protected String getComplementString(String key) {
+		try {
+			return this.complement.getString(key);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Remove os itens que devem estar na lista apresentada ao usuário, caso ela
+	 * fique vazia, alerta o usuário.
+	 */
+	protected void emptyTrash() {
+		objects.removeAll(trash);
+		if (objects.size() == 0) {
+			answer.append("\nNenhum registro foi localizado");
+			isEmpty = true;
+		}
+	}
+
+	//Manipulação de arquivos------------------------------------------------------------------
+	
+	/**
+	 * Solicita ao usuário o envio de um arquivo
+	 * 
+	 * @param folder
+	 *            Nome da pasta que será salvo o arquivo
+	 */
+	protected void iNeedAFile(String... folder) {
+		model.inicializeBox();
+		answer.append("Envie um arquivo a seguir\n");
+		this.needAFile = true;
+		BoxFolderObject currentFolder = null;
+		BoxFolderObject rootFolder = null;
+
+		for (String string : folder) {
+			currentFolder = model.locateBoxFolderObjectByName(string);
+			if (currentFolder == null) {
+				currentFolder = new BoxFolderObject(string, model, rootFolder);
+			}
+			rootFolder = currentFolder;
+		}
+
+		this.boxFolderObject = currentFolder;
+	}
+
+	/**
+	 * Solicita ao usuário o envio de um arquivo
+	 * 
+	 * @param defineFileName
+	 *            Coloque true para informar que será informado manualmente o nome
+	 *            do arquivo
+	 * @param fileName
+	 *            String com o nome do arquivo que esta sendo definido
+	 * @param folder
+	 *            Nome da pasta que será salvo o arquivo
+	 */
+	protected void iNeedAFile(boolean defineFileName, String fileName, String... folder) {
+		iNeedAFile(folder);
+		this.fileName = fileName;
+	}
+
+	/**
+	 * Envia um arquivo para o usuário do diálogo atual
+	 * 
+	 * @param file
+	 *            Objeto File que será enviado ao usuário
+	 */
+	protected void sendFile(File file) {
+		bot.execute(new SendDocument(person.getIdTelegram(), file));
+	}
+
+	/**
+	 * Envio de arquivos para n persons
+	 * @param file
+	 * Arquivo em si
+	 * @param persons
+	 * Lista de pessoas que receberão os arquivos
+	 */
+	protected void sendFiles(File file, List<Person> persons) {
+		for (Person person : persons) {
+			bot.execute(new SendDocument(person.getIdTelegram(), file));
+		}
+	}
+
+	//Envio de mensagens-----------------------------------------------------------------------------
+	
+	/**
+	 * Faz o bot enviar uma mensagem a alguem customizado.
+	 * 
+	 * @param person
+	 *            - Objeto Person do destinatário da mensagem.
+	 * @param message
+	 *            - String da Mensagem que deseja enviar
+	 */
+	protected void answer(Person person, String message) {
+		bot.execute(new SendMessage(person.getIdTelegram(), message));
+	}
+	
+	/**
+	 * Retorno utilizado quando o usuário envia um conteúdo inválido.
+	 * 
+	 * @return True - Utilizado para finalizar o passo sem avança-lo, forçando o
+	 *         usuário a tentar novamente.
+	 * 
+	 * 
+	 */
+	protected Dialog messageInvalid() {
+		answer("Conteúdo inválido, tente novamente");
+		return null;
+	}
+	
+	/**
+	 * Método que retorna a forma padrão de pedir alguma confirmação ao usuário Já
+	 * esta no padrão de keyboard
+	 * 
+	 * @return
+	 */
+	protected void messageConfirmation() {
+		answer.append("\n\nDeseja Confirmar esta ação?");
+		map.put(map.size() + 1, new String[] { "Sim", "Não" });
+	}
+
+	/**
+	 * Encapsulamento da confimação final do usuário, antes de efetivar a ação do
+	 * usuário
+	 * 
+	 * @return true quando o usuário confirmar a ação e false quando ele recusar
+	 */
+	protected boolean isConfirmated() {
+		if (!message.equals("Sim")) {
+			answer.append("Ação cancelada\n");
+			return false;
+		} else {
+			answer.append("Ação concluída com sucesso\n");
+			return true;
+		}
+	}
+		
+	/**
+	 * Adiciona uma mensagem agendada, que será executada somente quando a data/hora
+	 * atual for igual ao localdatetime enviado neste método.
+	 * 
+	 * @param person
+	 * @param message
+	 * @param trigger
+	 */
+	protected void answer(Person person, String message, LocalDateTime trigger) {
+		ScheduleMessage scheduleMessage = new ScheduleMessage(person, message, trigger);
+		model.addScheduleMessage(scheduleMessage);
+		model.schedule.schedule(() -> {
+			bot.execute(new SendMessage(person.getIdTelegram(), message));
+			model.removeScheduleMessage(scheduleMessage);
+		}, LocalDateTime.now().until(trigger, ChronoUnit.MILLIS), TimeUnit.MILLISECONDS);
+
+	}
+	
+	/**
+	 * Envia a mesma mensagem para n persons
+	 * @param message
+	 * Mensagem em si
+	 * @param persons
+	 *Lista das pessoas que receberão a mensagem
+	 */
+	protected void sendMessages(String message, List<Person> persons) {
+		for (Person person : persons) {
+			answer(person, message);
+		}
+	}
+		
+	// Inicio dos métodos públicos
+
+	/**
+	 * Método usado para definir se será usado ou não um arquivo
+	 * 
+	 * @param needAFile
+	 * 
+	 */
+	public void setNeedAFile(boolean needAFile) {
+		this.needAFile = needAFile;
+	}
+
+	/**
+	 * Método para conferir se esta sendo necessário o envio do arquivo (Usado pelo
+	 * TelegramResponse)
+	 * 
+	 * @return
+	 */
+	public boolean isNeedAFile() {
+		return needAFile;
+	}
+
+	/**
+	 * Recupera o objeto Person do usuário que está interagindo com o bot.
+	 * 
+	 * @return Person - Instância direta de Person.
+	 */
+	public Person getPerson() {
+		return person;
+	}
+
+	/**
+	 * Sobrescreve a mensagem que o usuário digitou para o bot. <br>
+	 * <b>Atenção</b><br>
+	 * Cuidado ao utiliza-lo para não perder a referência do que o usuário digitou.
+	 * 
+	 * @param message
+	 *            String - Mensagem que será considerada no bot.
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	 * Método que verifica se uma instância de Dialog já foi finalizada.
+	 * 
+	 * @return true - Já finalizado<br>
+	 *         false - Não finalizado
+	 */
+	public boolean isFinish() {
+		return this.finish;
+	}
+
+	/**
+	 * Finaliza abruptamente uma instância de Dialog, ao usuário enviar "Menu"
+	 * ao bot.
+	 */
+	public void quit() {
+		if (message.equals("Menu")) {
+			this.step = 0;
+			this.finish = true;
+		}
+	}
+	
+	/**
+	 * Volta um passo (implementação da rotina de voltar)
+	 */
 	public void backStep() {
 		if (step == 2) {
 			this.step = step - 1;
@@ -594,6 +723,11 @@ public abstract class Dialog {
 
 	}
 
+	/**
+	 * Insere no banco e no box o arquivo enviado ao usuário (usado pelo TelegramResponse)
+	 * @param fileId
+	 * @param name
+	 */
 	public void setBoxFile(String fileId, String name) {
 		model.inicializeBox();
 		GetFile request = new GetFile(fileId);
@@ -602,57 +736,62 @@ public abstract class Dialog {
 		this.boxFileObject = new BoxFileObject(name, bot.getFullFilePath(file), model, boxFolderObject);
 	}
 
+	/**
+	 * Permite que o TelegramResponse resete o uso do objeto boxFile
+	 */
 	public void resetBoxFile() {
 		this.boxFileObject = null;
 
 	}
 
-	protected boolean nextStep() {
-		if (stepControl == step) {
-			return true;
-		} else {
-			stepControl++;
-			return false;
-		}
-	}
-	
+// Métodos Privados (Uso somente interno)
 	
 	/**
-	 * Adiciona uma mensagem agendada, que será executada somente quando a data/hora atual for igual ao
-	 * localdatetime enviado neste método.
-	 * @param person
+	 * Método onde o bot responde ao usuário (uso interno)
 	 * @param message
-	 * @param trigger
 	 */
-	protected void addMessageSchedule(Person person, String message, LocalDateTime trigger){
-		ScheduleMessage scheduleMessage = new ScheduleMessage(person, message, trigger);
-		model.addScheduleMessage(scheduleMessage);
-		model.schedule.schedule(() -> {
-			bot.execute(new SendMessage(person.getIdTelegram(),message));
-			model.removeScheduleMessage(scheduleMessage);
-			},LocalDateTime.now().until(trigger, ChronoUnit.MILLIS),TimeUnit.MILLISECONDS);
-		
+	private void answer(String message) {
+		bot.execute(new SendMessage(person.getIdTelegram(), message));
 	}
 	
-	protected void sendMessages(String message, List<Person> persons){
-		for (Person person : persons) {
-			answer(person,message);
-		}
-	}
-	
-	protected void sendFiles(File file, List<Person> persons){
-		for (Person person : persons) {
-			bot.execute(new SendDocument(person.getIdTelegram(), file));
-		}
-	}
-	
-
 	/**
-	 * Método de ação do bot, deve ser utilizada retornos com os métodos
-	 * finishStep, finishHim ou invalidMessage.
+	 * Localiza a maios palavra dentro de uma lista de strings retornando seu tamanho.
+	 * @param strings
+	 * @return
+	 */
+	private int biggerString(List<String> strings) {
+		int result = 0;
+		for (String string : strings) {
+			if (string.length() > result) {
+				result = string.length();
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Realiza verificações internas comuns a todo finish step
+	 */
+	private void internalFinishStep() {
+		if (step != 1) {
+			map.put(map.size() + 1, new String[] { "Voltar", "Menu" });
+		} else {
+			map.put(map.size() + 1, new String[] { "Menu" });
+		}
+		bot.execute(new SendMessage(person.getIdTelegram(), answer.toString())
+				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+		model.addMessageLog(new MessageLog(person, answer.toString(), "Enviado pelo Bot"));
+		answer = new StringBuilder();
+		this.stepControl = 1;
+		map = new HashMap<>();
+
+	}
+	
+	/**
+	 * Método de ação do bot, deve ser utilizada retornos com os métodos finishStep,
+	 * finishHim ou invalidMessage.
 	 * 
-	 * @return Sempre True, o retorno é somente um gatilho para finalizar o
-	 *         método.
+	 * @return Sempre True, o retorno é somente um gatilho para finalizar o método.
 	 * 
 	 *         <blockquote>
 	 * 
@@ -667,7 +806,7 @@ public abstract class Dialog {
 	 *
 	 *         </pre>
 	 * 
-	 * 		</blockquote>
+	 *         </blockquote>
 	 */
 	public abstract Dialog action();
 
