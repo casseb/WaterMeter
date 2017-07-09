@@ -7,6 +7,7 @@ apply plugin: 'application'
 
 
 mainClassName = 'mvc.Main'
+//mainClassName = 'files.CreateAppUser'
 applicationName = 'app'
 
 defaultTasks = ['clean', 'jar']
@@ -26,6 +27,7 @@ dependencies {
 jar {
     manifest {
         attributes 'Main-Class': 'mvc.Main'
+        //attributes 'Main-Class': 'files.CreateAppUser'
     }
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } {
         // remove all signature files
