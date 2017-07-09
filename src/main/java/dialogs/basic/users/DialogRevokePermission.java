@@ -1,22 +1,24 @@
-package dialogs.basic;
+package dialogs.basic.users;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.structure.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;
 import objects.RouteGroup;
 
-public class DialogGrandPermission extends Dialog {
+public class DialogRevokePermission extends Dialog {
 
-	public DialogGrandPermission(TelegramBot bot, Person person, Route route, Model model, String message) {
+	public DialogRevokePermission(TelegramBot bot, Person person, Route route, Model model, String message) {
 		super(bot, person, route, model, message);
 	}
 
 	@Override
 	public Dialog action() {
+		
 		if(nextStep()){
-			answer.append("Pressione o nome do usuário que deseja dar permissão");
+			answer.append("Pressione o nome do usuário que deseja retirar permissão");
 			answer.append("\nAbaixo usuários cadastrados\n");
 			prepareKeyboard(model.showPersons(model.persons));
 			return finishStep();
@@ -26,8 +28,8 @@ public class DialogGrandPermission extends Dialog {
 				return messageInvalid();
 			else {
 				addComplementString("usuario");
-				answer.append("\nPressione o grupo da rota que deseja liberar");
-				prepareKeyboard(model.showGroupRoutes(model.routesDenieds(person)));
+				answer.append("\nPressione o grupo da rota que deseja bloquear");
+				prepareKeyboard(model.showGroupRoutes(model.locatePerson(message).getRotasPermitidas()));
 				return finishStep();
 			}
 		}
@@ -37,8 +39,8 @@ public class DialogGrandPermission extends Dialog {
 				return messageInvalid();
 			else{
 				addComplementString("routeGroup");
-				answer.append("\nPressione a rota que deseja liberar");
-				prepareKeyboard(model.showRoutes(model.routeGroup.locateRouteGroupByDesc(getComplementString("routeGroup")),model.routesDenieds(person)));
+				answer.append("\nPressione a rota que deseja bloquear");
+				prepareKeyboard(model.showRoutes(model.routeGroup.locateRouteGroupByDesc(getComplementString("routeGroup")),model.locatePerson(getComplementString("usuario")).getRotasPermitidas()));
 				return finishStep();
 			}
 			
@@ -48,7 +50,7 @@ public class DialogGrandPermission extends Dialog {
 				return messageInvalid();
 			else {
 				addComplementString("rota");
-				answer.append("Deseja dar permissão a rota " + getComplementString("routeGroup") + " - " + getComplementString("rota") + " ao usuário "
+				answer.append("Deseja retirar permissão a rota " + getComplementString("routeGroup") + " - " + getComplementString("rota") + " ao usuário "
 						+ getComplementString("usuario") + " ?");
 				messageConfirmation();
 				return finishStep();
@@ -56,12 +58,12 @@ public class DialogGrandPermission extends Dialog {
 		}
 		if(nextStep()){
 			if (isConfirmated()) {
-				model.grandPermission(model.locatePerson(getComplementString("usuario")),
+				model.revokePermission(model.locatePerson(getComplementString("usuario")),
 				model.locateRoute(getComplementString("routeGroup")+" - "+getComplementString("rota")));
-				answer.append("Permissão concedida com sucesso");
-				return finishHim(null);
+				answer.append("Permissão removida com sucesso");
+				return finishHim();
 			}else{
-				return finishHim(null);
+				return finishHim();
 			}
 		}
 		return null;

@@ -1,4 +1,4 @@
-package dialogs.basic;
+package dialogs.basic.structure;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ChatAction;

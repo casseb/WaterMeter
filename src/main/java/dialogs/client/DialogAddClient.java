@@ -2,7 +2,7 @@ package dialogs.client;
 
 import com.pengrad.telegrambot.TelegramBot;
 
-import dialogs.basic.Dialog;
+import dialogs.basic.structure.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;

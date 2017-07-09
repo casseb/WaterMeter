@@ -1,4 +1,4 @@
-package dialogs.basic;
+package dialogs.basic.structure;
 
 import org.json.JSONObject;
 
@@ -6,6 +6,16 @@ import com.pengrad.telegrambot.*;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
 
+import dialogs.basic.users.DialogActiveUser;
+import dialogs.basic.users.DialogDisableUser;
+import dialogs.basic.users.DialogEditLogin;
+import dialogs.basic.users.DialogGrandGroupPermission;
+import dialogs.basic.users.DialogGrandPermission;
+import dialogs.basic.users.DialogRevokeGroupPermission;
+import dialogs.basic.users.DialogRevokePermission;
+import dialogs.basic.users.DialogShowAllUsersInfo;
+import dialogs.basic.users.DialogShowUserInfo;
+import dialogs.basic.users.DialogTest;
 import dialogs.client.DialogAddClient;
 import dialogs.information.DialogTermos;
 import dialogs.project.DialogAddProject;
@@ -103,6 +113,13 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Administrativo - Desativar Usuário")){
 					return new DialogDisableUser(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Administrativo - Dar Permissão por menu")){
+					return new DialogGrandGroupPermission(bot,person,route,model,message);
+				}
+				
+				if((completeRoute).equals("Administrativo - Remover Permissão por menu")){
+					return new DialogRevokeGroupPermission(bot,person,route,model,message);
 				}
 				
 				return null;

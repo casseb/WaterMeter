@@ -1,8 +1,9 @@
-package dialogs.basic;
+package dialogs.basic.users;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 
+import dialogs.basic.structure.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;
@@ -30,7 +31,7 @@ public class DialogEditLogin extends Dialog {
 			person.setSenha(getComplementString("senha"));
 			model.editUsernamePassword(person);
 			answer.append("Edição realizada com sucesso!!!");
-			return finishHim(null);
+			return finishHim();
 		}
 		return null;
 

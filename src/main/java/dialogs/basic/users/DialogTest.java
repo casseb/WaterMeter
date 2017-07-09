@@ -1,4 +1,4 @@
-package dialogs.basic;
+package dialogs.basic.users;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import com.pengrad.telegrambot.request.SendDocument;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 
+import dialogs.basic.structure.Dialog;
 import mvc.Model;
 import objects.BoxFolderObject;
 import objects.Person;

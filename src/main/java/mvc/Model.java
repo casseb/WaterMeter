@@ -110,6 +110,12 @@ public class Model{
 			routesString.add("Ativar Usuário");
 			routesGroup.add(RouteGroup.ADMINISTRATIVO);
 			
+			routesString.add("Dar Permissão por menu");
+			routesGroup.add(RouteGroup.ADMINISTRATIVO);
+			
+			routesString.add("Remover Permissão por menu");
+			routesGroup.add(RouteGroup.ADMINISTRATIVO);
+			
 			routesString.add("Desativar Usuário");
 			routesGroup.add(RouteGroup.ADMINISTRATIVO);
 			
@@ -269,6 +275,20 @@ public class Model{
 			
 			for (Route route : routesToAdd) {
 				grandPermission(person, route);
+			}
+		}
+		
+		public void revokePermission(Person person, RouteGroup routeGroup){
+			List<Route> routesToRemove = new LinkedList<>();
+			for (Route route : routes) {
+				if(route.getRouteGroup()==routeGroup){
+					routesToRemove.add(route);
+				}
+				
+			}
+			
+			for (Route route : routesToRemove) {
+				revokePermission(person, route);
 			}
 		}
 		

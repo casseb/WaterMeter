@@ -1,7 +1,8 @@
-package dialogs.basic;
+package dialogs.basic.users;
 
 import com.pengrad.telegrambot.TelegramBot;
 
+import dialogs.basic.structure.Dialog;
 import mvc.Model;
 import objects.Person;
 import objects.Route;
@@ -15,7 +16,7 @@ public class DialogShowUserInfo extends Dialog {
 	@Override
 	public Dialog action() {
 		answer.append(model.showUserData(person));
-		return finishHim(null);
+		return finishHim();
 	}
 
 }
