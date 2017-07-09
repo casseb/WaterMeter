@@ -257,10 +257,13 @@ public class Model{
 		}
 		
 		public Person grandPermission(Person person, Route route){
-			List<Route> rotas = person.getRotasPermitidas();
-			rotas.add(route);
-			person.setRotasPermitidas(rotas);
-			editPerson(person);
+			if(!person.getRotasPermitidas().contains(route)) {
+				List<Route> rotas = person.getRotasPermitidas();
+				rotas.add(route);
+				person.setRotasPermitidas(rotas);
+				editPerson(person);
+				return person;
+			}
 			return person;
 		}
 		
