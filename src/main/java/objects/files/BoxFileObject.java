@@ -1,4 +1,4 @@
-package objects;
+package objects.files;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

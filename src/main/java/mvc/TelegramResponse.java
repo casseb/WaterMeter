@@ -10,7 +10,7 @@ import access.AccessConfiguration;
 import dialogs.basic.structure.Dialog;
 import dialogs.basic.structure.DialogCommands;
 import dialogs.basic.structure.DialogGenerator;
-import objects.MessageLog;
+import objects.basic.MessageLog;
 
 import org.eclipse.jetty.server.Request;
 import org.json.JSONArray;

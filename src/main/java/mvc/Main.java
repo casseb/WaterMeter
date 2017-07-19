@@ -18,13 +18,13 @@ import com.pengrad.telegrambot.request.SendMessage;
 import access.AccessConfiguration;
 import dialogs.basic.structure.Dialog;
 import dialogs.basic.users.DialogEditLogin;
-import objects.Person;
-import objects.PersonType;
 import objects.Project;
 import objects.ProjectType;
-import objects.Route;
-import objects.RouteGroup;
-import objects.ScheduleMessage;
+import objects.basic.Person;
+import objects.basic.PersonType;
+import objects.basic.Route;
+import objects.basic.RouteGroup;
+import objects.basic.ScheduleMessage;
 
 public class Main {
 	

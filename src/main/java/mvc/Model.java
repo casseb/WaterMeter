@@ -8,25 +8,29 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import files.Box;
-import objects.BoxFileObject;
-import objects.BoxFolderObject;
-import objects.HibernateUtil;
-import objects.MessageLog;
-import objects.Person;
-import objects.PersonType;
 import objects.Project;
 import objects.ProjectStatus;
 import objects.ProjectType;
-import objects.Route;
-import objects.RouteGroup;
-import objects.ScheduleMessage;
-import objects.Utils;
+import objects.Termo;
+import objects.TermoTopico;
+import objects.basic.MessageLog;
+import objects.basic.Person;
+import objects.basic.PersonType;
+import objects.basic.Route;
+import objects.basic.RouteGroup;
+import objects.basic.ScheduleMessage;
+import objects.basic.Utils;
+import objects.files.Box;
+import objects.files.BoxFileObject;
+import objects.files.BoxFolderObject;
+import objects.persistence.HibernateUtil;
 
 
 public class Model{
@@ -39,6 +43,7 @@ public class Model{
 		
 		public ProjectType projectType = ProjectType.MONETIZADO;
 		public ProjectStatus projectStatus = ProjectStatus.IDEIA;
+		public TermoTopico termoTopico = TermoTopico.VALIDADE;
 		public RouteGroup routeGroup = RouteGroup.CLIENTES;
 		public Box box = null;
 		public final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
@@ -118,6 +123,9 @@ public class Model{
 			
 			routesString.add("Desativar Usuário");
 			routesGroup.add(RouteGroup.ADMINISTRATIVO);
+			
+			routesString.add("Adicionar");
+			routesGroup.add(RouteGroup.TERMOS);
 			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
@@ -499,6 +507,40 @@ public class Model{
 			return saida;
 		}
 		
+		//Termos-------------------------------------------------------------------------
+		
+		public void addTermo(Termo termo){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.save(termo);
+			session.getTransaction().commit();
+			session.close();
+		}
+		
+		public int lastParagraph(TermoTopico termoTopico) {
+			List<Termo> termos = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			termos = (List<Termo>) crit.list();
+			session.close();
+			
+			int result = 0;
+			
+			if(termos.size()!=0) {
+				for (Termo termo : termos) {
+					if(termo.getTopico().equals(termoTopico)) {
+						result++;
+					}
+				}	
+			}
+			
+			return result;
+			
+			
+		}
+		
 		//BoxFileObject------------------------------------------------------------------
 		
 		public void inicializeBox() {
@@ -644,6 +686,8 @@ public class Model{
 			}
 			return null;
 		}
+
+		
 
 
 		

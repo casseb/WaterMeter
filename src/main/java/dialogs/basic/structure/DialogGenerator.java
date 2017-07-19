@@ -22,9 +22,10 @@ import dialogs.project.DialogAddProject;
 import dialogs.project.DialogEditProject;
 import dialogs.project.DialogRemoveProject;
 import dialogs.project.DialogShowProject;
+import dialogs.termos.DialogAddTermos;
 import mvc.Model;
-import objects.Person;
-import objects.Route;
+import objects.basic.Person;
+import objects.basic.Route;
 
 public class DialogGenerator {
 	
@@ -111,15 +112,17 @@ public class DialogGenerator {
 				if((completeRoute).equals("Administrativo - Ativar Usuário")){
 					return new DialogActiveUser(bot,person,route,model,message);
 				}
+				if((completeRoute).equals("Administrativo - Remover Permissão por menu")){
+					return new DialogRevokeGroupPermission(bot,person,route,model,message);
+				}
 				if((completeRoute).equals("Administrativo - Desativar Usuário")){
 					return new DialogDisableUser(bot,person,route,model,message);
 				}
 				if((completeRoute).equals("Administrativo - Dar Permissão por menu")){
 					return new DialogGrandGroupPermission(bot,person,route,model,message);
 				}
-				
-				if((completeRoute).equals("Administrativo - Remover Permissão por menu")){
-					return new DialogRevokeGroupPermission(bot,person,route,model,message);
+				if((completeRoute).equals("Termos - Adicionar")){
+					return new DialogAddTermos(bot,person,route,model,message);
 				}
 				
 				return null;

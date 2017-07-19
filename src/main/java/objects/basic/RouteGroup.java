@@ -1,4 +1,4 @@
-package objects;
+package objects.basic;
 
 public enum RouteGroup {
 
@@ -8,7 +8,8 @@ public enum RouteGroup {
 	PROJETO("Projeto"),
 	INFORMACOES("Informações"),
 	CLIENTES("Clientes"),
-	MEUSDADOS("Meus Dados")
+	MEUSDADOS("Meus Dados"),
+	TERMOS("Termos")
 	;
 	
 	public String desc;

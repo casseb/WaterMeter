@@ -4,10 +4,10 @@ import com.pengrad.telegrambot.TelegramBot;
 
 import dialogs.basic.structure.Dialog;
 import mvc.Model;
-import objects.Person;
 import objects.Project;
 import objects.ProjectType;
-import objects.Route;
+import objects.basic.Person;
+import objects.basic.Route;
 
 public class DialogAddProject extends Dialog{
 

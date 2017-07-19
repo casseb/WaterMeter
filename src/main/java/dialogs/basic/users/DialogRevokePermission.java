@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 
 import dialogs.basic.structure.Dialog;
 import mvc.Model;
-import objects.Person;
-import objects.Route;
-import objects.RouteGroup;
+import objects.basic.Person;
+import objects.basic.Route;
+import objects.basic.RouteGroup;
 
 public class DialogRevokePermission extends Dialog {
 

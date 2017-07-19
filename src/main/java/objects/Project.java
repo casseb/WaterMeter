@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import objects.basic.Person;
+
 
 @Entity
 @Table(name = "Project")

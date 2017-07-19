@@ -1,4 +1,4 @@
-package files;
+package objects.files;
 
 import java.io.FileInputStream;
 import java.io.FileReader;

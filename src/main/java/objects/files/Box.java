@@ -1,4 +1,4 @@
-package files;
+package objects.files;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +31,6 @@ import com.box.sdk.InMemoryLRUAccessTokenCache;
 import com.mchange.io.FileUtils;
 
 import access.AccessConfiguration;
-import objects.BoxFileObject;
-import objects.BoxFolderObject;
 
 public class Box {
 

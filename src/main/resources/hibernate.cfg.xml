@@ -36,12 +36,14 @@
 		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		
-		<mapping class="objects.Person" />
-		<mapping class="objects.Route" />
+		<mapping class="objects.basic.Person" />
+		<mapping class="objects.basic.Route" />
 		<mapping class="objects.Project" />
-		<mapping class="objects.BoxFileObject" />
-		<mapping class="objects.BoxFolderObject" />
-		<mapping class="objects.MessageLog" />
-		<mapping class="objects.ScheduleMessage" />
+		<mapping class="objects.files.BoxFileObject" />
+		<mapping class="objects.files.BoxFolderObject" />
+		<mapping class="objects.basic.MessageLog" />
+		<mapping class="objects.basic.ScheduleMessage" />
+		<mapping class="objects.Termo" />
+		
 	</session-factory>
 </hibernate-configuration>

@@ -20,12 +20,12 @@ import com.pengrad.telegrambot.response.GetFileResponse;
 
 import access.AccessConfiguration;
 import mvc.Model;
-import objects.BoxFileObject;
-import objects.BoxFolderObject;
-import objects.MessageLog;
-import objects.Person;
-import objects.Route;
-import objects.ScheduleMessage;
+import objects.basic.MessageLog;
+import objects.basic.Person;
+import objects.basic.Route;
+import objects.basic.ScheduleMessage;
+import objects.files.BoxFileObject;
+import objects.files.BoxFolderObject;
 
 /**
  * 

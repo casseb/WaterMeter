@@ -1,4 +1,4 @@
-package objects;
+package objects.basic;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

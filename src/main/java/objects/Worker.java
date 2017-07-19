@@ -1,5 +1,7 @@
 package objects;
 
+import objects.basic.Person;
+
 public class Worker {
 	
 	private int id;

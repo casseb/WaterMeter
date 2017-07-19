@@ -1,4 +1,4 @@
-package objects;
+package objects.basic;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

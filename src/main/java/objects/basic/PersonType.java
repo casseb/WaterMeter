@@ -1,4 +1,4 @@
-package objects;
+package objects.basic;
 
 public enum PersonType {
 	

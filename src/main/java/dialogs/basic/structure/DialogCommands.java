@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ChatAction;
 
 import mvc.Model;
-import objects.Person;
-import objects.Route;
-import objects.RouteGroup;
+import objects.basic.Person;
+import objects.basic.Route;
+import objects.basic.RouteGroup;
 
 public class DialogCommands extends Dialog {
 

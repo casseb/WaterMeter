@@ -5,8 +5,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 
 import dialogs.basic.structure.Dialog;
 import mvc.Model;
-import objects.Person;
-import objects.Route;
+import objects.basic.Person;
+import objects.basic.Route;
 
 public class DialogTermos extends Dialog {
 

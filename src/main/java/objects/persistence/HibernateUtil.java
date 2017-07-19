@@ -1,4 +1,4 @@
-package objects;
+package objects.persistence;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
