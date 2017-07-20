@@ -51,8 +51,8 @@ public class DialogAddTermos extends Dialog {
 		if(nextStep()) {
 			addComplementString("descricao");
 			answer.append("Confirma os seguintes dados?\n\n");
-			answer.append("Tópico:"		+getComplementString("topico")		+"\n");
-			answer.append("Descrição:"	+getComplementString("descricao")	+"\n");
+			answer.append("Tópico: "	+getComplementString("topico")		+"\n");
+			answer.append("Descrição: "	+getComplementString("descricao")	+"\n");
 			
 			messageConfirmation();
 			

@@ -29,6 +29,9 @@ public class Termo {
 	private String descricao;
 	
 	@Column(nullable = true)
+	private String descricaoTemp;
+	
+	@Column(nullable = true)
 	private Timestamp dataCriacao;
 	
 	@Column(nullable = true)
@@ -51,6 +54,7 @@ public class Termo {
 		this.descricao = descricao;
 		setDataCriacao(LocalDateTime.now());
 		this.codigoParagrafo = topico.getUltimoParagrafo()+1;
+		this.descricaoTemp = "Sem texto para homologação";
 	}
 
 
@@ -124,6 +128,14 @@ public class Termo {
 
 	public void setDeletado(boolean deletado) {
 		this.deletado = deletado;
+	}
+
+	public String getDescricaoTemp() {
+		return descricaoTemp;
+	}
+
+	public void setDescricaoTemp(String descricaoTemp) {
+		this.descricaoTemp = descricaoTemp;
 	}
 	
 	

@@ -23,6 +23,7 @@ import dialogs.project.DialogEditProject;
 import dialogs.project.DialogRemoveProject;
 import dialogs.project.DialogShowProject;
 import dialogs.termos.DialogAddTermos;
+import dialogs.termos.DialogEditTermos;
 import mvc.Model;
 import objects.basic.Person;
 import objects.basic.Route;
@@ -123,6 +124,9 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Termos - Adicionar")){
 					return new DialogAddTermos(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Termos - Editar")){
+					return new DialogEditTermos(bot,person,route,model,message);
 				}
 				
 				return null;

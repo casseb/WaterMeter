@@ -1,6 +1,7 @@
 package mvc;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -125,6 +126,9 @@ public class Model{
 			routesGroup.add(RouteGroup.ADMINISTRATIVO);
 			
 			routesString.add("Adicionar");
+			routesGroup.add(RouteGroup.TERMOS);
+			
+			routesString.add("Editar");
 			routesGroup.add(RouteGroup.TERMOS);
 			
 			for (int i = 0; i < routesString.size(); i++) {
@@ -515,6 +519,56 @@ public class Model{
 			session.save(termo);
 			session.getTransaction().commit();
 			session.close();
+		}
+		
+		public void editTermo(Termo termo){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.update(termo);
+			session.getTransaction().commit();
+			session.close();
+		}
+		
+		public Termo locateTermosByTopicoDesc(TermoTopico termoTopico, String desc){
+			List<Termo> termos = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			termos = (List<Termo>) crit.list();
+			session.close();
+			
+			for (Termo termo : termos) {
+				if(
+				   (termo.getTopico().equals(termoTopico) &&
+				   (termo.getCodigoParagrafo()+" - "+termo.getDescricao()).equals(desc))
+				) {
+					return termo;
+				}
+			}
+			
+			return null;
+		}
+		
+		public List<String> showTermosByTopico(TermoTopico termoTopico){
+			List<Termo> termos = new LinkedList<>();
+			List<String> result = new LinkedList();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			termos = (List<Termo>) crit.list();
+			session.close();
+			
+			for (Termo termo : termos) {
+				if(termo.getTopico().equals(termoTopico)) {
+					result.add(termo.getCodigoParagrafo()+" - "+termo.getDescricao());
+				}
+			}
+			
+			Collections.sort(result);
+			
+			return result;
 		}
 		
 		public int lastParagraph(TermoTopico termoTopico) {
