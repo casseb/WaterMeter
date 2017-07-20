@@ -58,7 +58,12 @@ public class DialogEditTermos extends Dialog {
 				Termo termo = model.locateTermosByTopicoDesc(model.termoTopico.locateTermoTopicoByString(getComplementString("topico")),
 						getComplementString("descricaoAntiga"));
 				
-				answer.append("Descrição Oficial: "+message																+"\n");
+				if(termo.isOficial()) {
+					answer.append("Descrição Oficial: "+message															+"\n");	
+				}else {
+					answer.append("Descrição Inicial: "+message															+"\n");	
+				}
+				
 				answer.append("Descrição em Homologação: "+termo.getCodigoParagrafo()+" - "+termo.getDescricaoTemp()	+"\n");
 				answer.append("\nDigite a nova descrição"																+"\n");
 				
@@ -78,7 +83,12 @@ public class DialogEditTermos extends Dialog {
 			
 			answer.append("Confirma os seguintes dados?\n\n");
 			answer.append("Tópico: "					+getComplementString("topico")											+"\n");
-			answer.append("Descrição Oficial: "			+getComplementString("descricaoAntiga")									+"\n");
+			if(termo.isOficial()) {
+				answer.append("Descrição Oficial: "			+getComplementString("descricaoAntiga")								+"\n");
+			}else {
+				answer.append("Descrição Inicial: "			+getComplementString("descricaoAntiga")								+"\n");
+			}
+			
 			answer.append("Descrição em Homologação: "	+termo.getCodigoParagrafo()+" - "+termo.getDescricaoTemp()				+"\n");
 			answer.append("Descrição Nova: "			+termo.getCodigoParagrafo()+" - "+getComplementString("descricaoNova")	+"\n");
 			
