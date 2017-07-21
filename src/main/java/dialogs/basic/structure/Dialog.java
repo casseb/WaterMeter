@@ -586,6 +586,7 @@ public abstract class Dialog {
 	 */
 	protected Dialog messageInvalid() {
 		answer("Conteúdo inválido, tente novamente");
+		this.stepControl = 1;
 		return null;
 	}
 	
@@ -717,8 +718,10 @@ public abstract class Dialog {
 	public void backStep() {
 		if (step == 2) {
 			this.step = step - 1;
+			this.stepControl = 1;
 		} else {
 			this.step = step - 2;
+			this.stepControl = 1;
 		}
 
 	}
