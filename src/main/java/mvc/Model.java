@@ -131,6 +131,12 @@ public class Model{
 			routesString.add("Editar");
 			routesGroup.add(RouteGroup.TERMOS);
 			
+			routesString.add("Ler");
+			routesGroup.add(RouteGroup.TERMOS);
+			
+			routesString.add("Deletar");
+			routesGroup.add(RouteGroup.TERMOS);
+			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
 					addRoute(new Route(routesString.get(i),routesGroup.get(i)));
@@ -548,6 +554,25 @@ public class Model{
 			}
 			
 			return null;
+		}
+		
+		public List<Termo> locateTermosByTopicoOficiais(TermoTopico termoTopico){
+			List<Termo> termos = new LinkedList<>();
+			List<Termo> result = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			termos = (List<Termo>) crit.list();
+			session.close();
+			
+			for (Termo termo : termos) {
+				if((termo.getTopico().equals(termoTopico)) && termo.isOficial()) {
+					result.add(termo);
+				}
+			}
+			
+			return result;
 		}
 		
 		public List<String> showTermosByTopico(TermoTopico termoTopico){

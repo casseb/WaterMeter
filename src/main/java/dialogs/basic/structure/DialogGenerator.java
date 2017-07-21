@@ -23,7 +23,9 @@ import dialogs.project.DialogEditProject;
 import dialogs.project.DialogRemoveProject;
 import dialogs.project.DialogShowProject;
 import dialogs.termos.DialogAddTermos;
+import dialogs.termos.DialogDeleteTermos;
 import dialogs.termos.DialogEditTermos;
+import dialogs.termos.DialogReadTermos;
 import mvc.Model;
 import objects.basic.Person;
 import objects.basic.Route;
@@ -127,6 +129,12 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Termos - Editar")){
 					return new DialogEditTermos(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Termos - Ler")){
+					return new DialogReadTermos(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Termos - Deletar")){
+					return new DialogDeleteTermos(bot,person,route,model,message);
 				}
 				
 				return null;
