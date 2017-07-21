@@ -37,7 +37,7 @@ public class DialogEditTermos extends Dialog {
 		}
 		
 		if(nextStep()) {
-			if(keyboard.contains(message)) {
+			if(keyboard.contains(message) || isValid("topico")) {
 				addComplementString("topico");
 				
 				answer.append("Selecione o Paragrafo que deseja editar");
@@ -51,7 +51,8 @@ public class DialogEditTermos extends Dialog {
 		}
 		
 		if(nextStep()) {
-			if(model.showTermosByTopico(model.termoTopico.locateTermoTopicoByString(getComplementString("topico"))).contains(message)) {
+			if(model.showTermosByTopico(model.termoTopico.locateTermoTopicoByString(getComplementString("topico"))).contains(message)
+					|| isValid("descricaoAntiga")) {
 				
 				addComplementString("descricaoAntiga");
 				

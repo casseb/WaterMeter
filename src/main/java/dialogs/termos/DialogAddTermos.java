@@ -37,7 +37,7 @@ public class DialogAddTermos extends Dialog {
 		}
 		
 		if(nextStep()) {
-			if(keyboard.contains(message)) {
+			if(keyboard.contains(message) || isValid("topico")) {
 				addComplementString("topico");
 				
 				answer.append("Digite o texto do novo termo");

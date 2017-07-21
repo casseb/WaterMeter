@@ -339,7 +339,7 @@ public abstract class Dialog {
 	}
 
 	/**
-	 * Finliza o passo
+	 * Finaliza o passo
 	 * @return
 	 */
 	protected Dialog finishStep() {
@@ -392,6 +392,19 @@ public abstract class Dialog {
 		this.step++;
 		map = new HashMap<>();
 		return null;
+	}
+	
+	/**
+	 * Caso seja necessário forçar a entrada no ciclo pelo comando voltar
+	 * @return
+	 * Booleano para entrar no bloque de entrada válida
+	 */
+	protected boolean isValid(String complementoNecessario) {
+		if(message.equals("Voltar") && complement.has(complementoNecessario)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	//Listas temporárias---------------------------------------------------------------------

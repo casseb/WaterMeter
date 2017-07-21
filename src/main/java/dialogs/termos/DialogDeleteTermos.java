@@ -37,7 +37,7 @@ public class DialogDeleteTermos extends Dialog {
 		}
 		
 		if(nextStep()) {
-			if(keyboard.contains(message)) {
+			if(keyboard.contains(message)|| isValid("topico")) {
 				addComplementString("topico");
 				
 				answer.append("Selecione o Paragrafo que deseja deletar");
@@ -51,7 +51,8 @@ public class DialogDeleteTermos extends Dialog {
 		}
 		
 		if(nextStep()) {
-			if(model.showTermosByTopico(model.termoTopico.locateTermoTopicoByString(getComplementString("topico"))).contains(message)) {
+			if(model.showTermosByTopico(model.termoTopico.locateTermoTopicoByString(getComplementString("topico"))).contains(message)
+					|| isValid("descricao")) {
 				
 				addComplementString("descricao");
 				
