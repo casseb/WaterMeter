@@ -101,6 +101,7 @@ public class DialogEditTermos extends Dialog {
 		if(nextStep()) {
 			if(isConfirmated()) {
 				termo.setDescricaoTemp(getComplementString("descricaoNova"));
+				termo.setModificado(true);
 				model.editTermo(termo);
 				return finishHim();
 			}else {

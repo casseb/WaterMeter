@@ -1,5 +1,7 @@
 package objects.files;
 
+import java.io.File;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,6 +52,15 @@ public class BoxFileObject {
 		this.name = name;
 		this.telegramLink = telegramLink;
 		this.boxId = model.box.addFileByTelegram(this,boxFolderObject);
+		this.boxFolderObject = boxFolderObject;
+		model.addBoxFileObject(this);
+	}
+	
+	public BoxFileObject(String name, Model model, File file, BoxFolderObject boxFolderObject) {
+		super();
+		this.name = name;
+		this.telegramLink = null;
+		this.boxId = model.box.addFile(file,name,boxFolderObject);
 		this.boxFolderObject = boxFolderObject;
 		model.addBoxFileObject(this);
 	}

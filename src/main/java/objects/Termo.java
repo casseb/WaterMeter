@@ -41,6 +41,12 @@ public class Termo {
 	private boolean oficial;
 	
 	@Column(nullable = true)
+	private boolean criado;
+	
+	@Column(nullable = true)
+	private boolean modificado;
+	
+	@Column(nullable = true)
 	private boolean deletado;
 
 	
@@ -55,6 +61,9 @@ public class Termo {
 		setDataCriacao(LocalDateTime.now());
 		this.codigoParagrafo = topico.getUltimoParagrafo()+1;
 		this.descricaoTemp = "Sem texto para homologação";
+		this.criado = true;
+		this.modificado = false;
+		this.deletado = false;
 	}
 
 
@@ -136,6 +145,26 @@ public class Termo {
 
 	public void setDescricaoTemp(String descricaoTemp) {
 		this.descricaoTemp = descricaoTemp;
+	}
+
+	public boolean isCriado() {
+		return criado;
+	}
+
+	public void setCriado(boolean criado) {
+		this.criado = criado;
+	}
+
+	public boolean isModificado() {
+		return modificado;
+	}
+
+	public void setModificado(boolean modificado) {
+		this.modificado = modificado;
+	}
+
+	public void setDataCriacao(Timestamp dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 	
 	

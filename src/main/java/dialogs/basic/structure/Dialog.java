@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 
+import com.itextpdf.text.Paragraph;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.GetFile;
@@ -519,9 +520,10 @@ public abstract class Dialog {
 	 *            Nome da pasta que será salvo o arquivo
 	 */
 	protected void iNeedAFile(String... folder) {
-		model.inicializeBox();
 		answer.append("Envie um arquivo a seguir\n");
 		this.needAFile = true;
+		
+		model.inicializeBox();
 		BoxFolderObject currentFolder = null;
 		BoxFolderObject rootFolder = null;
 

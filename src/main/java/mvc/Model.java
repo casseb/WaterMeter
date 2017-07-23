@@ -535,6 +535,14 @@ public class Model{
 			session.close();
 		}
 		
+		public void deleteTermo(Termo termo){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.delete(termo);
+			session.getTransaction().commit();
+			session.close();
+		}
+		
 		public Termo locateTermosByTopicoDesc(TermoTopico termoTopico, String desc){
 			List<Termo> termos = new LinkedList<>();
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -592,6 +600,25 @@ public class Model{
 			}
 			
 			Collections.sort(result);
+			
+			return result;
+		}
+		
+		public List<Termo> locateUnofficialTermos(){
+			List<Termo> termos = new LinkedList<>();
+			List<Termo> result = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			termos = (List<Termo>) crit.list();
+			session.close();
+			
+			for (Termo termo : termos) {
+				if(!termo.isOficial()) {
+					result.add(termo);
+				}
+			}
 			
 			return result;
 		}
