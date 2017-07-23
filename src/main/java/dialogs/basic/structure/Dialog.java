@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 
-import com.itextpdf.text.Paragraph;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.GetFile;
