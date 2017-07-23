@@ -17,6 +17,7 @@ import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import access.AccessConfiguration;
 import mvc.Model;
 
 public class GeneratorPDF {
@@ -51,7 +52,6 @@ public class GeneratorPDF {
 			
 			Model model = new Model();
 			
-			model.inicializeBox();
 			List<String> folder = new LinkedList();
 			folder.add("Pasta1");
 			folder.add("Pasta2");
