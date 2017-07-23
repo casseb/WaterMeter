@@ -41,7 +41,7 @@ public class GeneratorPDF {
 			paragraph2.add(new Chunk("Teste2", fontbold));
 			Paragraph paragraph3 = new Paragraph();
 			paragraph3.add("Teste3\n");
-			
+			/*
 			PdfWriter.getInstance(document, fileOut);
 			document.open();
 			document.add(paragraph1);
@@ -49,7 +49,7 @@ public class GeneratorPDF {
 			document.add(paragraph3);
 			document.close();
 			
-			/*
+			
 			Model model = new Model();
 			
 			List<String> folder = new LinkedList();
@@ -69,11 +69,9 @@ public class GeneratorPDF {
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
 			*/
 
-		} catch (DocumentException de) {
+		} catch (Exception de) {
 			System.err.println(de.getMessage());
-		} catch (IOException ioe) {
-			System.err.println(ioe.getMessage());
-		}
+		} 
 
 	}
 }
