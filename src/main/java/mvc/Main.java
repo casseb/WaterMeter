@@ -131,6 +131,8 @@ public class Main {
 			document.add(paragraph3);
 			document.close();
 			
+			System.out.println("Iniciado Gravação de arquivo no box");
+			
 			List<String> folder = new LinkedList();
 			folder.add("Pasta1");
 			folder.add("Pasta2");
