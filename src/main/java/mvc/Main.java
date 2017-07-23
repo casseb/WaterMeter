@@ -70,7 +70,7 @@ public class Main {
 		
 		permissaoADM();
 		triggerMessages();
-		testCreatePDF();
+		//testCreatePDF();
 		
     }
 
@@ -146,8 +146,6 @@ public class Main {
 				}
 				rootFolder = currentFolder;
 			}
-			
-			System.out.println("Criado pasta");
 			
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
 			
