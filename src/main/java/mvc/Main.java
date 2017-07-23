@@ -138,7 +138,7 @@ public class Main {
 			folder.add("Pasta2");
 			BoxFolderObject currentFolder = null;
 			BoxFolderObject rootFolder = null;
-
+			
 			for (String string : folder) {
 				currentFolder = model.locateBoxFolderObjectByName(string);
 				if (currentFolder == null) {
@@ -146,6 +146,8 @@ public class Main {
 				}
 				rootFolder = currentFolder;
 			}
+			
+			System.out.println("Criado pasta");
 			
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
 			
