@@ -145,6 +145,8 @@ public class Main {
 			
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
 			
+			System.out.println("Finalizado");
+			
 
 		} catch (Exception de) {
 			System.err.println(de.getMessage());
