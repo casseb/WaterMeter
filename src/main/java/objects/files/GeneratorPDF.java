@@ -44,7 +44,7 @@ public class GeneratorPDF {
 			
 			System.out.println("Finalizado");
 			
-			/*
+			
 			PdfWriter.getInstance(document, fileOut);
 			document.open();
 			document.add(paragraph1);
@@ -70,7 +70,7 @@ public class GeneratorPDF {
 			}
 			
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
-			*/
+			
 
 		} catch (Exception de) {
 			System.err.println(de.getMessage());
