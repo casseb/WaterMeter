@@ -52,6 +52,7 @@ public class GeneratorPDF {
 			document.add(paragraph3);
 			document.close();
 			
+			System.out.println(file.getAbsolutePath());
 			
 			Model model = new Model();
 			
