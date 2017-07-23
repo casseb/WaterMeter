@@ -57,12 +57,14 @@ public class BoxFileObject {
 	}
 	
 	public BoxFileObject(String name, Model model, File file, BoxFolderObject boxFolderObject) {
+		
 		super();
 		this.name = name;
 		this.telegramLink = null;
 		this.boxId = model.box.addFile(file,name,boxFolderObject);
 		this.boxFolderObject = boxFolderObject;
 		model.addBoxFileObject(this);
+		System.out.println("inserindo BoxFileObject");
 	}
 
 	public String getBoxId() {
