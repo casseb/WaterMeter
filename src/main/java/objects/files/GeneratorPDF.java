@@ -44,13 +44,12 @@ public class GeneratorPDF {
 			
 			PdfWriter.getInstance(document, fileOut);
 			document.open();
-			System.out.println("SDF");
 			document.add(paragraph1);
 			document.add(paragraph2);
 			document.add(paragraph3);
 			document.close();
 			
-			
+			/*
 			Model model = new Model();
 			
 			List<String> folder = new LinkedList();
@@ -68,7 +67,7 @@ public class GeneratorPDF {
 			}
 			
 			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
-			
+			*/
 
 		} catch (DocumentException de) {
 			System.err.println(de.getMessage());
