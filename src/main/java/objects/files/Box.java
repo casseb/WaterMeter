@@ -92,6 +92,7 @@ public class Box {
 	}
 
 	public String addFile(File file, String name, BoxFolderObject boxFolderObject) {
+		System.out.println("inserindo arquivo");
 		BoxFolder folder = new BoxFolder(api, boxFolderObject.getBoxId());
 		for (com.box.sdk.BoxItem.Info info : folder) {
 			if(info.getName().equals(name)){
