@@ -41,6 +41,9 @@ public class GeneratorPDF {
 			paragraph2.add(new Chunk("Teste2", fontbold));
 			Paragraph paragraph3 = new Paragraph();
 			paragraph3.add("Teste3\n");
+			
+			System.out.println("Finalizado");
+			
 			/*
 			PdfWriter.getInstance(document, fileOut);
 			document.open();
