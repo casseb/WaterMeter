@@ -12,10 +12,6 @@ import objects.basic.Person;
 import objects.basic.Route;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 
 public class DialogOfficialTermos extends Dialog {
 
@@ -106,8 +102,11 @@ public class DialogOfficialTermos extends Dialog {
 				for (Termo termo : deletados) {
 					model.deleteTermo(termo);
 				}
-
 				
+			}
+		}
+
+				/*
 				Document document = new Document();
 				
 				try {
@@ -125,8 +124,13 @@ public class DialogOfficialTermos extends Dialog {
 			} else {
 				return finishHim();
 			}
-		}
+			
+			}
+			
+			
+			*/
+		
 		return null;
-	}
+			}
 
 }
