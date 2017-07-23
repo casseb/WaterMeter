@@ -520,6 +520,7 @@ public abstract class Dialog {
 	 *            Nome da pasta que será salvo o arquivo
 	 */
 	protected void iNeedAFile(String... folder) {
+		System.out.println("Solicitado arquivo");
 		answer.append("Envie um arquivo a seguir\n");
 		this.needAFile = true;
 		
