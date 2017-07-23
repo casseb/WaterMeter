@@ -43,8 +43,8 @@ public class GeneratorPDF {
 			paragraph3.add("Teste3\n");
 			
 			PdfWriter.getInstance(document, fileOut);
-			System.out.println("XZS");
 			document.open();
+			System.out.println("SDF");
 			document.add(paragraph1);
 			document.add(paragraph2);
 			document.add(paragraph3);
