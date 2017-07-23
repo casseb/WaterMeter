@@ -6,7 +6,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 
-mainClassName = 'files.GeneratorPDF'
+mainClassName = 'objects.files.GeneratorPDF'
 //mainClassName = 'mvc.Main'
 //mainClassName = 'files.CreateAppUser'
 applicationName = 'app'
@@ -29,7 +29,7 @@ jar {
     manifest {
         //attributes 'Main-Class': 'mvc.Main'
         //attributes 'Main-Class': 'files.CreateAppUser'
-        attributes 'Main-Class': 'files.GeneratorPDF'
+        attributes 'Main-Class': 'objects.files.GeneratorPDF'
     }
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } {
         // remove all signature files
