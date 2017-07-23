@@ -6,8 +6,8 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 
-mainClassName = 'objects.files.GeneratorPDF'
-//mainClassName = 'mvc.Main'
+//mainClassName = 'objects.files.GeneratorPDF'
+mainClassName = 'mvc.Main'
 //mainClassName = 'files.CreateAppUser'
 applicationName = 'app'
 
@@ -27,9 +27,9 @@ dependencies {
 
 jar {
     manifest {
-        //attributes 'Main-Class': 'mvc.Main'
+        attributes 'Main-Class': 'mvc.Main'
         //attributes 'Main-Class': 'files.CreateAppUser'
-        attributes 'Main-Class': 'objects.files.GeneratorPDF'
+        //attributes 'Main-Class': 'objects.files.GeneratorPDF'
     }
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } {
         // remove all signature files
@@ -55,8 +55,7 @@ dependencies {
    compile 'org.slf4j:slf4j-simple:1.7.7'
    compile 'org.javassist:javassist:3.15.0-GA'
    compile 'mysql:mysql-connector-java:5.1.31'
-   //compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
-   compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+   compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '4.3.6.Final'
 } 
 
