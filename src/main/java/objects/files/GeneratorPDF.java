@@ -48,6 +48,7 @@ public class GeneratorPDF {
 			document.add(paragraph2);
 			document.add(paragraph3);
 			document.close();
+			System.out.println("Arquivo gerado");
 			
 			
 			Model model = new Model();
