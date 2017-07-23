@@ -41,14 +41,15 @@ public class GeneratorPDF {
 			paragraph2.add(new Chunk("Teste2", fontbold));
 			Paragraph paragraph3 = new Paragraph();
 			paragraph3.add("Teste3\n");
-
+			
+			System.out.println("Até aqui");
+			
 			PdfWriter.getInstance(document, fileOut);
 			document.open();
 			document.add(paragraph1);
 			document.add(paragraph2);
 			document.add(paragraph3);
 			document.close();
-			System.out.println("Arquivo gerado");
 			
 			
 			Model model = new Model();
