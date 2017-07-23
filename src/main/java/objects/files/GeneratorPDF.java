@@ -42,9 +42,8 @@ public class GeneratorPDF {
 			Paragraph paragraph3 = new Paragraph();
 			paragraph3.add("Teste3\n");
 			
-			System.out.println("Até aqui");
-			
 			PdfWriter.getInstance(document, fileOut);
+			System.out.println("Até aqui");
 			document.open();
 			document.add(paragraph1);
 			document.add(paragraph2);
