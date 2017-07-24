@@ -15,7 +15,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.server.session.JDBCSessionManager.Session;
 
-
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.TelegramBotAdapter;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -66,7 +70,7 @@ public class Main {
 		
 		permissaoADM();
 		triggerMessages();
-		//testCreatePDF();
+		testCreatePDF();
 		
     }
 
@@ -100,7 +104,7 @@ public class Main {
 		
 	}
 	
-	/*
+	
 	private static void testCreatePDF() {
 		try {
 			System.out.println("Iniciado");
@@ -155,7 +159,7 @@ public class Main {
 		
 		
 		}
-		*/
+		
 
 	
 	
