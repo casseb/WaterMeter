@@ -107,7 +107,6 @@ public class Main {
 	
 	private static void testCreatePDF() {
 		try {
-			System.out.println("Iniciado");
 			
 			Document document = new Document();
 			File file = new File("src/main/java/objects/basic/tempFiles/PDF_DevMedia.pdf");
@@ -148,7 +147,7 @@ public class Main {
 				rootFolder = currentFolder;
 			}
 			
-			model.addBoxFileObject(new BoxFileObject("Teste1",model,file,currentFolder));
+			model.addBoxFileObject(new BoxFileObject("Teste1.pdf",model,file,currentFolder));
 			
 			System.out.println("Finalizado");
 			

@@ -1,6 +1,8 @@
 package dialogs.basic.structure;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -11,6 +13,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.GetFile;
@@ -144,6 +152,14 @@ public abstract class Dialog {
 	 * Instância dos dados customizados de acesso
 	 */
 	private AccessConfiguration access = new AccessConfiguration();
+	
+	private Document document;
+	private File file;
+	
+	protected Font fontTitle;
+	protected Font fontSubTitle;
+	protected Font fontSimpleText;
+	protected Font fontBold;
 
 	// Construtor
 	public Dialog(TelegramBot bot, Person person, Route route, Model model, String message) {
@@ -157,6 +173,21 @@ public abstract class Dialog {
 		this.admin = access.getAdminTelegram();
 		this.model = model;
 		this.message = message;
+		
+		this.fontTitle = new Font();
+		this.fontSubTitle = new Font();
+		this.fontSimpleText = new Font();
+		this.fontBold = new Font();
+		
+		this.fontTitle.setSize(18);
+		this.fontTitle.setStyle(fontTitle.BOLD);
+		
+		this.fontSubTitle.setSize(14);
+		
+		this.fontSimpleText.setSize(12);
+		
+		this.fontBold.setSize(12);
+		this.fontBold.setStyle(this.fontBold.BOLD);
 	}
 
 	// Inicio dos métodos protected--------------------------------------------------------------
@@ -575,6 +606,48 @@ public abstract class Dialog {
 		for (Person person : persons) {
 			bot.execute(new SendDocument(person.getIdTelegram(), file));
 		}
+	}
+	
+	protected File createPDF(String fileName, List<Chunk> chunks, String... folder) {
+		this.document = new Document();
+		this.file = new File("src/main/java/objects/basic/tempFiles/"+LocalDateTime.now().toString()+".pdf");
+		List<Paragraph> paragraphs = new LinkedList<>();
+		Paragraph paragraphTemp = null;
+		
+		for (Chunk chunk : chunks) {
+			paragraphTemp = new Paragraph();
+			paragraphTemp.add(chunk);
+			paragraphs.add(paragraphTemp);
+		}
+		
+		try {
+			OutputStream fileOut = new FileOutputStream(file);
+			PdfWriter.getInstance(document, fileOut);
+			document.open();
+			for (Paragraph paragraph : paragraphs) {
+				document.add(paragraph);
+			}
+			document.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		BoxFolderObject currentFolder = null;
+		BoxFolderObject rootFolder = null;
+		
+		for (String string : folder) {
+			currentFolder = model.locateBoxFolderObjectByName(string);
+			if (currentFolder == null) {
+				currentFolder = new BoxFolderObject(string, model, rootFolder);
+			}
+			rootFolder = currentFolder;
+		}
+		
+		model.addBoxFileObject(new BoxFileObject(fileName+".pdf",model,file,currentFolder));
+		
+		return file;
+		
 	}
 
 	//Envio de mensagens-----------------------------------------------------------------------------

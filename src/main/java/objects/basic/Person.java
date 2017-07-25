@@ -49,6 +49,9 @@ public class Person {
 	@Column
 	private boolean active = true;
 	
+	@Column
+	private boolean termoAceito = false;
+	
 	public boolean isActive() {
 		return active;
 	}
@@ -115,6 +118,14 @@ public class Person {
 
 	public void setRotasPermitidas(List<Route> rotasPermitidas) {
 		this.rotasPermitidas = rotasPermitidas;
+	}
+
+	public boolean isTermoAceito() {
+		return termoAceito;
+	}
+
+	public void setTermoAceito(boolean termoAceito) {
+		this.termoAceito = termoAceito;
 	}
 	
 	

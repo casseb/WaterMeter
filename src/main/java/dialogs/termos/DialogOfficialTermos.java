@@ -3,6 +3,7 @@ package dialogs.termos;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.itextpdf.text.Chunk;
 import com.pengrad.telegrambot.TelegramBot;
 
 import dialogs.basic.structure.Dialog;
@@ -10,8 +11,11 @@ import mvc.Model;
 import objects.Termo;
 import objects.basic.Person;
 import objects.basic.Route;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class DialogOfficialTermos extends Dialog {
 
@@ -84,6 +88,43 @@ public class DialogOfficialTermos extends Dialog {
 		if (nextStep()) {
 			if (isConfirmated()) {
 
+				//Gerando pdf sobre as alterações ocorridas
+				answer.append("Segue pdf sobre alterações realizadas\n");
+
+				List<Chunk> chunks = new LinkedList<>();
+
+				chunks.add(new Chunk("Relatório de alterações dos termos\n", fontTitle));
+				chunks.add(new Chunk("Gerado as " + LocalDateTime.now().toString() + "\n\n\n\n", fontSubTitle));
+
+				if (!criados.isEmpty()) {
+					chunks.add(new Chunk("Termos Criados\n\n", fontSubTitle));
+					for (Termo termo : criados) {
+						chunks.add(new Chunk(termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo() + " - "
+								+ termo.getDescricao() + "\n", fontSimpleText));
+					}
+				}
+
+				if (!modificados.isEmpty()) {
+					chunks.add(new Chunk("Termos Modificados:\n\n", fontSubTitle));
+					for (Termo termo : criados) {
+						chunks.add(new Chunk("Antes:" + termo.getTopico().descricao + " -- "
+								+ termo.getCodigoParagrafo() + " - " + termo.getDescricao() + "\n", fontSimpleText));
+						chunks.add(
+								new Chunk("Depois:" + termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo()
+										+ " - " + termo.getDescricaoTemp() + "\n\n", fontSimpleText));
+					}
+				}
+
+				if (!deletados.isEmpty()) {
+					chunks.add(new Chunk("Termos Deletados:\n\n", fontSubTitle));
+					for (Termo termo : criados) {
+						chunks.add(new Chunk(termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo() + " - "
+								+ termo.getDescricao() + "\n", fontSimpleText));
+					}
+				
+				createPDF("Alterações Termos " + LocalDateTime.now().toString(), chunks, "Termos", "Alterações");
+					
+				//Atualizando no banco os status dos termos
 				for (Termo termo : criados) {
 					termo.setOficial(true);
 					termo.setModificado(false);
@@ -102,35 +143,24 @@ public class DialogOfficialTermos extends Dialog {
 				for (Termo termo : deletados) {
 					model.deleteTermo(termo);
 				}
+
+				//Avisando todos os Parceiros
+				sendMessages("Prezado, Acabou de ser gerado uma nova versão dos termos da iniciativa, peço que "
+							+ "entre na rota Termos -> Aceitar para conferir as mudanças e aceitar as alterações realizadas",
+							model.persons);
 				
+				//Deixando todos os aceites como false para forçar o novo aceite dos termos para todos os usuários
+				for (Person person : model.persons) {
+					person.setTermoAceito(false);
+					model.editPerson(person);
+				}
+				
+					return finishHim();
+				} else {
+					return finishHim();
+				}
 			}
 		}
-
-				/*
-				Document document = new Document();
-				
-				try {
-					PdfWriter.getInstance(document, new FileOutputStream("E:/Temp/PDF_DevMedia.pdf"));
-					document.open();
-					
-					document.add(new Paragraph("Gerando PDF - Java"));
-				} catch (DocumentException de) {
-					System.err.println(de.getMessage());
-				} catch (IOException ioe) {
-					System.err.println(ioe.getMessage());
-				}
-				document.close();
-
-			} else {
-				return finishHim();
-			}
-			
-			}
-			
-			
-			*/
-		
 		return null;
-			}
-
+	}
 }
