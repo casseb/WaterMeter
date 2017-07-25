@@ -59,7 +59,7 @@ public class DialogOfficialTermos extends Dialog {
 
 				if (!modificados.isEmpty()) {
 					answer.append("Termos Modificados:\n\n");
-					for (Termo termo : criados) {
+					for (Termo termo : modificados) {
 						answer.append("Antes:" + termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo()
 								+ " - " + termo.getDescricao() + "\n");
 						answer.append("Depois:" + termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo()
@@ -69,7 +69,7 @@ public class DialogOfficialTermos extends Dialog {
 
 				if (!deletados.isEmpty()) {
 					answer.append("Termos Deletados:\n\n");
-					for (Termo termo : criados) {
+					for (Termo termo : deletados) {
 						answer.append(termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo() + " - "
 								+ termo.getDescricao() + "\n");
 					}
@@ -106,7 +106,7 @@ public class DialogOfficialTermos extends Dialog {
 
 				if (!modificados.isEmpty()) {
 					chunks.add(new Chunk("Termos Modificados:\n\n", fontSubTitle));
-					for (Termo termo : criados) {
+					for (Termo termo : modificados) {
 						chunks.add(new Chunk("Antes:" + termo.getTopico().descricao + " -- "
 								+ termo.getCodigoParagrafo() + " - " + termo.getDescricao() + "\n", fontSimpleText));
 						chunks.add(
@@ -117,7 +117,7 @@ public class DialogOfficialTermos extends Dialog {
 
 				if (!deletados.isEmpty()) {
 					chunks.add(new Chunk("Termos Deletados:\n\n", fontSubTitle));
-					for (Termo termo : criados) {
+					for (Termo termo : deletados) {
 						chunks.add(new Chunk(termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo() + " - "
 								+ termo.getDescricao() + "\n", fontSimpleText));
 					}
