@@ -25,6 +25,7 @@ import dialogs.project.DialogShowProject;
 import dialogs.termos.DialogAddTermos;
 import dialogs.termos.DialogDeleteTermos;
 import dialogs.termos.DialogEditTermos;
+import dialogs.termos.DialogOfficialTermos;
 import dialogs.termos.DialogReadTermos;
 import mvc.Model;
 import objects.basic.Person;
@@ -135,6 +136,9 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Termos - Deletar")){
 					return new DialogDeleteTermos(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Termos - Oficializar")){
+					return new DialogOfficialTermos(bot,person,route,model,message);
 				}
 				
 				return null;
