@@ -30,7 +30,7 @@ public class DialogReadTermos extends Dialog {
 
 		if (nextStep()) {
 			answer.append("Selecione o tópico do termo que deseja ler");
-
+			sendFile(model.box.getFileByBox(model.locateBoxFileObjectByName("Termos.pdf", "Termos")));
 			prepareKeyboard(keyboard, 2);
 
 			return finishStep();

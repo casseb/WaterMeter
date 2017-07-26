@@ -148,6 +148,9 @@ public class Model{
 			routesString.add("Oficializar");
 			routesGroup.add(RouteGroup.TERMOS);
 			
+			routesString.add("Aceitar");
+			routesGroup.add(RouteGroup.TERMOS);
+			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
 					addRoute(new Route(routesString.get(i),routesGroup.get(i)));
