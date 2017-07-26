@@ -27,7 +27,7 @@ public class DialogOfficialTermos extends Dialog {
 
 	@Override
 	public Dialog action() {
-		List<Termo> todos = model.locateUnofficialTermos();
+		List<Termo> todos = model.locateAllTermos();
 		List<Termo> criados = new LinkedList();
 		List<Termo> modificados = new LinkedList();
 		List<Termo> deletados = new LinkedList();
@@ -128,6 +128,7 @@ public class DialogOfficialTermos extends Dialog {
 				// Atualizando no banco os status dos termos
 				for (Termo termo : criados) {
 					termo.setOficial(true);
+					termo.setCriado(false);
 					termo.setModificado(false);
 					termo.setDeletado(false);
 					model.editTermo(termo);
@@ -137,6 +138,7 @@ public class DialogOfficialTermos extends Dialog {
 				for (Termo termo : modificados) {
 					termo.setDescricao(termo.getDescricaoTemp());
 					termo.setOficial(true);
+					termo.setCriado(false);
 					termo.setModificado(false);
 					termo.setDeletado(false);
 					model.editTermo(termo);

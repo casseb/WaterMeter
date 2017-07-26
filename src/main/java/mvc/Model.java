@@ -635,6 +635,18 @@ public class Model{
 			return result;
 		}
 		
+		public List<Termo> locateAllTermos(){
+			List<Termo> result = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Termo.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			result = (List<Termo>) crit.list();
+			session.close();
+			
+			return result;
+		}
+		
 		public int lastParagraph(TermoTopico termoTopico) {
 			List<Termo> termos = new LinkedList<>();
 			Session session = HibernateUtil.getSessionFactory().openSession();
