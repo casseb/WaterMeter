@@ -738,9 +738,12 @@ public class Model{
 				rootFolder = currentFolder;
 			}
 			
+			System.out.println(currentFolder.getName());
+			
 			for (BoxFileObject boxFileObject : boxFileObjects) {
 				inicializeBox();
 				if(boxFileObject.getName().equals(name) && boxFileObject.getBoxFolderObject().getId() == currentFolder.getId()){
+					System.out.println(boxFileObject.getBoxId()+" - "+boxFileObject.getName());
 					return boxFileObject;
 				}
 			}
