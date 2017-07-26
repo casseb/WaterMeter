@@ -104,10 +104,10 @@ public class Box {
 		try {
 			stream = new FileInputStream(file);
 			BoxFile.Info uploaded = folder.uploadFile(stream, name);
-			BoxFile boxFile = uploaded.getResource();
+			BoxFile boxFile2 = uploaded.getResource();
 
 			stream.close();
-			return boxFile.getID();
+			return boxFile2.getID();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
