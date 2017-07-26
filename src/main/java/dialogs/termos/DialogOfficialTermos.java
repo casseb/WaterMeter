@@ -169,8 +169,8 @@ public class DialogOfficialTermos extends Dialog {
 					}
 				}
 
-				createPDF("Termos", chunks, "Termos");
-				createPDF("Termos - " + model.administracao.versaoTermo(), chunks, "Termos", "Versões");
+				//createPDF("Termos", chunks, "Termos");
+				//createPDF("Termos - " + model.administracao.versaoTermo(), chunks, "Termos", "Versões");
 
 				// Avisando todos os Parceiros
 				sendMessages("Prezado, Acabou de ser gerado uma nova versão dos termos da iniciativa, peço que "
