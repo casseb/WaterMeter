@@ -89,7 +89,7 @@ public class DialogOfficialTermos extends Dialog {
 		if (nextStep()) {
 			if (isConfirmated()) {
 
-				//Gerando pdf sobre as alterações ocorridas
+				// Gerando pdf sobre as alterações ocorridas
 
 				List<Chunk> chunks = new LinkedList<>();
 
@@ -121,10 +121,11 @@ public class DialogOfficialTermos extends Dialog {
 						chunks.add(new Chunk(termo.getTopico().descricao + " -- " + termo.getCodigoParagrafo() + " - "
 								+ termo.getDescricao() + "\n", fontSimpleText));
 					}
-				
+				}
+
 				createPDF("Alterações Termos " + LocalDateTime.now().toString(), chunks, "Termos", "Alterações");
-					
-				//Atualizando no banco os status dos termos
+
+				// Atualizando no banco os status dos termos
 				for (Termo termo : criados) {
 					termo.setOficial(true);
 					termo.setModificado(false);
@@ -146,49 +147,50 @@ public class DialogOfficialTermos extends Dialog {
 					model.deleteTermo(termo);
 					model.plusEstructureTermo();
 				}
-				
-				//Gerando pdf dos termos oficiais
-				
+
+				// Gerando pdf dos termos oficiais
+
 				chunks = new LinkedList<>();
-				
-				chunks.add(new Chunk("Termos da Iniciativa Sim Network\n",fontTitle));
-				chunks.add(new Chunk("Versão: "+model.administracao.versaoTermo()+"\n",fontSubTitle));
-				
+
+				chunks.add(new Chunk("Termos da Iniciativa Sim Network\n", fontTitle));
+				chunks.add(new Chunk("Versão: " + model.administracao.versaoTermo() + "\n", fontSubTitle));
+
 				for (TermoTopico termoTopico : model.termoTopico.values()) {
 					model.enumerateTopicos(termoTopico);
 					List<Termo> termos = new LinkedList<>();
 					termos.addAll(model.locateTermosByTopicoOficiais(termoTopico));
 					termos.removeAll(model.locateUnofficialTermos());
-					if(termos.size()!=0) {
-						chunks.add(new Chunk("\n\n"+termoTopico.descricao+"\n\n",fontSubTitle));
+					if (termos.size() != 0) {
+						chunks.add(new Chunk("\n\n" + termoTopico.descricao + "\n\n", fontSubTitle));
 						for (Termo termo : termos) {
-							chunks.add(new Chunk("\n"+termo.getCodigoParagrafo(),fontBold));
-							chunks.add(new Chunk(termo.getDescricao()+"\n",fontSimpleText));
+							chunks.add(new Chunk("\n" + termo.getCodigoParagrafo(), fontBold));
+							chunks.add(new Chunk(termo.getDescricao() + "\n", fontSimpleText));
 						}
 					}
 				}
-				
-				createPDF("Termos", chunks, "Termos");
-				createPDF("Termos - "+model.administracao.versaoTermo(),chunks,"Termos","Versões");
-				
 
-				//Avisando todos os Parceiros
+				createPDF("Termos", chunks, "Termos");
+				createPDF("Termos - " + model.administracao.versaoTermo(), chunks, "Termos", "Versões");
+
+				// Avisando todos os Parceiros
 				sendMessages("Prezado, Acabou de ser gerado uma nova versão dos termos da iniciativa, peço que "
-							+ "entre na rota Termos -> Aceitar para conferir as mudanças e aceitar as alterações realizadas",
-							model.persons);
-				
-				//Deixando todos os aceites como false para forçar o novo aceite dos termos para todos os usuários
+						+ "entre na rota Termos -> Aceitar para conferir as mudanças e aceitar as alterações realizadas",
+						model.persons);
+
+				// Deixando todos os aceites como false para forçar o novo aceite dos termos
+				// para todos os usuários
 				for (Person person : model.persons) {
 					person.setTermoAceito(false);
 					model.editPerson(person);
 				}
-				
-					return finishHim();
-				} else {
-					return finishHim();
-				}
+
+				return finishHim();
+
+			} else {
+				return finishHim();
 			}
-		}
-		return null;
-	}
+
+		}return null;
+}
+
 }
