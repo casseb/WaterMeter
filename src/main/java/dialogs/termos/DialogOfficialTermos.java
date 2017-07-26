@@ -48,7 +48,7 @@ public class DialogOfficialTermos extends Dialog {
 		if (nextStep()) {
 
 
-			if (!criados.isEmpty() && !modificados.isEmpty() && !deletados.isEmpty()) {
+			if (!criados.isEmpty() || !modificados.isEmpty() || !deletados.isEmpty()) {
 				answer.append("Abaixo todas as modificações realizadas:");
 
 				if (!criados.isEmpty()) {
