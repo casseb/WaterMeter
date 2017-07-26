@@ -3,9 +3,60 @@ package objects;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Administracao {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-	private int id;
-	private List<Termo> termos = new LinkedList();
+@Entity
+@Table(name = "Administracao")
+public class Administracao {
 	
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
+	@Column(nullable = true)
+	private int versaoPrincipalTermos;
+	@Column(nullable = true)
+	private int versaoEstruturaTermos;
+	@Column(nullable = true)
+	private int versaoModificacoesTermos;
+	
+	
+	public Administracao() {
+		super();
+		this.versaoPrincipalTermos = 5;
+		this.versaoEstruturaTermos = 0;
+		this.versaoModificacoesTermos = 0;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getVersaoPrincipalTermos() {
+		return versaoPrincipalTermos;
+	}
+	public int getVersaoEstruturaTermos() {
+		return versaoEstruturaTermos;
+	}
+	public void plusVersaoEstruturaTermos() {
+		this.versaoEstruturaTermos++;
+	}
+	public int getVersaoModificacoesTermos() {
+		return versaoModificacoesTermos;
+	}
+	public void plusVersaoModificacoesTermos() {
+		this.versaoModificacoesTermos++;
+	}
+	
+	public String versaoTermo() {
+		return versaoPrincipalTermos+"."+versaoEstruturaTermos+"."+versaoModificacoesTermos;
+	}
 }

@@ -44,6 +44,7 @@
 		<mapping class="objects.basic.MessageLog" />
 		<mapping class="objects.basic.ScheduleMessage" />
 		<mapping class="objects.Termo" />
+		<mapping class="objects.Administracao" />
 		
 	</session-factory>
 </hibernate-configuration>

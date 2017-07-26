@@ -70,7 +70,6 @@ public class Main {
 		
 		permissaoADM();
 		triggerMessages();
-		//testCreatePDF();
 		
     }
 
@@ -103,67 +102,5 @@ public class Main {
 		}
 		
 	}
-	
-	
-	private static void testCreatePDF() {
-		try {
-			
-			Document document = new Document();
-			File file = new File("src/main/java/objects/basic/tempFiles/PDF_DevMedia.pdf");
-			OutputStream fileOut = new FileOutputStream(file);
-
-			Font font20 = new Font();
-			font20.setSize(20);
-			Font fontbold = new Font();
-			fontbold.setStyle(fontbold.BOLD);
-
-			Paragraph paragraph1 = new Paragraph();
-			paragraph1.add(new Chunk("Teste1", font20));
-			Paragraph paragraph2 = new Paragraph();
-			paragraph2.add(new Chunk("Teste2", fontbold));
-			Paragraph paragraph3 = new Paragraph();
-			paragraph3.add("Teste3\n");
-			
-			PdfWriter.getInstance(document, fileOut);
-			document.open();
-			document.add(paragraph1);
-			document.add(paragraph2);
-			document.add(paragraph3);
-			document.close();
-			
-			System.out.println("Iniciado Gravação de arquivo no box");
-			
-			List<String> folder = new LinkedList();
-			folder.add("Pasta1");
-			folder.add("Pasta2");
-			BoxFolderObject currentFolder = null;
-			BoxFolderObject rootFolder = null;
-			
-			for (String string : folder) {
-				currentFolder = model.locateBoxFolderObjectByName(string);
-				if (currentFolder == null) {
-					currentFolder = new BoxFolderObject(string, model, rootFolder);
-				}
-				rootFolder = currentFolder;
-			}
-			
-			model.addBoxFileObject(new BoxFileObject("Teste1.pdf",model,file,currentFolder));
-			
-			System.out.println("Finalizado");
-			
-
-		} catch (Exception de) {
-			System.err.println(de.getMessage());
-		} 
-		
-		
-		}
-		
-
-	
-	
-	
-	
-	
 	
 }

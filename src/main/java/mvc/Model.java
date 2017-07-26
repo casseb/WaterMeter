@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import objects.Administracao;
 import objects.Project;
 import objects.ProjectStatus;
 import objects.ProjectType;
@@ -48,7 +49,7 @@ public class Model{
 		public RouteGroup routeGroup = RouteGroup.CLIENTES;
 		public Box box = null;
 		public final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
-		
+		public Administracao administracao;
 		
 		
 		//Construtor
@@ -66,6 +67,13 @@ public class Model{
 			Criteria critScheduleMessage = session.createCriteria(ScheduleMessage.class);
 			critScheduleMessage.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			this.scheduleMessages = (List<ScheduleMessage>) critScheduleMessage.list();
+			Criteria critAdministracao = session.createCriteria(Administracao.class);
+			this.administracao = (Administracao) critAdministracao.uniqueResult();
+			if(administracao==null) {
+				administracao = new Administracao();
+				session.save(administracao);
+				session.getTransaction().commit();
+			}
 			session.close();
 			
 			List<String> routesString = new LinkedList<>();
@@ -145,6 +153,7 @@ public class Model{
 					addRoute(new Route(routesString.get(i),routesGroup.get(i)));
 				}
 			}
+			
 			
 			
 		}
@@ -648,6 +657,34 @@ public class Model{
 			return result;
 			
 			
+		}
+		
+		public void enumerateTopicos(TermoTopico termoTopico) {
+			List<Termo> termos = locateTermosByTopicoOficiais(termoTopico);
+			int n = 0;
+			for (Termo termo : termos) {
+				termo.setCodigoParagrafo(++n);
+			}
+		}
+		
+		public void plusModifiedTermo() {
+			administracao.plusVersaoModificacoesTermos();
+			editAdministracao();
+		}
+		
+		public void plusEstructureTermo() {
+			administracao.plusVersaoEstruturaTermos();
+			editAdministracao();
+		}
+		
+		//Administração------------------------------------------------------------------
+		
+		public void editAdministracao() {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.update(administracao);
+			session.getTransaction().commit();
+			session.close();
 		}
 		
 		//BoxFileObject------------------------------------------------------------------
