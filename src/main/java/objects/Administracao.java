@@ -25,6 +25,8 @@ public class Administracao {
 	private int versaoEstruturaTermos;
 	@Column(nullable = true)
 	private int versaoModificacoesTermos;
+	@Column(nullable = true)
+	private String arquivoUltimaAlteracaoTermos;
 	
 	
 	public Administracao() {
@@ -59,4 +61,14 @@ public class Administracao {
 	public String versaoTermo() {
 		return versaoPrincipalTermos+"."+versaoEstruturaTermos+"."+versaoModificacoesTermos;
 	}
+
+	public String getArquivoUltimaAlteracaoTermos() {
+		return arquivoUltimaAlteracaoTermos;
+	}
+
+	public void setArquivoUltimaAlteracaoTermos(String arquivoUltimaAlteracaoTermos) {
+		this.arquivoUltimaAlteracaoTermos = arquivoUltimaAlteracaoTermos;
+	}
+	
+	
 }

@@ -23,6 +23,7 @@ public class DialogAcceptTermo extends Dialog {
 			if(!person.isTermoAceito()) {
 				answer.append("Deseja aceitar os termos vigentes?");
 				sendFile(model.box.getFileByBox(model.locateBoxFileObjectByName("Termos - " + model.administracao.versaoTermo()+".pdf", "Termos", "Versões")));
+				sendFile(model.box.getFileByBox(model.locateBoxFileObjectByName(model.administracao.getArquivoUltimaAlteracaoTermos()+".pdf", "Termos", "Alterações")));
 				messageConfirmation();
 				return finishStep();
 			}else {

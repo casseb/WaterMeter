@@ -124,7 +124,8 @@ public class DialogOfficialTermos extends Dialog {
 					}
 				}
 
-				createPDF("Alterações Termos " + LocalDateTime.now().toString(), chunks, "Termos", "Alterações");
+				model.administracao.setArquivoUltimaAlteracaoTermos("Alterações Termos " + LocalDateTime.now().toString());
+				createPDF(model.administracao.getArquivoUltimaAlteracaoTermos(), chunks, "Termos", "Alterações");
 
 				// Atualizando no banco os status dos termos
 				for (Termo termo : criados) {
