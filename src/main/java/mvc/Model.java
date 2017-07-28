@@ -17,6 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import objects.Administracao;
+import objects.Competencia;
+import objects.CompetenciaTipo;
+import objects.CompetenciaUN;
 import objects.Project;
 import objects.ProjectStatus;
 import objects.ProjectType;
@@ -46,6 +49,8 @@ public class Model{
 		public ProjectType projectType = ProjectType.MONETIZADO;
 		public ProjectStatus projectStatus = ProjectStatus.IDEIA;
 		public TermoTopico termoTopico = TermoTopico.VALIDADE;
+		public CompetenciaTipo competenciaTipo = CompetenciaTipo.PROGRAMACAO;
+		public CompetenciaUN competenciaUN = CompetenciaUN.UNIDADE;
 		public RouteGroup routeGroup = RouteGroup.CLIENTES;
 		public Box box = null;
 		public final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
@@ -150,6 +155,9 @@ public class Model{
 			
 			routesString.add("Aceitar");
 			routesGroup.add(RouteGroup.TERMOS);
+			
+			routesString.add("Adicionar");
+			routesGroup.add(RouteGroup.COMPETENCIAS);
 			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
@@ -690,6 +698,16 @@ public class Model{
 		public void plusEstructureTermo() {
 			administracao.plusVersaoEstruturaTermos();
 			editAdministracao();
+		}
+		
+		//Competencia--------------------------------------------------------------------
+		
+		public void addCompetencia(Competencia competencia){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.save(competencia);
+			session.getTransaction().commit();
+			session.close();
 		}
 		
 		//Administração------------------------------------------------------------------

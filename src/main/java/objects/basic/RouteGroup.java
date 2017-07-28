@@ -9,7 +9,8 @@ public enum RouteGroup {
 	INFORMACOES("Informações"),
 	CLIENTES("Clientes"),
 	MEUSDADOS("Meus Dados"),
-	TERMOS("Termos")
+	TERMOS("Termos"),
+	COMPETENCIAS("Competencias")
 	;
 	
 	public String desc;

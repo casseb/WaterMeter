@@ -27,13 +27,15 @@ public class Administracao {
 	private int versaoModificacoesTermos;
 	@Column(nullable = true)
 	private String arquivoUltimaAlteracaoTermos;
-	
+	@Column(nullable = true)
+	private double fatorConversaoInic;
 	
 	public Administracao() {
 		super();
 		this.versaoPrincipalTermos = 5;
 		this.versaoEstruturaTermos = 0;
 		this.versaoModificacoesTermos = 0;
+		this.fatorConversaoInic = 0.1;
 	}
 	
 	public int getId() {
