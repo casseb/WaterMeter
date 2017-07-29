@@ -32,6 +32,10 @@ public class Competencia {
 	@Enumerated(EnumType.STRING)
 	private CompetenciaUN un;
 
+	public Competencia() {
+		super();
+	}
+	
 	public Competencia(String descricao, Double valor, CompetenciaTipo tipo, CompetenciaUN un) {
 		super();
 		Descricao = descricao;

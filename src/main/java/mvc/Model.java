@@ -159,6 +159,9 @@ public class Model{
 			routesString.add("Adicionar");
 			routesGroup.add(RouteGroup.COMPETENCIAS);
 			
+			routesString.add("Editar");
+			routesGroup.add(RouteGroup.COMPETENCIAS);
+			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
 					addRoute(new Route(routesString.get(i),routesGroup.get(i)));
@@ -708,6 +711,72 @@ public class Model{
 			session.save(competencia);
 			session.getTransaction().commit();
 			session.close();
+		}
+		
+		public void editCompetencia(Competencia competencia){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.update(competencia);
+			session.getTransaction().commit();
+			session.close();
+		}
+		
+		public List<String> showAllCompetencias(){
+			List<Competencia> competencias = new LinkedList<>();
+			List<String> result = new LinkedList();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Competencia.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			competencias = (List<Competencia>) crit.list();
+			session.close();
+			
+			for (Competencia competencia : competencias) {
+				result.add(competencia.getDescricao());
+			}
+			
+			Collections.sort(result);
+			
+			return result;
+		}
+		
+		public List<Competencia> locateCompetenciaByCompetenciaTipo(CompetenciaTipo competenciaTipo){
+			List<Competencia> competencias = new LinkedList<>();
+			List<Competencia> result = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Competencia.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			competencias = (List<Competencia>) crit.list();
+			session.close();
+			
+			for (Competencia competencia : competencias) {
+				if(competencia.getTipo().equals(competenciaTipo)) {
+					result.add(competencia);
+				}
+				
+			}
+			
+			return result;
+		}
+		
+		public Competencia locateCompetenciaByTipoDesc(CompetenciaTipo competenciaTipo, String descricao) {
+			List<Competencia> competencias = new LinkedList<>();
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Competencia.class);
+			crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			competencias = (List<Competencia>) crit.list();
+			session.close();
+			
+			for (Competencia competencia : competencias) {
+				if(competencia.getDescricao().equals(descricao)) {
+					return competencia;
+				}
+				
+			}
+			
+			return null;
 		}
 		
 		//Administração------------------------------------------------------------------

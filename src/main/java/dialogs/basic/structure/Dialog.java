@@ -104,7 +104,11 @@ public abstract class Dialog {
 	 * emptyTrash
 	 */
 	protected List trash = new LinkedList<>();
-
+	
+	private boolean skip = false;
+	
+	private String skippedValue;
+	
 	/**
 	 * Controlador interno para saber se a lista foi esvaziada para finalizar o
 	 * dialogo em caso positivo
@@ -209,6 +213,11 @@ public abstract class Dialog {
 	 * @return
 	 */
 	protected boolean nextStep() {
+		if(message.equals("Pular") && skip) {
+			message = skippedValue;
+		}
+		this.skip = false;
+		
 		if (stepControl == step) {
 			return true;
 		} else {
@@ -389,6 +398,17 @@ public abstract class Dialog {
 	protected Dialog finishStep(int step) {
 		internalFinishStep();
 		this.step = step;
+		return null;
+	}
+	
+	protected Dialog finishStep(String skipValue) {
+		if (isEmpty)
+			return finishHim();
+		map.put(map.size() + 1, new String[] { "Pular" });
+		internalFinishStep();
+		++this.step;
+		this.skip = true;
+		this.skippedValue = skipValue;
 		return null;
 	}
 	

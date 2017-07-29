@@ -18,6 +18,7 @@ import dialogs.basic.users.DialogShowUserInfo;
 import dialogs.basic.users.DialogTest;
 import dialogs.client.DialogAddClient;
 import dialogs.competencia.DialogAddCompetencia;
+import dialogs.competencia.DialogEditCompetencia;
 import dialogs.information.DialogTermos;
 import dialogs.project.DialogAddProject;
 import dialogs.project.DialogEditProject;
@@ -146,8 +147,11 @@ public class DialogGenerator {
 					return new DialogAcceptTermo(bot,person,route,model,message);
 				}
 				
-				if((completeRoute).equals("Competencias - Adicionar")){
+				if((completeRoute).equals("Competências - Adicionar")){
 					return new DialogAddCompetencia(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Competências - Editar")){
+					return new DialogEditCompetencia(bot,person,route,model,message);
 				}
 				
 				return null;
