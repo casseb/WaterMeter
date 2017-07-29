@@ -162,6 +162,12 @@ public class Model{
 			routesString.add("Editar");
 			routesGroup.add(RouteGroup.COMPETENCIAS);
 			
+			routesString.add("Consultar");
+			routesGroup.add(RouteGroup.COMPETENCIAS);
+			
+			routesString.add("Deletar");
+			routesGroup.add(RouteGroup.COMPETENCIAS);
+			
 			for (int i = 0; i < routesString.size(); i++) {
 				if(locateRoute(routesGroup.get(i).getDesc()+" - "+routesString.get(i))==null){
 					addRoute(new Route(routesString.get(i),routesGroup.get(i)));
@@ -720,6 +726,15 @@ public class Model{
 			session.getTransaction().commit();
 			session.close();
 		}
+		
+		public void deleteCompetencia(Competencia competencia){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.delete(competencia);
+			session.getTransaction().commit();
+			session.close();
+		}
+
 		
 		public List<String> showAllCompetencias(){
 			List<Competencia> competencias = new LinkedList<>();

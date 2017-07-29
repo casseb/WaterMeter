@@ -30,6 +30,14 @@ public class Administracao {
 	@Column(nullable = true)
 	private double fatorConversaoInic;
 	
+	public double getFatorConversaoInic() {
+		return fatorConversaoInic;
+	}
+
+	public void setFatorConversaoInic(double fatorConversaoInic) {
+		this.fatorConversaoInic = fatorConversaoInic;
+	}
+
 	public Administracao() {
 		super();
 		this.versaoPrincipalTermos = 5;

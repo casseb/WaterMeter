@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import mvc.Model;
+
 @Entity
 @Table(name = "Competencia")
 public class Competencia {
@@ -76,6 +78,17 @@ public class Competencia {
 		this.un = un;
 	}
 	
+	public String valorFormatado() {
+		return "R$ "+String.format("%.2f",valor).replace(".",",");
+	}
 	
+	public Double valorInic() {
+		Model model = new Model();
+		return valor*model.administracao.getFatorConversaoInic();
+	}
+	
+	public String valorInicFormatado() {
+		return String.format("%.2f",valorInic()).replace(".",",")+" Inics";
+	}
 
 }
