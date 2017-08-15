@@ -100,11 +100,11 @@ public class DialogAddCompetencia extends Dialog {
 
 		if (nextStep()) {
 			if (isConfirmated()) {
-				model.competenciaTipo.locateCompetenciaTipoByString(getComplementString("tipo"));
+				model.competenciaTipo.locateCompetenciaTipoByString(getComplementString("tipo"),model);
 				Competencia competencia = new Competencia(
 						getComplementString("descricao"),
 						Double.parseDouble(getComplementString("valor")),
-						model.competenciaTipo.locateCompetenciaTipoByString(getComplementString("tipo")),
+						model.competenciaTipo.locateCompetenciaTipoByString(getComplementString("tipo"),model),
 						model.competenciaUN.locateCompetenciaUNByString(getComplementString("UN"))
 				);
 				model.addCompetencia(competencia);

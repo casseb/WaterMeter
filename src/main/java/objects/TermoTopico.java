@@ -19,7 +19,6 @@ public enum TermoTopico {
 	;
 	
 	public String descricao;
-	public Model model = new Model();
 	
 	public TermoTopico locateTermoTopicoByString(String string){
 		for (TermoTopico topico : TermoTopico.values()) {
@@ -34,7 +33,7 @@ public enum TermoTopico {
 		this.descricao = descricao;
 	}
 
-	public int getUltimoParagrafo() {
+	public int getUltimoParagrafo(Model model) {
 		return model.lastParagraph(this);
 	}
 	

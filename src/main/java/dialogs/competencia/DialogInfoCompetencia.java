@@ -49,11 +49,11 @@ public class DialogInfoCompetencia extends Dialog {
 				
 				answer.append("Abaixo características das competências da área");
 				
-				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message))) {
+				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message,model))) {
 					answer.append("Tipo: "	+	competencia.getTipo().descricao	+	"\n");
 					answer.append("Descrição: "	+	competencia.getDescricao()	+	"\n");
 					answer.append("Valor pelo serviço prestado (R$): "	+	competencia.valorFormatado()+ " " +	competencia.getUn().descricao	+	"\n");
-					answer.append("Valor pelo serviço prestado (Inicoins): "	+	competencia.valorInicFormatado()+ " " +	competencia.getUn().descricao	+	"\n");
+					answer.append("Valor pelo serviço prestado (Inicoins): "	+	competencia.valorInicFormatado()+ " " +	competencia.getUn().descricao	+	"\n\n");
 				}
 				
 				

@@ -10,13 +10,13 @@ public enum CompetenciaTipo {
 	;
 	
 	public String descricao;
-	public Model model = new Model();
+	public Model model;
 	
 	CompetenciaTipo(String descricao) {
 		this.descricao = descricao;
 	}
 	
-	public CompetenciaTipo locateCompetenciaTipoByString(String string){
+	public CompetenciaTipo locateCompetenciaTipoByString(String string, Model model){
 		for (CompetenciaTipo tipo : CompetenciaTipo.values()) {
 			if(string.equals(tipo.descricao)){
 				return tipo;

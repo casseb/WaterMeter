@@ -53,7 +53,7 @@ public class DialogEditCompetencia extends Dialog {
 				
 				answer.append("Selecione qual competência deseja editar");
 				
-				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message))) {
+				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message,model))) {
 					competencias.add(competencia.getDescricao());
 				}
 				
@@ -69,7 +69,7 @@ public class DialogEditCompetencia extends Dialog {
 		if(nextStep()) {
 			if(competencias.contains(message) || isValid("competencia")) {
 				addComplementString("competencia");
-				competenciaTarget = model.locateCompetenciaByTipoDesc(model.competenciaTipo.locateCompetenciaTipoByString("tipo"),message);
+				competenciaTarget = model.locateCompetenciaByTipoDesc(model.competenciaTipo.locateCompetenciaTipoByString("tipo",model),message);
 				
 				answer.append("Deseja editar descrição?\n");
 				answer.append("Descrição atual: " + competenciaTarget.getDescricao());

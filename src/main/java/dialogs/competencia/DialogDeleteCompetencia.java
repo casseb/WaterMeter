@@ -53,7 +53,7 @@ public class DialogDeleteCompetencia extends Dialog{
 				
 				answer.append("Selecione qual competência deseja deletar");
 				
-				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message))) {
+				for(Competencia competencia : model.locateCompetenciaByCompetenciaTipo(model.competenciaTipo.locateCompetenciaTipoByString(message,model))) {
 					competencias.add(competencia.getDescricao());
 				}
 				
@@ -72,7 +72,7 @@ public class DialogDeleteCompetencia extends Dialog{
 				
 				answer.append("Confirma a exclusão da seguinte competência?\n\n");
 				
-				competenciaTarget = model.locateCompetenciaByTipoDesc(model.competenciaTipo.locateCompetenciaTipoByString("tipo"),message);
+				competenciaTarget = model.locateCompetenciaByTipoDesc(model.competenciaTipo.locateCompetenciaTipoByString("tipo",model),message);
 				answer.append("Tipo: "+competenciaTarget.getTipo().descricao+"\n");
 				answer.append("Descrição: "+competenciaTarget.getDescricao()+"\n");
 				

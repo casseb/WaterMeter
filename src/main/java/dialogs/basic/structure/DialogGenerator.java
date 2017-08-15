@@ -8,15 +8,16 @@ import com.pengrad.telegrambot.request.SendMessage;
 
 import dialogs.basic.users.DialogActiveUser;
 import dialogs.basic.users.DialogDisableUser;
-import dialogs.basic.users.DialogEditLogin;
+import dialogs.basic.users.DialogEditApelido;
+import dialogs.basic.users.DialogEditNome;
 import dialogs.basic.users.DialogGrandGroupPermission;
 import dialogs.basic.users.DialogGrandPermission;
+import dialogs.basic.users.DialogMinhasCompetencias;
 import dialogs.basic.users.DialogRevokeGroupPermission;
 import dialogs.basic.users.DialogRevokePermission;
 import dialogs.basic.users.DialogShowAllUsersInfo;
 import dialogs.basic.users.DialogShowUserInfo;
 import dialogs.basic.users.DialogTest;
-import dialogs.client.DialogAddClient;
 import dialogs.competencia.DialogAddCompetencia;
 import dialogs.competencia.DialogDeleteCompetencia;
 import dialogs.competencia.DialogEditCompetencia;
@@ -82,8 +83,14 @@ public class DialogGenerator {
 				if((completeRoute).equals("Informações - Termos")){
 					return new DialogTermos(bot,person,route,model,message);
 				}
-				if((completeRoute).equals("Meus Dados - Editar Login")){
-					return new DialogEditLogin(bot,person,route,model,message);
+				if((completeRoute).equals("Meus Dados - Apelido")){
+					return new DialogEditApelido(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Meus Dados - Nome Completo")){
+					return new DialogEditNome(bot,person,route,model,message);
+				}
+				if((completeRoute).equals("Meus Dados - Competências")){
+					return new DialogMinhasCompetencias(bot,person,route,model,message);
 				}
 				if((completeRoute).equals("Administrativo - Dar Permissão")){
 					return new DialogGrandPermission(bot,person,route,model,message);
@@ -100,6 +107,9 @@ public class DialogGenerator {
 				if((completeRoute).equals("Meus Dados - Dados Login")){
 					return new DialogShowUserInfo(bot,person,route,model,message);
 				}
+				if((completeRoute).equals("Meus Dados - Dados Login")){
+					return new DialogShowUserInfo(bot,person,route,model,message);
+				}
 				if((completeRoute).equals("Projeto - Adicionar")){
 					return new DialogAddProject(bot,person,route,model,message);
 				}
@@ -111,9 +121,6 @@ public class DialogGenerator {
 				}
 				if((completeRoute).equals("Projeto - Editar")){
 					return new DialogEditProject(bot,person,route,model,message);
-				}
-				if((completeRoute).equals("Clientes - Adicionar")){
-					return new DialogAddClient(bot,person,route,model,message);
 				}
 				if((completeRoute).equals("Navegação - Testes")){
 					return new DialogTest(bot,person,route,model,message);
@@ -177,7 +184,7 @@ public class DialogGenerator {
 		
 		if(person==null){
 			person = model.addPersonByTelegram(Integer.toString(telegramMessage.getJSONObject("message").getJSONObject("chat").getInt("id")));
-			return new DialogEditLogin(bot,person,model.locateRoute("Meus Dados - Editar Login"),model,message);
+			return new DialogEditApelido(bot,person,model.locateRoute("Meus Dados - Editar Login"),model,message);
 		}
 		
 		if(!person.isActive()){

@@ -34,19 +34,6 @@ public class REST {
 
 		});
 	}
-
-	public void login() {
-		post("/login", new Route() {
-			@Override
-			public Object handle(final Request request, final Response response) {
-				response.header("Access-Control-Allow-Origin", "*");
-				
-				return model.login(new JSONObject(request.body()));
-				
-			}
-
-		});
-	}
 	
 	
 

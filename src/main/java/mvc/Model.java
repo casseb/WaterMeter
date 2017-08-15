@@ -2,8 +2,10 @@ package mvc;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -27,7 +29,7 @@ import objects.Termo;
 import objects.TermoTopico;
 import objects.basic.MessageLog;
 import objects.basic.Person;
-import objects.basic.PersonType;
+import objects.basic.PersonTipo;
 import objects.basic.Route;
 import objects.basic.RouteGroup;
 import objects.basic.ScheduleMessage;
@@ -64,7 +66,7 @@ public class Model{
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
 			Criteria critPerson = session.createCriteria(Person.class);
-			critPerson.add(Restrictions.eq("personType",PersonType.PARCEIRO));
+			critPerson.add(Restrictions.eq("personType",PersonTipo.PARCEIRO));
 			critPerson.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			this.persons = (List<Person>) critPerson.list();
 			Criteria critRoute = session.createCriteria(Route.class);
@@ -87,7 +89,13 @@ public class Model{
 			routesString.add("Termos");
 			routesGroup.add(RouteGroup.INFORMACOES);
 			
-			routesString.add("Editar Login");
+			routesString.add("Apelido");
+			routesGroup.add(RouteGroup.MEUSDADOS);
+			
+			routesString.add("Nome Completo");
+			routesGroup.add(RouteGroup.MEUSDADOS);
+			
+			routesString.add("Competências");
 			routesGroup.add(RouteGroup.MEUSDADOS);
 			
 			routesString.add("Dar Permissão");
@@ -186,7 +194,7 @@ public class Model{
 			session.save(person);
 			session.getTransaction().commit();
 			session.close();
-			if(person.getPersonType().equals(PersonType.PARCEIRO)){
+			if(person.getPersonType().equals(PersonTipo.PARCEIRO)){
 				persons.add(person);
 				grandBasic(person);
 			}
@@ -202,19 +210,14 @@ public class Model{
 		
 		public Person locatePerson(String person){
 			for (Person currentPerson : persons) {
-				if(currentPerson.getName()!=null){
-					if(currentPerson.getName().equals(person))
+				if(currentPerson.getApelido()!=null){
+					if(currentPerson.getApelido().equals(person))
 						return currentPerson;
 				}
 			}
 			return null;
 		}
 		
-		private boolean validatePassword(Person person,String senha){
-			if (person.getSenha().equals(senha))
-				return true;
-			return false;
-		}
 		
 		public Person locateTelegramUser(String idTelegram){
 			for (Person person : persons) {
@@ -226,7 +229,7 @@ public class Model{
 			
 		public Person addPersonByTelegram(String idTelegram){
 			Person person = new Person(idTelegram);
-			person.setPersonType(PersonType.PARCEIRO);
+			person.setPersonType(PersonTipo.PARCEIRO);
 			addPerson(person);
 			person.setIdTelegram(idTelegram);
 			return person;
@@ -245,8 +248,8 @@ public class Model{
 			return false;
 		}
 		
-		public List<Route> routesDenieds(Person person){
-			List<Route> result = new LinkedList<Route>();
+		public Set<Route> routesDenieds(Person person){
+			Set<Route> result = new HashSet<Route>();
 			for (Route route : routes){
 				if(!havePermission(route, person)){
 					result.add(route);
@@ -294,7 +297,7 @@ public class Model{
 		}
 		
 		public Person revokePermission(Person person,Route route){
-			List<Route> rotas = person.getRotasPermitidas();
+			Set<Route> rotas = person.getRotasPermitidas();
 			for (Route currentRoute : rotas) {
 				if(currentRoute.getName().equals(route.getName())){
 					rotas.remove(currentRoute);
@@ -308,7 +311,7 @@ public class Model{
 		
 		public Person grandPermission(Person person, Route route){
 			if(!person.getRotasPermitidas().contains(route)) {
-				List<Route> rotas = person.getRotasPermitidas();
+				Set<Route> rotas = person.getRotasPermitidas();
 				rotas.add(route);
 				person.setRotasPermitidas(rotas);
 				editPerson(person);
@@ -411,21 +414,21 @@ public class Model{
 		//Cliente--------------------------------------------------------------------
 		
 		public void addClient(Person person){
-			person.setPersonType(PersonType.CLIENTE);
+			person.setPersonType(PersonTipo.CLIENTE);
 			addPerson(person);
 		}
 		
 		//Visualizações Bot----------------------------------------------------------
 		
-		public List<String> showGroupRoutes(List<Route> rotas){
-			if(rotas == null){
+		public List<String> showGroupRoutes(Set<Route> routesDenieds){
+			if(routesDenieds == null){
 				return null;
 			}
 			List<String> saida = new LinkedList<>();
 			
 			for (RouteGroup routeGroup : RouteGroup.values()) {
 				boolean first = true;
-				for (Route route : rotas) {
+				for (Route route : routesDenieds) {
 					if(route.getRouteGroup().equals(routeGroup)){
 						if(first){
 							saida.add(routeGroup.desc);
@@ -438,7 +441,7 @@ public class Model{
 			return saida;
 		}
 		
-		public List<String> showRoutes(RouteGroup routeGroup, List<Route> rotas){
+		public List<String> showRoutes(RouteGroup routeGroup, Set<Route> rotas){
 			if(routeGroup == null){
 				return null;
 			}
@@ -482,7 +485,7 @@ public class Model{
 			}
 			List<String> saida = new LinkedList<>();
 			for (Person person : persons) {
-				saida.add(person.getName());
+				saida.add(person.getApelido());
 			}
 			return saida;
 		}
@@ -493,7 +496,7 @@ public class Model{
 			}
 			StringBuilder saida = new StringBuilder();
 			saida.append("\n Id do Telegram: " + person.getIdTelegram());
-			saida.append("\n Nome do Usuário: "+ person.getName());
+			saida.append("\n Nome do Usuário: "+ person.getApelido());
 			return saida.toString();
 		}
 		
@@ -503,8 +506,7 @@ public class Model{
 			}
 			StringBuilder saida = new StringBuilder();
 			saida.append("\n Id do Telegram: " + person.getIdTelegram());
-			saida.append("\n Nome do Usuário: "+ person.getName());
-			saida.append("\n Senha definida: "+ person.getSenha());
+			saida.append("\n Nome do Usuário: "+ person.getApelido());
 			return saida.toString();
 		}
 		
@@ -917,27 +919,6 @@ public class Model{
 		
 		//Métodos REST-------------------------------------------------------------------
 		
-		public JSONObject login(JSONObject json){        	
-	        String usuario = json.getString("usuario");
-	        String senha = json.getString("senha");				
-			try {									
-				 if(validatePassword(locatePerson(usuario), senha)){
-					 JSONArray jsonResult = new JSONArray();
-		         	 JSONObject jsonObj = new JSONObject();
-		         	 jsonObj.put("userName", usuario);
-		             jsonResult.put(jsonObj);			             	
-		             return jsonObj;
-					}else{
-					}				
-			} catch (JSONException e) {
-				//e.printStackTrace();
-			}
-			JSONArray jsonResult = new JSONArray();
-    	    JSONObject jsonObj = new JSONObject();
-    	    jsonObj.put("status", "");
-    	    jsonResult.put(jsonObj);
-        	return jsonObj;
-		}
 		
 		public JSONArray termos() throws IOException{
 			try {
@@ -952,6 +933,7 @@ public class Model{
 			}
 			return null;
 		}
+
 
 		
 

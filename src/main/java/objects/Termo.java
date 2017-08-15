@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import mvc.Model;
+
 @Entity
 @Table(name = "Termo")
 public class Termo {
@@ -54,12 +56,12 @@ public class Termo {
 		super();
 	}
 	
-	public Termo(TermoTopico topico, String descricao) {
+	public Termo(TermoTopico topico, String descricao,Model model) {
 		super();
 		this.topico = topico;
 		this.descricao = descricao;
 		setDataCriacao(LocalDateTime.now());
-		this.codigoParagrafo = topico.getUltimoParagrafo()+1;
+		this.codigoParagrafo = topico.getUltimoParagrafo(model)+1;
 		this.descricaoTemp = "Sem texto para homologação";
 		this.criado = true;
 		this.modificado = false;

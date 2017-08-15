@@ -61,7 +61,7 @@ public class DialogAddTermos extends Dialog {
 		
 		if(nextStep()) {
 			if(isConfirmated()) {
-				Termo termo = new Termo(model.termoTopico.locateTermoTopicoByString(getComplementString("topico")),getComplementString("descricao"));
+				Termo termo = new Termo(model.termoTopico.locateTermoTopicoByString(getComplementString("topico")),getComplementString("descricao"),model);
 				model.addTermo(termo);
 				return finishHim();
 			}else {

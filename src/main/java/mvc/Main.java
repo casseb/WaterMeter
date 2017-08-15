@@ -26,11 +26,11 @@ import com.pengrad.telegrambot.request.SendMessage;
 
 import access.AccessConfiguration;
 import dialogs.basic.structure.Dialog;
-import dialogs.basic.users.DialogEditLogin;
+import dialogs.basic.users.DialogEditApelido;
 import objects.Project;
 import objects.ProjectType;
 import objects.basic.Person;
-import objects.basic.PersonType;
+import objects.basic.PersonTipo;
 import objects.basic.Route;
 import objects.basic.RouteGroup;
 import objects.basic.ScheduleMessage;
@@ -65,7 +65,6 @@ public class Main {
             return "Success";
         });
         
-		rest.login();
 		rest.getTermos();
 		
 		permissaoADM();
@@ -92,9 +91,8 @@ public class Main {
 		Person person = model.locateTelegramUser(access.getAdminTelegram());
 		if(person == null){
 			person = model.addPersonByTelegram(access.getAdminTelegram());
-			person.setName("Adm");
-			person.setSenha("123");
-			person.setPersonType(PersonType.PARCEIRO);
+			person.setApelido("Adm");
+			person.setPersonType(PersonTipo.PARCEIRO);
 			model.editPerson(person);
 		}
 		if(!model.havePermission(model.locateRoute("Administrativo - Dar Permissão"), person)){

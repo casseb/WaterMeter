@@ -9,7 +9,6 @@ public enum CompetenciaUN {
 	;
 	
 	public String descricao;
-	public Model model = new Model();
 	
 	CompetenciaUN(String descricao) {
 		this.descricao = descricao;
