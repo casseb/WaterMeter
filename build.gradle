@@ -59,6 +59,7 @@ dependencies {
    //compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
    compile 'org.postgresql:postgresql:42.1.4.jre7'
    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '4.3.6.Final'
+   compile group: 'org.springframework', name: 'spring-context', version: '4.1.2.RELEASE'
    } 
 
   
