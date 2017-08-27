@@ -21,7 +21,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepo;
-	
+
 	public UsuarioServiceImpl() {
 		super();
 	}
@@ -35,19 +35,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	@Transactional
 	public void criarUsuario(String botId, String apelido) {
-		RotaService rotaService = App.getCon().getBean("rotaService",RotaService.class);
+		RotaService rotaService = App.getCon().getBean("rotaService", RotaService.class);
 		Usuario usuario = new Usuario();
 		usuario.setBotId(botId);
 		apelido = Utils.firstUpper(apelido);
 		usuario.setApelido(apelido);
 		usuario.setLiberado(1);
-		
+
 		List<Rota> rotasBasicasList = rotaService.listarRotasBasicas();
-		if(!(rotasBasicasList.isEmpty() || rotasBasicasList == null)) {
+		if (!(rotasBasicasList.isEmpty() || rotasBasicasList == null)) {
 			Set<Rota> rotasBasicas = new HashSet<>(rotasBasicasList);
 			usuario.setRotasPermitidas(rotasBasicas);
 		}
-		
+
 		usuarioRepo.save(usuario);
 	}
 
@@ -61,7 +61,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Transactional
 	public void atualizarUsuario(Usuario usuario) {
 		usuarioRepo.save(usuario);
-		
+
 	}
 
 	@Override
@@ -69,11 +69,33 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario localizarUsuarioPorApelido(String apelido) {
 		return usuarioRepo.findByApelido(apelido);
 	}
-	
+
 	@Override
 	@Transactional
 	public Usuario localizarUsuarioPorId(int id) {
 		return usuarioRepo.findOne(id);
+	}
+
+	@Override
+	@Transactional
+	public void darPermissaoTodos(Rota rota) {
+
+		for (Usuario usuario : usuarioRepo.findAll()) {
+			darPermissao(usuario, rota);
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void darPermissao(Usuario usuario, Rota rota) {
+		if (!usuarioRepo.findByRotasPermitidasRotaPK(rota.getRotaPK()).contains(usuario)) {
+			Set<Rota> currentRotas = new HashSet<>();
+			currentRotas = usuario.getRotasPermitidas();
+			currentRotas.add(rota);
+			usuario.setRotasPermitidas(currentRotas);
+			usuarioRepo.save(usuario);
+		}
 	}
 
 }

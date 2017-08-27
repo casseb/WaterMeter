@@ -1,5 +1,6 @@
 package br.com.simnetwork.model.service;
 
+import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 
 public interface UsuarioService {
@@ -15,5 +16,9 @@ public interface UsuarioService {
 	public Usuario localizarUsuarioPorApelido(String apelido);
 
 	public Usuario localizarUsuarioPorId(int id);
-
+	
+	public void darPermissaoTodos(Rota rota);
+	
+	public void darPermissao(Usuario usuario, Rota rota);
+	
 }

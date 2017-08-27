@@ -50,6 +50,21 @@ public class Rota implements Serializable{
 		this.admin = admin;
 	}
 	
-	
+	public String getBeanName() {
+		String basico;
+		String admin;
+		if(this.basico == 1) {
+			basico = "B";
+		}else {
+			basico = " ";
+		}
+		
+		if(this.admin == 1) {
+			admin = "A";
+		}else {
+			admin = " ";
+		}
+		return "|R|"+this.rotaPK.getRotaGrupo()+"|"+this.rotaPK.getNome()+"|"+basico+"|"+admin+"|";
+	}
 
 }

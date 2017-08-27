@@ -13,25 +13,11 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		// Get port config of heroku on environment variable
-        ProcessBuilder process = new ProcessBuilder();
-        Integer port;
-        if (process.environment().get("PORT") != null) {
-            port = Integer.parseInt(process.environment().get("PORT"));
-        } else {
-            port = 4567;
-        }
-        port(port);
-		
-        
-        TelegramResponse api = new TelegramResponse();
-        
-        post("/readMessages", (req, res) -> {
-            api.readMessage(req.bodyAsBytes());
-            return "Success";
-       });
-        
-        	
+		Start.startEnvironment();
+		Start.startTelegramMethods();
+		Start.carregandoMapeamentoSpring();
+		Start.persistirRotas();
+		System.out.println("Concluido o carregamento da aplicação");
     }
 	
 }

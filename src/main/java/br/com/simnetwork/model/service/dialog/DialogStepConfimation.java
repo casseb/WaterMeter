@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
@@ -22,6 +23,7 @@ import br.com.simnetwork.view.DialogTypeFinish;
 public class DialogStepConfimation implements DialogStep {
 
 	public StringBuilder mensagemBot = new StringBuilder();
+	private Map<String, String> labels = new TreeMap<String, String>();
 
 	@Override
 	public Object action(Usuario usuario, String mensagemUsuario, DialogTypeFinish currentDialogTypeFinish,
@@ -32,10 +34,10 @@ public class DialogStepConfimation implements DialogStep {
 			if (currentDialogTypeFinish.equals(DialogTypeFinish.INICIOSTEP)
 					|| currentDialogTypeFinish.equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
 				
-				mensagemBot.append("Deseja confirmar a gravação dos seguintes dados?\n");
+				mensagemBot.append("Deseja confirmar a gravação dos seguintes dados?\n\n");
 				
 				for (String complementKey : complements.keySet()) {
-					mensagemBot.append(complementKey+" : "+complements.getString(complementKey));
+					mensagemBot.append(labels.get(complementKey)+" : "+complements.getString(complementKey));
 				}
 				
 				List<String> keyboard = new LinkedList<>();
@@ -74,5 +76,23 @@ public class DialogStepConfimation implements DialogStep {
 		}
 
 	}
+
+	public StringBuilder getMensagemBot() {
+		return mensagemBot;
+	}
+
+	public void setMensagemBot(StringBuilder mensagemBot) {
+		this.mensagemBot = mensagemBot;
+	}
+
+	public Map<String, String> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Map<String, String> labels) {
+		this.labels = labels;
+	}
+	
+	
 
 }

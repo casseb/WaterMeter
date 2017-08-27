@@ -10,5 +10,7 @@ public interface RotaService {
 	public List<Rota> listarRotasBasicas();
 	
 	public List<Rota> listasRotasAdm();
+	
+	public void salvarRota(String grupo, String rota, String compl1, String compl2);
 
 }
