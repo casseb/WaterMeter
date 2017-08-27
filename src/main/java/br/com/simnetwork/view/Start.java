@@ -64,7 +64,7 @@ public class Start {
 		for (String rotaBean : rotaBeans) {
 			List<String> parts = Utils.extractLetterFor(rotaBean, "|");
 			
-			rotaService.salvarRota(parts.get(2), parts.get(3), parts.get(4), parts.get(5));
+			rotaService.salvarRota(parts.get(2), parts.get(3), parts.get(4), parts.get(5), parts.get(6));
 		}
 		
 		System.out.println("Persistencia Iniciado com Sucesso");

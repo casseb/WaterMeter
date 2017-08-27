@@ -35,7 +35,7 @@ public class Usuario {
 	@Column(name = "usu_id_bot", length = 45)
 	private String botId;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_rota", joinColumns = { @JoinColumn(name = "usu_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "rot_nome"), @JoinColumn(name = "rot_grupo") })
 	private Set<Rota> rotasPermitidas = new HashSet<Rota>();

@@ -1,4 +1,4 @@
-package br.com.simnetwork.model.service.dialog;
+package br.com.simnetwork.view.dialogStep;
 
 import java.util.LinkedList;
 import java.util.List;

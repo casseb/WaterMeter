@@ -8,7 +8,7 @@ import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;
 import br.com.simnetwork.model.service.UsuarioService;
-import br.com.simnetwork.model.service.dialog.DialogStep;
+import br.com.simnetwork.view.dialogStep.DialogStep;
 
 public class DialogImpl implements Dialog {
 
@@ -168,6 +168,7 @@ public class DialogImpl implements Dialog {
 	public void setCustomTable(String customTable) {
 		this.customTable = customTable;
 	}
+
 
 	
 	

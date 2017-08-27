@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS  Rota (
   rot_grupo VARCHAR(200) NOT NULL,
   rot_basico INT NOT NULL DEFAULT 0,
   rot_admin INT NOT NULL DEFAULT 0,
+  rot_invisivel INT NOT NULL DEFAULT 0,
   PRIMARY KEY (rot_nome, rot_grupo))
 ;
 

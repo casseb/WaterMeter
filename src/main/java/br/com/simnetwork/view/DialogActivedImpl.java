@@ -30,8 +30,10 @@ public class DialogActivedImpl implements DialogsActivated {
 
 	@Override
 	public void executeDialog(String botId, String mensagemUsuario) {
+		
 		Dialog dialog = dialogsActivated.get(botId);
 		Usuario usuario = usuarioService.localizarUsuarioPorTelegram(botId);
+		
 		if(dialog!=null) {
 			if(usuario==null) {
 				usuario = new Usuario();
@@ -40,12 +42,12 @@ public class DialogActivedImpl implements DialogsActivated {
 			executeAction(dialog, usuario, mensagemUsuario, false);
 		}else {
 			if(dialog==null && usuario!=null) {
-				dialog = App.getCon().getBean("|R|Navegação|Menu Principal|B| |", Dialog.class);
+				dialog = App.getCon().getBean("|R|Navegação|Menu Principal|B| |I|", Dialog.class);
 				executeAction(dialog, usuario, mensagemUsuario, true);
 			}else {
 				usuario = new Usuario();
 				usuario.setBotId(botId);
-				dialog = App.getCon().getBean("|R|Meus Dados|Editar Apelido|B| |", Dialog.class);
+				dialog = App.getCon().getBean("|R|Meus Dados|Editar Apelido|B| | |", Dialog.class);
 				executeAction(dialog, usuario, mensagemUsuario, true);
 			}
 		}
@@ -60,7 +62,9 @@ public class DialogActivedImpl implements DialogsActivated {
 
 	@Override
 	public void removeDialogActived(String id) {
-		this.dialogsActivated.remove(id);
+		if(dialogsActivated.containsKey(id)) {
+			this.dialogsActivated.remove(id);
+		}
 	}
 	
 	public void executeAction(Dialog dialog, Usuario usuario,String mensagemUsuario,boolean adicionarAtivos) {
@@ -81,17 +85,20 @@ public class DialogActivedImpl implements DialogsActivated {
 	}
 
 	@Override
-	public void prepareDialogActived() {
+	public void prepareDialogActived(String mensagemUsuario) {
 		
 		for (Map.Entry<String, Dialog> dialogActivated : dialogsActivated.entrySet()) {
 			if ((dialogActivated.getValue().getCurrentDialogTypeFinish().equals(DialogTypeFinish.ERRO))
 					|| (dialogActivated.getValue().getCurrentDialogTypeFinish()
-							.equals(DialogTypeFinish.FINALIZADO))) {
+							.equals(DialogTypeFinish.FINALIZADO))
+					||
+					mensagemUsuario.equals("Menu")) {
 				removeDialogActived(dialogActivated.getKey());
 			}
 		}
 		
 	}
+
 
 
 }

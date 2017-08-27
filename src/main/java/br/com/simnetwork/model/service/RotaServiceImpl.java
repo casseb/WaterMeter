@@ -35,7 +35,7 @@ public class RotaServiceImpl implements RotaService {
 
 	@Override
 	@Transactional
-	public void salvarRota(String grupo, String rota, String compl1, String compl2) {
+	public void salvarRota(String grupo, String rota, String compl1, String compl2, String compl3) {
 		
 		boolean replicarTodos = false;
 		boolean replicarAdm = false;
@@ -56,6 +56,9 @@ public class RotaServiceImpl implements RotaService {
 				if (compl2 != null) {
 					complements.add(compl2);
 				}
+				if (compl3 != null) {
+					complements.add(compl3);
+				}
 
 				if (complements.contains("B")) {
 					rotaNova.setBasico(1);
@@ -68,6 +71,11 @@ public class RotaServiceImpl implements RotaService {
 					replicarAdm = true;
 				} else {
 					rotaNova.setAdmin(0);
+				}
+				if (complements.contains("I")) {
+					rotaNova.setInvisivel(1);
+				} else {
+					rotaNova.setInvisivel(0);
 				}
 				
 				rotaRepo.save(rotaNova);
@@ -86,5 +94,14 @@ public class RotaServiceImpl implements RotaService {
 		}
 
 	}
+
+	@Override
+	public Rota pesquisarPorPK(String rotaGrupo, String rota) {
+		RotaPK rotaPK = new RotaPK();
+		rotaPK.setRotaGrupo(rotaGrupo);
+		rotaPK.setNome(rota);
+		return rotaRepo.findOne(rotaPK);
+	}
+
 
 }

@@ -7,5 +7,6 @@ public interface Dialog {
 	public DialogTypeFinish action(Usuario usuario, String mensagemUsuario);
 	
 	public DialogTypeFinish getCurrentDialogTypeFinish();
+	
 
 }

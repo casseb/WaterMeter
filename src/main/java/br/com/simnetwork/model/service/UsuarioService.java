@@ -21,4 +21,5 @@ public interface UsuarioService {
 	
 	public void darPermissao(Usuario usuario, Rota rota);
 	
+	
 }

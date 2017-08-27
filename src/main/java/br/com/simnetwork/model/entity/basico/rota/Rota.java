@@ -26,6 +26,21 @@ public class Rota implements Serializable{
 	@Column(name = "rot_admin")
 	private int admin;
 	
+	@Column(name = "rot_invisivel")
+	private int invisivel;
+	
+	public int getInvisivel() {
+		return invisivel;
+	}
+
+	public void setInvisivel(int invisivel) {
+		this.invisivel = invisivel;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Rota() {
 		super();
 	}
@@ -58,6 +73,7 @@ public class Rota implements Serializable{
 	public String getBeanName() {
 		String basico;
 		String admin;
+		String invisivel;
 		if(this.basico == 1) {
 			basico = "B";
 		}else {
@@ -69,7 +85,14 @@ public class Rota implements Serializable{
 		}else {
 			admin = " ";
 		}
-		return "|R|"+this.rotaPK.getRotaGrupo()+"|"+this.rotaPK.getNome()+"|"+basico+"|"+admin+"|";
+		
+		if(this.invisivel == 1) {
+			invisivel = "I";
+		}else {
+			invisivel = " ";
+		}
+		
+		return "|R|"+this.rotaPK.getRotaGrupo()+"|"+this.rotaPK.getNome()+"|"+basico+"|"+admin+"|"+invisivel+"|";
 	}
 
 }

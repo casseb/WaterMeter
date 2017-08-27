@@ -1,6 +1,7 @@
 package br.com.simnetwork.model.service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
+import br.com.simnetwork.model.entity.framework.App;
+import br.com.simnetwork.view.DialogsActivated;
 
 public class TelegramBotImpl implements Bot {
 
@@ -29,50 +32,46 @@ public class TelegramBotImpl implements Bot {
 		bot = TelegramBotAdapter.build(token);
 	}
 
+	private void prepareMap() {
+		map.put(map.size() + 1, new String[] { "Menu" });
+	}
+
 	@Override
 	public void sendMessage(Usuario usuario, String mensagem) {
-		if(map.isEmpty()) {
-			bot.execute(new SendMessage(usuario.getBotId(), mensagem));
-		}else {
-			bot.execute(new SendMessage(usuario.getBotId(), mensagem).
-					replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		}
-		
+		prepareMap();
+		bot.execute(new SendMessage(usuario.getBotId(), mensagem)
+				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+		map.clear();
 	}
 
 	public void sendMessage(String mensagem) {
-		if(map.isEmpty()) {
-			bot.execute(new SendMessage(access.getAdminTelegram(), mensagem));
-		}else {
-			bot.execute(new SendMessage(access.getAdminTelegram(), mensagem).
-					replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		}
+		prepareMap();
+		bot.execute(new SendMessage(access.getAdminTelegram(), mensagem)
+				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+		map.clear();
 	}
 
 	@Override
 	public void sendMessage(List<Usuario> usuarios, String mensagem) {
 		for (Usuario usuario : usuarios) {
-			if(map.isEmpty()) {
-				bot.execute(new SendMessage(usuario.getBotId(), mensagem));
-			}else {
-				bot.execute(new SendMessage(usuario.getBotId(), mensagem).
-						replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-			}
+			prepareMap();
+			bot.execute(new SendMessage(usuario.getBotId(), mensagem)
+					.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+			map.clear();
 		}
 	}
 
 	@Override
 	public void sendMessage(String usuario, String mensagem) {
-		if(map.isEmpty()) {
-			bot.execute(new SendMessage(usuario, mensagem));
-		}else {
-			bot.execute(new SendMessage(usuario, mensagem).
-					replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
-		}
+		prepareMap();
+		bot.execute(new SendMessage(usuario, mensagem)
+				.replyMarkup(new ReplyKeyboardMarkup(map.values().toArray(new String[map.size()][20]))));
+		map.clear();
 	}
 
 	@Override
 	public void prepareKeyboard(List<String> strings, int n) {
+		map.clear();
 		if (strings.size() != 0) {
 			int linha = 0;
 			int item = 0;
@@ -110,6 +109,7 @@ public class TelegramBotImpl implements Bot {
 
 	@Override
 	public void prepareKeyboard(List<String> strings) {
+		map.clear();
 		if (strings.size() != 0) {
 			int linha = 0;
 			int item = 0;
@@ -172,7 +172,7 @@ public class TelegramBotImpl implements Bot {
 		}
 
 	}
-	
+
 	public TelegramBot getBot() {
 		return bot;
 	}

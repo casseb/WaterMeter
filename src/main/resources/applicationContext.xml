@@ -33,7 +33,7 @@
 
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-		id="entityManagerFactory" p:dataSource-ref="dataSourceOnline"
+		id="entityManagerFactory" p:dataSource-ref="dataSourceLocal"
 		p:packagesToScan="br.com.simnetwork.model.entity">
 
 		<property name="jpaVendorAdapter">
@@ -76,7 +76,7 @@
 
 	<!-- Dialogs -->
 
-	<bean id="|R|Meus Dados|Editar Apelido|B| |" class="br.com.simnetwork.view.DialogImpl"
+	<bean id="|R|Meus Dados|Editar Apelido|B| | |" class="br.com.simnetwork.view.DialogImpl"
 		scope="prototype">
 		<property name="currentStep" value="1" />
 		<property name="customTable" value="Usuario"></property>
@@ -110,7 +110,7 @@
 		</property>
 	</bean>
 
-	<bean id="|R|Testes|Mensagem Simples|B| |" class="br.com.simnetwork.view.DialogImpl"
+	<bean id="|R|Testes|Mensagem Simples|B| | |" class="br.com.simnetwork.view.DialogImpl"
 		scope="prototype">
 		<property name="currentStep" value="1" />
 		<property name="steps">
@@ -124,7 +124,7 @@
 		</property>
 	</bean>
 
-	<bean id="|R|Testes|Mensagem Simples 2|B| |" class="br.com.simnetwork.view.DialogImpl"
+	<bean id="|R|Testes|Mensagem Simples 2|B| | |" class="br.com.simnetwork.view.DialogImpl"
 		scope="prototype">
 		<property name="currentStep" value="1" />
 		<property name="steps">
@@ -138,7 +138,7 @@
 		</property>
 	</bean>
 
-	<bean id="|R|Navegação|Menu Principal|B| |" class="br.com.simnetwork.view.DialogImpl"
+	<bean id="|R|Navegação|Menu Principal|B| |I|" class="br.com.simnetwork.view.DialogImpl"
 		scope="prototype">
 		<property name="currentStep" value="1" />
 		<property name="steps">
@@ -146,20 +146,21 @@
 				<entry key="1">
 					<bean parent="stepSetList">
 						<property name="mensagemBot" value="Você está no Menu Principal" />
-						<property name="chaveDado" value="grupo" />
-						<property name="lista">
-							<list>
-								<value>Valor 1</value>
-								<value>Valor 2</value>
-								<value>Valor 3</value>
-							</list>
-						</property>
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoPermitido" />
+						<property name="dependenciasListaDinamica" value="listGrupoRota"></property>
 					</bean>
 				</entry>
 				<entry key="2">
-					<bean parent="stepSimpleMessage">
-						<property name="mensagemBot" value="Teste de Mensagem Simples 2" />
+					<bean parent="stepSetList">
+						<property name="mensagemBot" value="Selecione a Rota desejada" />
+						<property name="chaveDado" value="rota" />
+						<property name="listaDinamica" ref="dynamicListRotaPermitido" />
+						<property name="dependenciasListaDinamica" value="listRota"></property>
 					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepDialogFactory" />
 				</entry>
 			</map>
 		</property>

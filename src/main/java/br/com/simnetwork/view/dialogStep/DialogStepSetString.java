@@ -1,4 +1,4 @@
-package br.com.simnetwork.model.service.dialog;
+package br.com.simnetwork.view.dialogStep;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
+import br.com.simnetwork.model.entity.basico.validacao.Validacao;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.view.DialogTypeFinish;
 
-@Service("stepSetList")
-public class DialogStepSetList implements DialogStep {
+@Service("stepSetString")
+public class DialogStepSetString implements DialogStep {
 
 	public String mensagemBot;
+	public List<Validacao> validacoes = new LinkedList<>();
 	public String chaveDado;
-	public List<String> lista = new LinkedList<>();
 
 	@SuppressWarnings("static-access")
 	@Override
@@ -26,15 +27,16 @@ public class DialogStepSetList implements DialogStep {
 			
 			if(currentDialogTypeFinish.equals(DialogTypeFinish.INICIOSTEP) ||
 					currentDialogTypeFinish.equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
-				bot.prepareKeyboard(lista);
 				bot.sendMessage(usuario, mensagemBot);
 				return DialogTypeFinish.AGUARDANDODADO;
 			}
 			
 			if(currentDialogTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)) {
-				
-				if(!lista.contains(mensagemUsuario)) {
-					return DialogTypeFinish.CONTEUDOINVALIDO; 
+				for (Validacao validacao : validacoes) {
+					if(!validacao.eValido(mensagemUsuario)) {
+						bot.sendMessage(usuario,validacao.getInvalidMessage());
+						return DialogTypeFinish.CONTEUDOINVALIDO;
+					}
 				}
 				
 				JSONObject retorno = new JSONObject();
@@ -71,6 +73,14 @@ public class DialogStepSetList implements DialogStep {
 		this.mensagemBot = mensagemBot;
 	}
 
+	public List<Validacao> getValidacoes() {
+		return validacoes;
+	}
+
+	public void setValidacoes(List<Validacao> validacoes) {
+		this.validacoes = validacoes;
+	}
+
 	public String getChaveDado() {
 		return chaveDado;
 	}
@@ -78,15 +88,5 @@ public class DialogStepSetList implements DialogStep {
 	public void setChaveDado(String chaveDado) {
 		this.chaveDado = chaveDado;
 	}
-
-	public List<String> getLista() {
-		return lista;
-	}
-
-	public void setLista(List<String> lista) {
-		this.lista = lista;
-	}
-	
-	
 
 }

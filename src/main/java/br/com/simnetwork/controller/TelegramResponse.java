@@ -27,7 +27,7 @@ public class TelegramResponse {
 			String mensagemUsuarioString = telegramMessage.getJSONObject("message").getString("text");
 
 			
-			dialogActived.prepareDialogActived();
+			dialogActived.prepareDialogActived(mensagemUsuarioString);
 			
 			dialogActived.executeDialog(botId, mensagemUsuarioString);
 			/*
