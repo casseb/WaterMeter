@@ -4,14 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
 
 
 
 @Embeddable
 public class RotaPK implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2294147366319057733L;
 
 	@Column(name = "rot_nome", length = 200)
 	private String nome;

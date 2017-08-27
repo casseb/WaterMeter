@@ -1,11 +1,6 @@
 package br.com.simnetwork.controller;
 
 import static spark.Spark.get;
-import static spark.Spark.post;
-
-import org.json.JSONObject;
-
-import br.com.simnetwork.model.entity.framework.App;
 import spark.Request;
 import spark.Response;
 import spark.Route;

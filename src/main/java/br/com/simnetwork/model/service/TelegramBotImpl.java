@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
-import org.springframework.stereotype.Component;
-
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.TelegramBotAdapter;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
@@ -16,8 +12,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.old.PessoaParceiro;
 
 public class TelegramBotImpl implements Bot {
 

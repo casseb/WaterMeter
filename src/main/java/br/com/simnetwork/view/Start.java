@@ -6,8 +6,6 @@ import static spark.Spark.post;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import br.com.simnetwork.controller.TelegramResponse;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.framework.App;

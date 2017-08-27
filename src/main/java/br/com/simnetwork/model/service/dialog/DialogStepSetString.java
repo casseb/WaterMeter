@@ -3,13 +3,10 @@ package br.com.simnetwork.model.service.dialog;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hibernate.cfg.JoinedSubclassFkSecondPass;
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
-import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.basico.validacao.Validacao;
 import br.com.simnetwork.model.entity.framework.App;
@@ -22,6 +19,7 @@ public class DialogStepSetString implements DialogStep {
 	public List<Validacao> validacoes = new LinkedList<>();
 	public String chaveDado;
 
+	@SuppressWarnings("static-access")
 	@Override
 	public Object action(Usuario usuario, String mensagemUsuario,DialogTypeFinish currentDialogTypeFinish, JSONObject complement) {
 

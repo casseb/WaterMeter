@@ -1,8 +1,6 @@
 package br.com.simnetwork.model.service.dialog;
 
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
-
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;

@@ -12,6 +12,11 @@ import javax.persistence.Table;
 @Table(name = "Rota")
 public class Rota implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1755517836854014198L;
+
 	@EmbeddedId
 	private RotaPK rotaPK;
 	

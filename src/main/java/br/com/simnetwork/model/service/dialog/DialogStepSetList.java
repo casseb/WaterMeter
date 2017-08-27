@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.entity.basico.validacao.Validacao;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.view.DialogTypeFinish;
 
@@ -19,6 +18,7 @@ public class DialogStepSetList implements DialogStep {
 	public String chaveDado;
 	public List<String> lista = new LinkedList<>();
 
+	@SuppressWarnings("static-access")
 	@Override
 	public Object action(Usuario usuario, String mensagemUsuario,DialogTypeFinish currentDialogTypeFinish, JSONObject complement) {
 

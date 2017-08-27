@@ -1,21 +1,14 @@
 package br.com.simnetwork.model.service.dialog;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Consumer;
-
-import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
-
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.entity.basico.validacao.Validacao;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.view.DialogTypeFinish;
 
@@ -25,6 +18,7 @@ public class DialogStepConfimation implements DialogStep {
 	public StringBuilder mensagemBot = new StringBuilder();
 	private Map<String, String> labels = new TreeMap<String, String>();
 
+	@SuppressWarnings("static-access")
 	@Override
 	public Object action(Usuario usuario, String mensagemUsuario, DialogTypeFinish currentDialogTypeFinish,
 			JSONObject complements) {

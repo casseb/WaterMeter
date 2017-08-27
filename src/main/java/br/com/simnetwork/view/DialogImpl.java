@@ -1,16 +1,9 @@
 package br.com.simnetwork.view;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
-
-import com.sun.awt.AWTUtilities.Translucency;
-
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;
@@ -26,9 +19,6 @@ public class DialogImpl implements Dialog {
 	private JSONObject complements = new JSONObject();
 	private boolean lastStep = false;
 	private String customTable;
-	private boolean repeat = false;
-
-
 	public DialogImpl() {
 		super();
 	}

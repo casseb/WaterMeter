@@ -2,10 +2,7 @@ package br.com.simnetwork.model.entity.basico.validacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import br.com.simnetwork.model.entity.basico.Utils;
-import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.UsuarioService;
 
 @Service("validacaoUsuarioExistente")

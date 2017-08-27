@@ -1,14 +1,9 @@
 package br.com.simnetwork.model.entity.basico;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,10 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.old.Estado;
 
 @Entity
 @Table(name = "MensagemLog")

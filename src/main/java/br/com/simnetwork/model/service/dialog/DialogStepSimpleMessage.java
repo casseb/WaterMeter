@@ -1,13 +1,9 @@
 package br.com.simnetwork.model.service.dialog;
 
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
 import br.com.simnetwork.model.entity.acesso.Acesso;
-import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.view.DialogTypeFinish;

@@ -1,38 +1,18 @@
 package br.com.simnetwork.model.entity.arquivo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.box.sdk.BoxConfig;
 import com.box.sdk.BoxDeveloperEditionAPIConnection;
-import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFolder;
-import com.box.sdk.BoxFolder.Info;
-import com.box.sdk.BoxItem;
-import com.box.sdk.BoxResource;
-import com.box.sdk.BoxSharedLink.Access;
-import com.box.sdk.BoxSharedLink.Permissions;
 import com.box.sdk.BoxUser;
 import com.box.sdk.IAccessTokenCache;
 import com.box.sdk.InMemoryLRUAccessTokenCache;
-import com.mchange.io.FileUtils;
-
 import br.com.simnetwork.model.entity.acesso.Acesso;
-import br.com.simnetwork.old.Arquivo;
-import br.com.simnetwork.old.Pasta;
 
 public class Box {
 
@@ -73,6 +53,7 @@ public class Box {
 
 	}
 
+	
 	public String addFileByTelegram(Arquivo boxFileObject, Pasta boxFolderObject) {
 
 		try {
@@ -164,6 +145,7 @@ public class Box {
 		BoxFile boxFile = new BoxFile(api,boxFileObject.getId());
 		return downloadFileByURL(boxFile.getDownloadURL(), boxFileObject.getName());
 	}
-
+	
+	
 
 }

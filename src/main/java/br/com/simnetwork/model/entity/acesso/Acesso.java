@@ -1,8 +1,5 @@
 package br.com.simnetwork.model.entity.acesso;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 public class Acesso {
 	
 	private String tokenTelegram;

@@ -30,7 +30,6 @@ public class DialogActivedImpl implements DialogsActivated {
 
 	@Override
 	public void executeDialog(String botId, String mensagemUsuario) {
-		boolean repeat = false;
 		Dialog dialog = dialogsActivated.get(botId);
 		Usuario usuario = usuarioService.localizarUsuarioPorTelegram(botId);
 		if(dialog!=null) {

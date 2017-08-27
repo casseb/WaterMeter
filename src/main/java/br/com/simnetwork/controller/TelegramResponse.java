@@ -1,39 +1,12 @@
 package br.com.simnetwork.controller;
 
-import com.mchange.v2.collection.MapEntry;
-import com.pengrad.telegrambot.*;
-import com.pengrad.telegrambot.request.GetFile;
-import com.pengrad.telegrambot.request.SendDocument;
-import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.GetFileResponse;
-
-import br.com.simnetwork.model.entity.acesso.Acesso;
-import br.com.simnetwork.model.entity.basico.LogMensagem;
-import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.model.service.Bot;
-import br.com.simnetwork.model.service.UsuarioService;
-import br.com.simnetwork.view.Dialog;
-import br.com.simnetwork.view.DialogTypeFinish;
 import br.com.simnetwork.view.DialogsActivated;
 
-import org.eclipse.jetty.server.Request;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.*;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class TelegramResponse {
-
-	private Map<String, Dialog> dialogsActivated = new HashMap<String, Dialog>();
 
 	public TelegramResponse() {
 
