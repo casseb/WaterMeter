@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.model.repository.RotaRepository;
 import br.com.simnetwork.model.service.RotaService;
 
 @Service("dialogFactory")

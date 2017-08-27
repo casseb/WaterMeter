@@ -1,7 +1,6 @@
 package br.com.simnetwork.model.service;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +12,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.view.DialogsActivated;
 
 public class TelegramBotImpl implements Bot {
 
