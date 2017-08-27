@@ -1,0 +1,14 @@
+package br.com.simnetwork.view;
+
+public enum DialogTypeFinish {
+	
+	AGUARDANDODADO,
+	FINALIZADOSTEP,
+	ERRO,
+	INICIOSTEP,
+	CONTEUDOINVALIDO,
+	FINALIZADO,
+	CONFIRMADO,
+	CANCELADO
+
+}

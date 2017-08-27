@@ -7,7 +7,7 @@ apply plugin: 'application'
 
 
 //mainClassName = 'objects.files.GeneratorPDF'
-mainClassName = 'mvc.Main'
+mainClassName = 'br.com.simnetwork.view.Main'
 //mainClassName = 'files.CreateAppUser'
 applicationName = 'app'
 
@@ -28,7 +28,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'mvc.Main'
+        attributes 'Main-Class': 'br.com.simnetwork.view.Main'
         //attributes 'Main-Class': 'files.CreateAppUser'
         //attributes 'Main-Class': 'objects.files.GeneratorPDF'
     }
@@ -59,7 +59,15 @@ dependencies {
    //compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
    compile 'org.postgresql:postgresql:42.1.4.jre7'
    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '4.3.6.Final'
-   compile group: 'org.springframework', name: 'spring-context', version: '4.1.2.RELEASE'
+   compile group: 'org.springframework', name: 'spring-context', version: '4.3.9.RELEASE'
+   compile group: 'org.springframework', name: 'spring-orm', version: '4.3.9.RELEASE'
+   //compile group: 'org.springframework', name: 'spring-orm', version: '4.1.2.RELEASE'
+   compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.0.0.RELEASE'
+   compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.3.6.Final'
+   
+   
+   
+   
    } 
 
   

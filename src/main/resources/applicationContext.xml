@@ -1,42 +1,122 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-           http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+<beans
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns="http://www.springframework.org/schema/beans">
 
-    
-    <context:component-scan base-package="mvc"/>
-    
-    <bean id="model" class="mvc.Model">
-    </bean>
-    
-    <bean id="access" class="access.AccessConfiguration">
-    </bean>
-     
-    <!--  
-    <bean id="pessoaFisica"
-        class="br.gov.sp.fatec.Pessoa" scope="prototype">
-        <property name="tipo" value="Fisico" />
-    </bean>
-    
-    <bean id="pessoaJuridica"
-        class="br.gov.sp.fatec.Pessoa" scope="prototype">
-        <property name="tipo" value="Juridico"/>
-    </bean>
-    
-    <bean id="catalogo"
-        class="br.gov.sp.fatec.Catalogo">
-        <property name="produtos" value="produtos whatever"/>
-    </bean>
-    
-     <bean id="loja"
-        class="br.gov.sp.fatec.Loja">
-        <property name="catalogo" ref="catalogo"/>
-    </bean>
-    -->
-    
+	<context:component-scan base-package="br.com.simnetwork" />
+
+	<jpa:repositories base-package="br.com.simnetwork.model" />
+
+	<!-- Spring Data -->
+
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSourceOnline">
+		<property value="org.postgresql.Driver" name="driverClassName" />
+		<property
+			value="jdbc:postgresql://ec2-23-21-220-188.compute-1.amazonaws.com:5432/d226npdt6jgknl"
+			name="url" />
+		<property value="jfbefyvaagufnu" name="username" />
+		<property
+			value="a0f7c0b854f5f8ed655719b906f79500921a3045a90935f27c982722e766a031"
+			name="password" />
+	</bean>
+
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSourceLocal">
+		<property value="org.postgresql.Driver" name="driverClassName" />
+		<property value="jdbc:postgresql://localhost:5432/Test_CasseBot"
+			name="url" />
+		<property value="postgres" name="username" />
+		<property value="1234" name="password" />
+	</bean>
+
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		id="entityManagerFactory" p:dataSource-ref="dataSourceLocal"
+		p:packagesToScan="br.com.simnetwork.model.entity">
+
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property value="false" name="generateDdl" />
+				<property value="true" name="showSql" />
+				<property value="org.hibernate.dialect.PostgreSQLDialect"
+					name="databasePlatform" />
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
+		id="transactionManager">
+
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+
+	</bean>
+
+	<tx:annotation-driven />
+
+
+	<!-- Instâncias Globais Personalizadas -->
+
+	<bean id="access" class="br.com.simnetwork.model.entity.acesso.Acesso">
+
+		<property name="tokenTelegram"
+			value="388217062:AAF0Kg9uDtkWGKDkX9M8eQM6tah9j-brOMA" />
+		<property name="adminTelegram" value="336050938" />
+		<property name="boxUsername" value="Test_CasseBot" />
+		<property name="boxIdUsername" value="2029208618" />
+
+	</bean>
+
+	<bean id="telegramBot" class="br.com.simnetwork.model.service.TelegramBotImpl"
+		scope="prototype">
+		<constructor-arg ref="access" />
+	</bean>
+
+	<!-- Dialogs -->
+
+	<bean id="Meus Dados - Inicio" class="br.com.simnetwork.view.DialogImpl"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="customTable" value="Usuario"></property>
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepGetString">
+						<property name="mensagemBot"
+							value="Bem Vindo ao CasseBot &#010;Como deseja ser Chamado?" />
+						<property name="chaveDado" value="usu_apelido" />
+						<property name="validacoes">
+							<list>
+								<bean parent="validacaoMaxString">
+									<property name="condicao" value="100" />
+								</bean>
+								<bean parent="validacaoUsuarioExistente"/>
+							</list>
+						</property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepConfirmation"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="Teste - Teste" class="br.com.simnetwork.view.DialogImpl"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSimpleMessage">
+						<property name="mensagemBot" value="Você já esta cadastrado!" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
 </beans>
