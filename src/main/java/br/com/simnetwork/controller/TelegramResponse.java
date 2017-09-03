@@ -1,9 +1,13 @@
 package br.com.simnetwork.controller;
 
+import br.com.simnetwork.model.entity.basico.debug.Debug;
 import br.com.simnetwork.model.entity.framework.App;
+import br.com.simnetwork.model.entity.framework.Configuracao;
 import br.com.simnetwork.view.DialogsActivated;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.*;
 
 public class TelegramResponse {
@@ -12,6 +16,7 @@ public class TelegramResponse {
 
 	}
 
+
 	public void readMessage(byte[] body) throws IOException {
 
 		DialogsActivated dialogActived = App.getCon().getBean("dialogActived",DialogsActivated.class);
@@ -19,6 +24,8 @@ public class TelegramResponse {
 
 		try {
 
+			Debug debug = App.getCon().getBean("debug",Debug.class);
+			
 			String responseJSON = new String(body, "UTF-8");
 			JSONObject telegramMessage = new JSONObject(responseJSON);
 
@@ -26,9 +33,11 @@ public class TelegramResponse {
 					.toString(telegramMessage.getJSONObject("message").getJSONObject("chat").getInt("id"));
 			String mensagemUsuarioString = telegramMessage.getJSONObject("message").getString("text");
 
+			debug.setMessage("TelegramResponse: Usuário enviou a mensagem: "+mensagemUsuarioString+
+					" com o id "+botId+"\n\n");
+			
 			
 			dialogActived.prepareDialogActived(mensagemUsuarioString);
-			
 			dialogActived.executeDialog(botId, mensagemUsuarioString);
 			/*
 			 * 
@@ -107,5 +116,6 @@ public class TelegramResponse {
 		}
 
 	}
+	
 
 }

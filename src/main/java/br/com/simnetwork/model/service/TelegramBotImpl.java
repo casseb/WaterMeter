@@ -186,4 +186,9 @@ public class TelegramBotImpl implements Bot {
 		this.access = access;
 	}
 
+	@Override
+	public void sendMessageWithoutKeyboard(String usuario, String mensagem) {
+		bot.execute(new SendMessage(usuario, mensagem));
+	}
+
 }

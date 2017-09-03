@@ -29,12 +29,21 @@ public class Rota implements Serializable{
 	@Column(name = "rot_invisivel")
 	private int invisivel;
 	
-	public int getInvisivel() {
-		return invisivel;
+	public boolean getInvisivel() {
+		if(this.invisivel==1) {
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 
-	public void setInvisivel(int invisivel) {
-		this.invisivel = invisivel;
+	public void setInvisivel(boolean invisivel) {
+		if(invisivel) {
+			 this.invisivel = 1;
+		}else {
+			this.invisivel =  0;
+		}
 	}
 
 	public static long getSerialversionuid() {
@@ -54,20 +63,36 @@ public class Rota implements Serializable{
 		this.rotaPK = rotaPK;
 	}
 
-	public int getBasico() {
-		return basico;
+	public boolean getBasico() {
+		if(this.basico==1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
-	public void setBasico(int basico) {
-		this.basico = basico;
+	public void setBasico(boolean basico) {
+		if(basico) {
+			 this.basico = 1;
+		}else {
+			this.basico =  0;
+		}
 	}
 
-	public int getAdmin() {
-		return admin;
+	public boolean getAdmin() {
+		if(this.admin==1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
-	public void setAdmin(int admin) {
-		this.admin = admin;
+	public void setAdmin(boolean admin) {
+		if(admin) {
+			 this.admin = 1;
+		}else {
+			this.admin =  0;
+		}
 	}
 	
 	public String getBeanName() {

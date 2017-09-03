@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
+import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.rota.RotaPK;
 import br.com.simnetwork.model.entity.framework.App;
@@ -35,72 +36,141 @@ public class RotaServiceImpl implements RotaService {
 
 	@Override
 	@Transactional
-	public void salvarRota(String grupo, String rota, String compl1, String compl2, String compl3) {
-		
+	public Rota AtualizarRotaByBean(String grupo, String rota, String compl1, String compl2, String compl3) {
+
 		boolean replicarTodos = false;
 		boolean replicarAdm = false;
-		
+
 		if (grupo != null && rota != null) {
+
 			RotaPK rotapk = new RotaPK();
 			rotapk.setNome(rota);
 			rotapk.setRotaGrupo(grupo);
-			Rota rotaNova = new Rota();
-			rotaNova.setRotaPK(rotapk);
 
-			if (!rotaRepo.exists(rotapk)) {
-
-				List<String> complements = new LinkedList<>();
-				if (compl1 != null) {
-					complements.add(compl1);
-				}
-				if (compl2 != null) {
-					complements.add(compl2);
-				}
-				if (compl3 != null) {
-					complements.add(compl3);
-				}
-
-				if (complements.contains("B")) {
-					rotaNova.setBasico(1);
-					replicarTodos = true;
-				} else {
-					rotaNova.setBasico(0);
-				}
-				if (complements.contains("A")) {
-					rotaNova.setAdmin(1);
-					replicarAdm = true;
-				} else {
-					rotaNova.setAdmin(0);
-				}
-				if (complements.contains("I")) {
-					rotaNova.setInvisivel(1);
-				} else {
-					rotaNova.setInvisivel(0);
-				}
-				
-				rotaRepo.save(rotaNova);
-				
-				if(replicarTodos) {
-					usuarioService.darPermissaoTodos(rotaNova);
-				}
-				
-				if(replicarAdm){
-					Acesso acesso = App.getCon().getBean("access",Acesso.class);
-					usuarioService.darPermissao(usuarioService.localizarUsuarioPorTelegram(acesso.getAdminTelegram()), rotaNova);
-				}
-
+			Rota rotaNova;
+			if (rotaRepo.exists(rotapk)) {
+				rotaNova = rotaRepo.findOne(rotapk);
+			} else {
+				rotaNova = new Rota();
 			}
 
+			rotaNova.setRotaPK(rotapk);
+
+			List<String> complements = new LinkedList<>();
+			if (compl1 != null) {
+				complements.add(compl1);
+			}
+			if (compl2 != null) {
+				complements.add(compl2);
+			}
+			if (compl3 != null) {
+				complements.add(compl3);
+			}
+
+			if (complements.contains("B")) {
+				rotaNova.setBasico(true);
+				replicarTodos = true;
+			} else {
+				rotaNova.setBasico(false);
+			}
+			if (complements.contains("A")) {
+				rotaNova.setAdmin(true);
+				replicarAdm = true;
+			} else {
+				rotaNova.setAdmin(false);
+			}
+			if (complements.contains("I")) {
+				rotaNova.setInvisivel(true);
+			} else {
+				rotaNova.setInvisivel(false);
+			}
+			
+			this.salvarRota(rotaNova);
+			
+			if (replicarTodos) {
+				usuarioService.darPermissaoTodos(rotaNova);
+			}
+
+			if (replicarAdm) {
+				Acesso acesso = App.getCon().getBean("access", Acesso.class);
+				usuarioService.darPermissao(usuarioService.localizarUsuarioPorTelegram(acesso.getAdminTelegram()),
+						rotaNova);
+			}
+			
+			return rotaNova;
+
 		}
+		
+		return null;
 
 	}
 
 	@Override
+	@Transactional
 	public Rota pesquisarPorPK(String rotaGrupo, String rota) {
 		RotaPK rotaPK = new RotaPK();
 		rotaPK.setRotaGrupo(rotaGrupo);
 		rotaPK.setNome(rota);
 		return rotaRepo.findOne(rotaPK);
+	}
+	
+	
+	
+	@Override
+	@Transactional
+	public void sincronizarRotas() {
+
+		List<String> rotaBeans = new LinkedList<>();
+		for (String beanString : App.getDianamicDialogContext().getBeanDefinitionNames()) {
+			if (beanString.contains("|R|")) {
+				rotaBeans.add(beanString);
+			}
+		}
+		
+		for (String beanString : App.getStaticDialogContext().getBeanDefinitionNames()) {
+			if (beanString.contains("|R|")) {
+				rotaBeans.add(beanString);
+			}
+		}
+
+		for (String rotaBean : rotaBeans) {
+			List<String> parts = Utils.extractLetterFor(rotaBean, "|");
+			
+			this.salvarRota(this.AtualizarRotaByBean(parts.get(2), parts.get(3), parts.get(4), parts.get(5), parts.get(6)));
+		}
+		
+		for (Rota rota : rotaRepo.findAll()) {
+			if(!rotaBeans.contains(rota.getBeanName())) {
+				rota.setInvisivel(true);
+				rotaRepo.save(rota);
+			}
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void salvarRota(Rota rota) {
+		
+		rotaRepo.save(rota);
+		
+	}
+
+	@Override
+	public Rota localizarRotaByBean(String bean) {
+		
+		List<String> parts = Utils.extractLetterFor(bean, "|");
+		
+		RotaPK rotapk = new RotaPK();
+		rotapk.setNome(parts.get(3));
+		rotapk.setRotaGrupo(parts.get(2));
+
+		if (rotaRepo.exists(rotapk)) {
+			return rotaRepo.findOne(rotapk);
+		} else {
+			return null;
+		}
+		
 	}
 
 

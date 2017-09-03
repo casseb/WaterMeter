@@ -4,80 +4,95 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
+import br.com.simnetwork.model.entity.basico.debug.Debug;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
+import br.com.simnetwork.model.service.Bot;
+import br.com.simnetwork.view.Dialog;
 import br.com.simnetwork.view.DialogTypeFinish;
 import br.com.simnetwork.view.dynamicList.DynamicList;
 
 @Service("stepSetList")
+@Scope(value = "prototype")
 public class DialogStepSetList implements DialogStep {
 
 	public String mensagemBot;
 	public String chaveDado;
-	public List<String> listaEstatica = new LinkedList<>();
+	public List<String> listaEstatica = new LinkedList<String>();
 	public DynamicList listaDinamica;
 	public String dependenciasListaDinamica;
+	@Autowired
+	private Debug debug;
+	@Autowired
+	private Bot bot;
 
 	@SuppressWarnings("static-access")
 	@Override
-	public Object action(Usuario usuario, String mensagemUsuario,DialogTypeFinish currentDialogTypeFinish, JSONObject complement) {
+	public void action(String botId, Dialog dialog) {
 
 		try {
 			
-			if(currentDialogTypeFinish.equals(DialogTypeFinish.INICIOSTEP) ||
-					currentDialogTypeFinish.equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
-				
-				if(!listaEstatica.isEmpty()) {
-					bot.prepareKeyboard(listaEstatica);
-				}else {
-					if(dependenciasListaDinamica.equals("listGrupoRota")) {
-						listaDinamica.prepareList(usuario);
+			if (dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.AGUARDANDODADO)) {
+
+				if(listaDinamica != null) {
+					if(!listaDinamica.getList().contains(dialog.getMensagemUsuario())) {
+						dialog.setCurrentTypeFinish(DialogTypeFinish.CONTEUDOINVALIDO);
 					}
-					if(dependenciasListaDinamica.equals("listRota")) {
-						listaDinamica.prepareList(usuario,complement.get("grupoRota"));
+				}
+				
+				if(!listaEstatica.isEmpty() && !listaEstatica.contains(dialog.getMensagemUsuario())){
+					dialog.setCurrentTypeFinish(DialogTypeFinish.CONTEUDOINVALIDO);
+				}
+				
+				if(!dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
+					dialog.getComplements().put(chaveDado, dialog.getMensagemUsuario());
+					dialog.setCurrentTypeFinish(DialogTypeFinish.FINALIZADOSTEP);
+				}
+	
+			}
+
+			if (dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.INICIOSTEP)
+					|| dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
+
+				if (!listaEstatica.isEmpty()) {
+					debug.setMessage("DialogStepSetList: Preparando lista estática");
+					bot.prepareKeyboard(listaEstatica);
+				} else {
+					if (dependenciasListaDinamica.equals("listGrupoRota")) {
+						listaDinamica.prepareList(usuarioService.localizarUsuarioPorTelegram(botId));
+					}
+					if (dependenciasListaDinamica.equals("listRota")) {
+						listaDinamica.prepareList(usuarioService.localizarUsuarioPorTelegram(botId),
+								dialog.getComplements().get("grupoRota"));
 					}
 					bot.prepareKeyboard(listaDinamica.getList());
 				}
-				
-				
-				bot.sendMessage(usuario, mensagemBot);
-				return DialogTypeFinish.AGUARDANDODADO;
-			}
-			
-			if(currentDialogTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)) {
-				
-				if(!listaEstatica.contains(mensagemUsuario) && !listaDinamica.getList().contains(mensagemUsuario)) {
-					return DialogTypeFinish.CONTEUDOINVALIDO; 
-				}
-				
-				JSONObject retorno = new JSONObject();
-				
-				retorno.put(chaveDado, mensagemUsuario);
-				
-				return retorno;
-				
-			}
-			
-			return currentDialogTypeFinish.ERRO;
-			
 
-		} catch (Exception e) {
+				bot.sendMessage(botId, mensagemBot);
+				dialog.setCurrentTypeFinish(DialogTypeFinish.AGUARDANDODADO);
+			}
+		}
+
+		catch (Exception e) {
 			Acesso access = App.getCon().getBean("access", Acesso.class);
-			if (usuario.getApelido() != null) {
-				bot.sendMessage(access.getAdminTelegram(),
-						"Ocorreu o seguinte erro para o usuário: " + usuario.getApelido() + "&#010;" + e.getMessage());
+			if (usuarioService.localizarUsuarioPorTelegram(botId) != null) {
+				bot.sendMessage(access.getAdminTelegram(), "Step Set List: Ocorreu o seguinte erro para o usuário: "
+						+ usuarioService.localizarUsuarioPorTelegram(botId).getApelido() + " \n" + e.getMessage());
 			} else {
 				bot.sendMessage(access.getAdminTelegram(),
 						"Ocorreu o seguinte erro (não foi possivel saber o usuário): " + e.getMessage());
 			}
-			return DialogTypeFinish.ERRO;
 
 		}
 
 	}
+
+	
 
 	public String getMensagemBot() {
 		return mensagemBot;
@@ -126,8 +141,5 @@ public class DialogStepSetList implements DialogStep {
 	public void setDependenciasListaDinamica(String dependenciasListaDinamica) {
 		this.dependenciasListaDinamica = dependenciasListaDinamica;
 	}
-	
-	
-	
 
 }

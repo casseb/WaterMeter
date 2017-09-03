@@ -8,6 +8,7 @@ public class Main {
 		Start.startTelegramMethods();
 		Start.carregandoMapeamentoSpring();
 		Start.persistirRotas();
+		Start.conferindoConfiguracoes();
 		System.out.println("Concluido o carregamento da aplicação");
     }
 	

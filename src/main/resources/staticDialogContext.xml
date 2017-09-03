@@ -1,0 +1,163 @@
+<beans
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns="http://www.springframework.org/schema/beans">
+
+	<import resource="applicationContext.xml"/>
+	
+	<bean id="|R|Meus Dados|Editar Apelido|B| | |" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="customTable" value="Usuario"></property>
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetString">
+						<property name="mensagemBot"
+							value="Bem Vindo ao CasseBot &#010;Como deseja ser Chamado?" />
+						<property name="chaveDado" value="usu_apelido" />
+						<property name="validacoes">
+							<list>
+								<bean parent="validacaoMaxString">
+									<property name="condicao" value="100" />
+								</bean>
+								<bean parent="validacaoUsuarioExistente" />
+							</list>
+						</property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepConfirmation">
+						<property name="labels">
+							<map>
+								<entry key="usu_apelido" value="Apelido" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="|R|Navegação|Menu Principal|B| |I|" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot" value="Você está no Menu Principal" />
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoPermitido" />
+						<property name="dependenciasListaDinamica" value="listGrupoRota"></property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSetList">
+						<property name="mensagemBot" value="Selecione a Rota desejada" />
+						<property name="chaveDado" value="rota" />
+						<property name="listaDinamica" ref="dynamicListRotaPermitido" />
+						<property name="dependenciasListaDinamica" value="listRota"></property>
+					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepDialogFactory" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="|R|Administração|Permissões| |A| |" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepDialogFactory">
+						<property name="rotaBean"
+							value="|R|Administração|PermissõesInterno| | |I|" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="|R|Administração|PermissõesInterno| | |I|" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione qual opção de permissão deseja utilizar" />
+						<property name="chaveDado" value="opcaoPermissao" />
+						<property name="listaEstatica">
+							<list>
+								<value>Permitir</value>
+								<value>Denegar</value>
+								<value>Consultar</value>
+							</list>
+						</property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepDialogFactory">
+						<property name="condicao" value="opcaoPermissao" />
+						<property name="opcoes">
+							<map>
+								<entry key="Permitir" value="|R|Testes|Mensagem Simples 2|B| | |" />
+								<entry key="Denegar" value="|R|Testes|Mensagem Simples 2|B| | |" />
+								<entry key="Consultar" value="|R|Testes|Mensagem Simples 2|B| | |" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
+
+
+
+	<bean id="|R|Testes|Mensagem Simples 2|B| | |" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSimpleMessage">
+						<property name="mensagemBot" value="Teste de Mensagem Simples 2" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	
+	<bean id="|R|Testes|Bug|B| | |" class="br.com.simnetwork.view.DialogIA"
+		scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione qual opção de permissão deseja utilizar" />
+						<property name="chaveDado" value="opcaoPermissao" />
+						<property name="listaEstatica">
+							<list>
+								<value>Permitir</value>
+								<value>Denegar</value>
+								<value>Consultar</value>
+							</list>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

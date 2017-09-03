@@ -33,7 +33,7 @@
 
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-		id="entityManagerFactory" p:dataSource-ref="dataSourceOnline"   
+		id="entityManagerFactory" p:dataSource-ref="dataSourceLocal"
 		p:packagesToScan="br.com.simnetwork.model.entity">
 
 		<property name="jpaVendorAdapter">
@@ -68,102 +68,14 @@
 		<property name="boxIdUsername" value="2029208618" />
 
 	</bean>
+	
+	<bean id="config" class="br.com.simnetwork.model.entity.framework.Configuracao">
+		<property name="debug" value="false" />
+	</bean>
 
 	<bean id="telegramBot" class="br.com.simnetwork.model.service.TelegramBotImpl"
 		scope="prototype">
 		<constructor-arg ref="access" />
-	</bean>
-
-	<!-- Dialogs -->
-
-	<bean id="|R|Meus Dados|Editar Apelido|B| | |" class="br.com.simnetwork.view.DialogImpl"
-		scope="prototype">
-		<property name="currentStep" value="1" />
-		<property name="customTable" value="Usuario"></property>
-		<property name="steps">
-			<map>
-				<entry key="1">
-					<bean parent="stepSetString">
-						<property name="mensagemBot"
-							value="Bem Vindo ao CasseBot &#010;Como deseja ser Chamado?" />
-						<property name="chaveDado" value="usu_apelido" />
-						<property name="validacoes">
-							<list>
-								<bean parent="validacaoMaxString">
-									<property name="condicao" value="100" />
-								</bean>
-								<bean parent="validacaoUsuarioExistente" />
-							</list>
-						</property>
-					</bean>
-				</entry>
-				<entry key="2">
-					<bean parent="stepConfirmation">
-						<property name="labels">
-							<map>
-								<entry key="usu_apelido" value="Apelido" />
-							</map>
-						</property>
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
-	<bean id="|R|Testes|Mensagem Simples|B| | |" class="br.com.simnetwork.view.DialogImpl"
-		scope="prototype">
-		<property name="currentStep" value="1" />
-		<property name="steps">
-			<map>
-				<entry key="1">
-					<bean parent="stepSimpleMessage">
-						<property name="mensagemBot" value="Teste de Mensagem Simples" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
-	<bean id="|R|Testes|Mensagem Simples 2|B| | |" class="br.com.simnetwork.view.DialogImpl"
-		scope="prototype">
-		<property name="currentStep" value="1" />
-		<property name="steps">
-			<map>
-				<entry key="1">
-					<bean parent="stepSimpleMessage">
-						<property name="mensagemBot" value="Teste de Mensagem Simples 2" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
-	<bean id="|R|Navegação|Menu Principal|B| |I|" class="br.com.simnetwork.view.DialogImpl"
-		scope="prototype">
-		<property name="currentStep" value="1" />
-		<property name="steps">
-			<map>
-				<entry key="1">
-					<bean parent="stepSetList">
-						<property name="mensagemBot" value="Você está no Menu Principal" />
-						<property name="chaveDado" value="grupoRota" />
-						<property name="listaDinamica" ref="dynamicListRotaGrupoPermitido" />
-						<property name="dependenciasListaDinamica" value="listGrupoRota"></property>
-					</bean>
-				</entry>
-				<entry key="2">
-					<bean parent="stepSetList">
-						<property name="mensagemBot" value="Selecione a Rota desejada" />
-						<property name="chaveDado" value="rota" />
-						<property name="listaDinamica" ref="dynamicListRotaPermitido" />
-						<property name="dependenciasListaDinamica" value="listRota"></property>
-					</bean>
-				</entry>
-				<entry key="3">
-					<bean parent="stepDialogFactory" />
-				</entry>
-			</map>
-		</property>
 	</bean>
 
 </beans>

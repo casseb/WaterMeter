@@ -30,7 +30,7 @@ public class DynamicListRotaPermitido implements DynamicList{
 			List<Rota> rotas = usuario.getRotasPermitidas().stream().collect(Collectors.toList());
 			
 			for (Rota rota : rotas) {
-				if(rota.getRotaPK().getRotaGrupo().equals(grupoRota) && rota.getInvisivel()==0) {
+				if(rota.getRotaPK().getRotaGrupo().equals(grupoRota) && !rota.getInvisivel()) {
 					list.add(rota.getRotaPK().getNome());
 				}
 			}
