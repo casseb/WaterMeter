@@ -23,7 +23,11 @@ public interface UsuarioService {
 	
 	public void darPermissao(Usuario usuario, Rota rota);
 	
+	public void darPermissaoGrupo(Usuario usuario, String grupoRota);
+	
 	public void removerPermissao(Usuario usuario, Rota rota);
+	
+	public void removerPermissaoGrupo(Usuario usuario, String grupoRota);
 	
 	public List<Usuario> localizarTodosUsuarios();
 

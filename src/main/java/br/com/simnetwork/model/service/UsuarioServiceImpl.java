@@ -146,4 +146,38 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	}
 
+	@Override
+	public void darPermissaoGrupo(Usuario usuario, String grupoRota) {
+		Set<Rota> currentRotas = new HashSet<>();
+		currentRotas = usuario.getRotasPermitidas();
+		boolean tem;
+		for(Rota rota : rotaService.listarRotaporGrupoRota(grupoRota)) {
+			tem = false;
+			for (Rota rotaDisponivel : usuario.getRotasPermitidas()) {
+				if (rotaDisponivel.getBeanName().equals(rota.getBeanName())) {
+					tem = true;
+				}
+			}
+			if (!tem) {
+				currentRotas.add(rota);
+			}
+		}
+		usuario.setRotasPermitidas(currentRotas);
+		usuarioRepo.save(usuario);
+	}
+
+	@Override
+	public void removerPermissaoGrupo(Usuario usuario, String grupoRota) {
+		Set<Rota> currentRotas = new HashSet<>();
+		for(Rota rotasDisponivel : usuario.getRotasPermitidas()) {
+			if(!rotasDisponivel.getRotaPK().getRotaGrupo().equals(grupoRota)) {
+				currentRotas.add(rotasDisponivel);
+			}
+		}
+		usuario.setRotasPermitidas(currentRotas);
+		usuarioRepo.save(usuario);
+		
+		
+	}
+
 }

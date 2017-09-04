@@ -97,7 +97,9 @@
 						<property name="listaEstatica">
 							<list>
 								<value>Permitir</value>
+								<value>Permitir Grupo</value>
 								<value>Denegar</value>
+								<value>Denegar Grupo</value>
 								<value>Consultar</value>
 							</list>
 						</property>
@@ -110,7 +112,10 @@
 							<map>
 								<entry key="Permitir"
 									value="|R|Administração|PermissõesInterno - Permitir| |A|I|" />
+									<entry key="Permitir Grupo"
+									value="|R|Administração|PermissõesInterno - PermitirGrupo| |A|I|" />
 								<entry key="Denegar" value="|R|Administração|PermissõesInterno - Denegar| |A|I|" />
+								<entry key="Denegar Grupo" value="|R|Administração|PermissõesInterno - DenegarGrupo| |A|I|" />
 								<entry key="Consultar" value="|R|Administração|PermissõesInterno - Consultar| |A|I|" />
 							</map>
 						</property>
@@ -240,6 +245,80 @@
 	</bean>
 
 	
-
+	<bean id="|R|Administração|PermissõesInterno - PermitirGrupo| |A|I|"
+		class="br.com.simnetwork.view.DialogIA" scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="customTable" value="UsuarioGrupoRotaLiberar" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o usuário que deseja dar permissão" />
+						<property name="chaveDado" value="usuario" />
+						<property name="listaDinamica" ref="dynamicListUsuarioSemPermissao" />
+						<property name="dependenciasListaDinamica" value="semAtributo"></property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o grupo da Rota que deseja liberar" />
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoMenuBloqueado" />
+						<property name="dependenciasListaDinamica" value="listGrupoRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepConfirmation">
+						<property name="labels">
+							<map>
+								<entry key="usuario" value="Usuário" />
+								<entry key="grupoRota" value="Grupo da Rota" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="|R|Administração|PermissõesInterno - DenegarGrupo| |A|I|"
+		class="br.com.simnetwork.view.DialogIA" scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="customTable" value="UsuarioGrupoRotaDenegar" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o usuário que deseja retirar permissão" />
+						<property name="chaveDado" value="usuario" />
+						<property name="listaDinamica" ref="dynamicListUsuarioComPermissao" />
+						<property name="dependenciasListaDinamica" value="semAtributo"></property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o grupo da Rota que deseja bloquear" />
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoMenuLiberado" />
+						<property name="dependenciasListaDinamica" value="listGrupoRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepConfirmation">
+						<property name="labels">
+							<map>
+								<entry key="usuario" value="Usuário" />
+								<entry key="grupoRota" value="Grupo da Rota" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
 
 </beans>

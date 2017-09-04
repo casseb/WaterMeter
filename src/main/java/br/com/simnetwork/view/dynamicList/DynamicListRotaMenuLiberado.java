@@ -3,13 +3,11 @@ package br.com.simnetwork.view.dynamicList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.service.UsuarioService;
 
 @Service("dynamicListRotaMenuLiberado")
 @Scope("prototype")
@@ -18,9 +16,6 @@ public class DynamicListRotaMenuLiberado implements DynamicList{
 	private List<String> list = new LinkedList<String>();
 	private Usuario usuario;
 	private String grupoRota;
-	@Autowired
-	private UsuarioService usuarioService;
-
 	@Override
 	public void prepareList(Object... object) {
 

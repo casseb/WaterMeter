@@ -33,7 +33,7 @@
 
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-		id="entityManagerFactory" p:dataSource-ref="dataSourceOnline"
+		id="entityManagerFactory" p:dataSource-ref="dataSourceLocal"
 		p:packagesToScan="br.com.simnetwork.model.entity">
 
 		<property name="jpaVendorAdapter">

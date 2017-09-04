@@ -45,6 +45,14 @@ public class DialogStepConfimation implements DialogStep {
 								rotaService.pesquisarPorPK(dialog.getComplements().getString("grupoRota"),
 										dialog.getComplements().getString("rota")));
 					}
+					if (dialog.getCustomTable().equals("UsuarioGrupoRotaLiberar")) {
+						usuarioService.darPermissaoGrupo(usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
+						dialog.getComplements().getString("grupoRota"));
+					}
+					if (dialog.getCustomTable().equals("UsuarioGrupoRotaDenegar")) {
+						usuarioService.removerPermissaoGrupo(usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
+						dialog.getComplements().getString("grupoRota"));
+					}
 					
 					bot.sendMessage(botId, "Ação concluída com Sucesso");
 					dialog.setCurrentTypeFinish(DialogTypeFinish.CONFIRMADO);
