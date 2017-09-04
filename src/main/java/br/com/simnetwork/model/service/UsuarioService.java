@@ -23,6 +23,8 @@ public interface UsuarioService {
 	
 	public void darPermissao(Usuario usuario, Rota rota);
 	
+	public void removerPermissao(Usuario usuario, Rota rota);
+	
 	public List<Usuario> localizarTodosUsuarios();
 
 	public List<Usuario> localizarUsuarioComPermissoesDisponiveis();

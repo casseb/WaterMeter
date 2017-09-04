@@ -34,13 +34,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Transactional
 	public void criarUsuario(String botId, String apelido) {
 		Usuario usuario = usuarioRepo.findByBotId(botId);
-		if(usuario == null) {
+		if (usuario == null) {
 			usuario = new Usuario();
 			usuario.setBotId(botId);
 			apelido = Utils.firstUpper(apelido);
 			usuario.setApelido(apelido);
 			usuario.setLiberado(1);
-		}else {
+		} else {
 			usuario.setApelido(apelido);
 		}
 
@@ -85,20 +85,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	@Transactional
 	public void darPermissao(Usuario usuario, Rota rota) {
-		if (!usuarioRepo.findByRotasPermitidasRotaPK(rota.getRotaPK()).contains(usuario)) {
-			Set<Rota> currentRotas = new HashSet<>();
-			currentRotas = usuario.getRotasPermitidas();
-			currentRotas.add(rota);
-			usuario.setRotasPermitidas(currentRotas);
-			usuarioRepo.save(usuario);
-		}
+		Set<Rota> currentRotas = new HashSet<>();
+		currentRotas = usuario.getRotasPermitidas();
+		currentRotas.add(rota);
+		usuario.setRotasPermitidas(currentRotas);
+		usuarioRepo.save(usuario);
 	}
 
 	@Override
 	@Transactional
 	public List<Usuario> localizarTodosUsuarios() {
 		List<Usuario> resultado = new LinkedList<>();
-		for(Usuario usuario: usuarioRepo.findAll()) {
+		for (Usuario usuario : usuarioRepo.findAll()) {
 			resultado.add(usuario);
 		}
 		return resultado;
@@ -108,13 +106,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Transactional
 	public List<Usuario> localizarUsuarioComPermissoesDisponiveis() {
 		List<Usuario> resultado = new LinkedList<>();
-		List<Rota> rotasMenu = rotaService.listarRotasVisiveisMenu();
-		for(Usuario usuario : usuarioRepo.findAll()) {
-			for(Rota rotaVisivel : rotasMenu) {
-				if(!usuario.getRotasPermitidas().contains(rotaVisivel)) {
-					resultado.add(usuario);
-					break;
-				}
+		for (Usuario usuario : localizarTodosUsuarios()) {
+			if (!listarRotasBloqueadas(usuario).isEmpty()) {
+				resultado.add(usuario);
 			}
 		}
 		return resultado;
@@ -124,18 +118,32 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public List<Rota> listarRotasBloqueadas(Usuario usuario) {
 		List<Rota> resultado = new LinkedList<>();
 		boolean tem;
-		for(Rota rotaMenu : rotaService.listarRotasVisiveisMenu()) {
+		for (Rota rotaMenu : rotaService.listarRotasVisiveisMenu()) {
 			tem = false;
-			for(Rota rotaDisponivel : usuario.getRotasPermitidas()) {
-				if(rotaMenu.getBeanName().equals(rotaDisponivel.getBeanName())){
+			for (Rota rotaDisponivel : usuario.getRotasPermitidas()) {
+				if (rotaMenu.getBeanName().equals(rotaDisponivel.getBeanName())) {
 					tem = true;
 				}
 			}
-			if(!tem) {
+			if (!tem) {
 				resultado.add(rotaMenu);
 			}
 		}
 		return resultado;
+	}
+
+	@Override
+	public void removerPermissao(Usuario usuario, Rota rota) {
+		usuario = usuarioRepo.findOne(usuario.getId());
+		Set<Rota> currentRotas = new HashSet<>();
+		for(Rota rotaPermitida : usuario.getRotasPermitidas()) {
+			if(!rotaPermitida.getBeanName().equals(rota.getBeanName())) {
+				currentRotas.add(rotaPermitida);
+			}
+		}
+		usuario.setRotasPermitidas(currentRotas);
+		usuarioRepo.save(usuario);
+
 	}
 
 }

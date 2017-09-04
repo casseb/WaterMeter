@@ -110,8 +110,8 @@
 							<map>
 								<entry key="Permitir"
 									value="|R|Administração|PermissõesInterno - Permitir| |A|I|" />
-								<entry key="Denegar" value="|R|Testes|Mensagem Simples 2|B| | |" />
-								<entry key="Consultar" value="|R|Testes|Mensagem Simples 2|B| | |" />
+								<entry key="Denegar" value="|R|Administração|PermissõesInterno - Denegar| |A|I|" />
+								<entry key="Consultar" value="|R|Administração|PermissõesInterno - Consultar| |A|I|" />
 							</map>
 						</property>
 					</bean>
@@ -124,7 +124,7 @@
 	<bean id="|R|Administração|PermissõesInterno - Permitir| |A|I|"
 		class="br.com.simnetwork.view.DialogIA" scope="prototype">
 		<property name="currentStep" value="1" />
-		<property name="customTable" value="UsuarioRota" />
+		<property name="customTable" value="UsuarioRotaLiberar" />
 		<property name="steps">
 			<map>
 				<entry key="1">
@@ -133,7 +133,7 @@
 							value="Selecione o usuário que deseja dar permissão" />
 						<property name="chaveDado" value="usuario" />
 						<property name="listaDinamica" ref="dynamicListUsuarioSemPermissao" />
-						<property name="dependenciasListaDinamica" value="listUsuariosSemPermissao"></property>
+						<property name="dependenciasListaDinamica" value="semAtributo"></property>
 					</bean>
 				</entry>
 				<entry key="2">
@@ -162,6 +162,77 @@
 								<entry key="rota" value="Rota" />
 							</map>
 						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="|R|Administração|PermissõesInterno - Denegar| |A|I|"
+		class="br.com.simnetwork.view.DialogIA" scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="customTable" value="UsuarioRotaDenegar" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o usuário que deseja retirar permissão" />
+						<property name="chaveDado" value="usuario" />
+						<property name="listaDinamica" ref="dynamicListUsuarioComPermissao" />
+						<property name="dependenciasListaDinamica" value="semAtributo"></property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o grupo da Rota que deseja bloquear" />
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoMenuLiberado" />
+						<property name="dependenciasListaDinamica" value="listGrupoRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepSetList">
+						<property name="mensagemBot" value="Selecione a Rota que deseja bloquear" />
+						<property name="chaveDado" value="rota" />
+						<property name="listaDinamica" ref="dynamicListRotaMenuLiberado" />
+						<property name="dependenciasListaDinamica" value="listRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="4">
+					<bean parent="stepConfirmation">
+						<property name="labels">
+							<map>
+								<entry key="usuario" value="Usuário" />
+								<entry key="grupoRota" value="Grupo da Rota" />
+								<entry key="rota" value="Rota" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="|R|Administração|PermissõesInterno - Consultar| |A|I|"
+		class="br.com.simnetwork.view.DialogIA" scope="prototype">
+		<property name="currentStep" value="1" />
+		<property name="steps">
+			<map>
+				<entry key="1">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o usuário que deseja conferir as permissões" />
+						<property name="chaveDado" value="usuario" />
+						<property name="listaDinamica" ref="dynamicListUsuarioTodos" />
+						<property name="dependenciasListaDinamica" value="semAtributo"/>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSimpleMessage">
+						<property name="dynamicMessage" ref="dynamicMessagePermissoesUsuario" />
+						<property name="dependenciasMensagemDinamica" value="usuario"/>
 					</bean>
 				</entry>
 			</map>

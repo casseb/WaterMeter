@@ -81,7 +81,7 @@ public class DialogStepSetList implements DialogStep {
 								usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
 								dialog.getComplements().get("grupoRota"));
 					}
-					if (dependenciasListaDinamica.equals("listUsuariosSemPermissao")) {
+					if (dependenciasListaDinamica.equals("semAtributo")) {
 						listaDinamica.prepareList();
 					}
 

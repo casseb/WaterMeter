@@ -21,6 +21,10 @@ import br.com.simnetwork.model.entity.basico.rota.Rota;
 @Table(name = "Usuario")
 public class Usuario {
 
+	
+
+
+
 	@Id
 	@Column(name = "usu_id", length = 100)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +50,15 @@ public class Usuario {
 		super();
 	}
 
+	public int getId() {
+		return id;
+	}
 
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getApelido() {
 		return apelido;

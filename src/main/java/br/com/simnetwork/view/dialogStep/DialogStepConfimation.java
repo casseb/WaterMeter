@@ -35,12 +35,18 @@ public class DialogStepConfimation implements DialogStep {
 						usuarioService.criarUsuario(botId, dialog.getComplements().getString("usu_apelido"));
 						
 					}
-					if (dialog.getCustomTable().equals("UsuarioRota")) {
+					if (dialog.getCustomTable().equals("UsuarioRotaLiberar")) {
 						usuarioService.darPermissao(usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
 								rotaService.pesquisarPorPK(dialog.getComplements().getString("grupoRota"),
 										dialog.getComplements().getString("rota")));
 					}
-					bot.sendMessage(botId, "Cadastro realizado com sucesso");
+					if (dialog.getCustomTable().equals("UsuarioRotaDenegar")) {
+						usuarioService.removerPermissao(usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
+								rotaService.pesquisarPorPK(dialog.getComplements().getString("grupoRota"),
+										dialog.getComplements().getString("rota")));
+					}
+					
+					bot.sendMessage(botId, "Ação concluída com Sucesso");
 					dialog.setCurrentTypeFinish(DialogTypeFinish.CONFIRMADO);
 				} else {
 					dialog.setCurrentTypeFinish(DialogTypeFinish.CANCELADO);
