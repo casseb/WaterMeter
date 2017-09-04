@@ -36,24 +36,27 @@ public class DialogStepSetList implements DialogStep {
 	public void action(String botId, Dialog dialog) {
 
 		try {
-			
+
 			if (dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.AGUARDANDODADO)) {
 
-				if(listaDinamica != null) {
-					if(!listaDinamica.getList().contains(dialog.getMensagemUsuario())) {
+				if (listaDinamica != null) {
+					if (!listaDinamica.getList().contains(dialog.getMensagemUsuario())) {
 						dialog.setCurrentTypeFinish(DialogTypeFinish.CONTEUDOINVALIDO);
 					}
 				}
-				
-				if(!listaEstatica.isEmpty() && !listaEstatica.contains(dialog.getMensagemUsuario())){
+
+				if (!listaEstatica.isEmpty() && !listaEstatica.contains(dialog.getMensagemUsuario())) {
 					dialog.setCurrentTypeFinish(DialogTypeFinish.CONTEUDOINVALIDO);
 				}
-				
-				if(!dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
+
+				if (!dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
 					dialog.getComplements().put(chaveDado, dialog.getMensagemUsuario());
 					dialog.setCurrentTypeFinish(DialogTypeFinish.FINALIZADOSTEP);
+				} else {
+					bot.sendMessage(botId,
+							"Foi utilizado uma opção não presente na lista, peço que utilize uma das opções abaixo.");
 				}
-	
+
 			}
 
 			if (dialog.getCurrentDialogTypeFinish().equals(DialogTypeFinish.INICIOSTEP)
@@ -62,26 +65,49 @@ public class DialogStepSetList implements DialogStep {
 				if (!listaEstatica.isEmpty()) {
 					debug.setMessage("DialogStepSetList: Preparando lista estática");
 					bot.prepareKeyboard(listaEstatica);
+					bot.sendMessage(botId, mensagemBot);
+					dialog.setCurrentTypeFinish(DialogTypeFinish.AGUARDANDODADO);
 				} else {
 					if (dependenciasListaDinamica.equals("listGrupoRota")) {
 						listaDinamica.prepareList(usuarioService.localizarUsuarioPorTelegram(botId));
+					}
+					if (dependenciasListaDinamica.equals("listGrupoRotaOutroUsuario")) {
+						listaDinamica.prepareList(usuarioService
+								.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")));
 					}
 					if (dependenciasListaDinamica.equals("listRota")) {
 						listaDinamica.prepareList(usuarioService.localizarUsuarioPorTelegram(botId),
 								dialog.getComplements().get("grupoRota"));
 					}
-					bot.prepareKeyboard(listaDinamica.getList());
+					if (dependenciasListaDinamica.equals("listRotaOutroUsuario")) {
+						listaDinamica.prepareList(
+								usuarioService.localizarUsuarioPorApelido(dialog.getComplements().getString("usuario")),
+								dialog.getComplements().get("grupoRota"));
+					}
+					if (dependenciasListaDinamica.equals("listUsuariosSemPermissao")) {
+						listaDinamica.prepareList();
+					}
+
+					if (listaDinamica.getList().isEmpty()) {
+						bot.sendMessage(botId, "Nenhuma opção disponível");
+						dialog.setCurrentTypeFinish(DialogTypeFinish.FINALIZADO);
+					} else {
+						bot.prepareKeyboard(listaDinamica.getList());
+						bot.sendMessage(botId, mensagemBot);
+						dialog.setCurrentTypeFinish(DialogTypeFinish.AGUARDANDODADO);
+					}
+
 				}
 
-				bot.sendMessage(botId, mensagemBot);
-				dialog.setCurrentTypeFinish(DialogTypeFinish.AGUARDANDODADO);
 			}
 		}
 
 		catch (Exception e) {
 			Acesso access = App.getCon().getBean("access", Acesso.class);
 			if (usuarioService.localizarUsuarioPorTelegram(botId) != null) {
-				bot.sendMessage(access.getAdminTelegram(), "Step Set List: Ocorreu o seguinte erro para o usuário: "
+				bot.sendMessage(botId,
+						"Ocorreu algo inesperado, peço que tente novamente e contate o administrador do sistema.");
+				bot.sendMessage(access.getAdminTelegram(), "Ocorreu o seguinte erro para o usuário: "
 						+ usuarioService.localizarUsuarioPorTelegram(botId).getApelido() + " \n" + e.getMessage());
 			} else {
 				bot.sendMessage(access.getAdminTelegram(),
@@ -91,8 +117,6 @@ public class DialogStepSetList implements DialogStep {
 		}
 
 	}
-
-	
 
 	public String getMensagemBot() {
 		return mensagemBot;

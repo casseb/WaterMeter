@@ -13,10 +13,11 @@ import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.service.RotaService;
+import br.com.simnetwork.model.service.UsuarioService;
 
-@Service("dynamicListRotaGrupoPermitido")
+@Service("dynamicListRotaGrupoMenuBloqueado")
 @Scope("prototype")
-public class DynamicListRotaGrupoPermitido implements DynamicList {
+public class DynamicListRotaGrupoMenuBloqueado implements DynamicList {
 
 	private List<String> list = new LinkedList<String>();
 	private Usuario usuario;
@@ -24,6 +25,8 @@ public class DynamicListRotaGrupoPermitido implements DynamicList {
 	private Acesso access;
 	@Autowired
 	private RotaService rotaService;
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	public void prepareList(Object... object) {
@@ -31,20 +34,9 @@ public class DynamicListRotaGrupoPermitido implements DynamicList {
 		if (object[0] instanceof Usuario) {
 
 			usuario = (Usuario) object[0];
-			List<Rota> rotas = usuario.getRotasPermitidas().stream().collect(Collectors.toList());
 			
-			for (Rota rota : rotas) {
-				list.add(rota.getRotaPK().getRotaGrupo());
-			}
-			
-			for (Rota rota : rotaService.listarRotasBasicas()) {
-				list.add(rota.getRotaPK().getRotaGrupo());
-			}
-			
-			if(usuario.getBotId().equals(access.getAdminTelegram())) {
-				for (Rota rota : rotaService.listarRotasAdm()) {
-					list.add(rota.getRotaPK().getRotaGrupo());
-				}
+			for(Rota rotaBloq : usuarioService.listarRotasBloqueadas(usuario)) {
+				list.add(rotaBloq.getRotaPK().getRotaGrupo());
 			}
 			
 			

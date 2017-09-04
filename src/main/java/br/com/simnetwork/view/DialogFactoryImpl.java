@@ -20,14 +20,25 @@ public class DialogFactoryImpl implements DialogFactory {
 	public void createDialog(String rotaGrupo, String rota, Usuario usuario) {
 		
 		Rota rotaTemp = rotaService.pesquisarPorPK(rotaGrupo, rota);
-		Dialog dialog = App.getStaticDialogContext().getBean(rotaTemp.getBeanName(),Dialog.class);
+		Dialog dialog;
+		if(App.getStaticDialogContext().containsBeanDefinition(rotaTemp.getBeanName())) {
+			dialog = App.getStaticDialogContext().getBean(rotaTemp.getBeanName(),Dialog.class);
+		}else {
+			dialog = App.getDianamicDialogContext().getBean(rotaTemp.getBeanName(),Dialog.class);
+		}
+		
 		DialogActivedImpl.dialogs.put(usuario.getBotId(),dialog);
 		
 	}
 
 	@Override
 	public void createDialog(String bean, Usuario usuario) {
-		Dialog dialog = App.getStaticDialogContext().getBean(bean,Dialog.class);
+		Dialog dialog;
+		if(App.getStaticDialogContext().containsBeanDefinition(bean)) {
+			dialog = App.getStaticDialogContext().getBean(bean,Dialog.class);
+		}else {
+			dialog = App.getDianamicDialogContext().getBean(bean,Dialog.class);
+		}
 		DialogActivedImpl.dialogs.put(usuario.getBotId(),dialog);
 	}
 	

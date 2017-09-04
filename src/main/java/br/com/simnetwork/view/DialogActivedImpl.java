@@ -86,6 +86,7 @@ public class DialogActivedImpl implements DialogsActivated {
 		for (Map.Entry<String, Dialog> dialogActivated : DialogActivedImpl.dialogs.entrySet()) {
 			if ((dialogActivated.getValue().getCurrentDialogTypeFinish().equals(DialogTypeFinish.ERRO))
 					|| (dialogActivated.getValue().getCurrentDialogTypeFinish().equals(DialogTypeFinish.FINALIZADO))
+					|| (dialogActivated.getValue().getCurrentDialogTypeFinish().equals(DialogTypeFinish.CANCELADO))
 					|| mensagemUsuario.equals("Menu")) {
 				removeDialogActived(dialogActivated.getKey());
 			}

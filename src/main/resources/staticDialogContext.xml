@@ -4,12 +4,13 @@
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns="http://www.springframework.org/schema/beans">
 
-	<import resource="applicationContext.xml"/>
-	
+	<import resource="applicationContext.xml" />
+	<import resource="dianamicDialogContext.xml"/>
+
 	<bean id="|R|Meus Dados|Editar Apelido|B| | |" class="br.com.simnetwork.view.DialogIA"
 		scope="prototype">
 		<property name="currentStep" value="1" />
-		<property name="customTable" value="Usuario"></property>
+		<property name="customTable" value="Usuario" />
 		<property name="steps">
 			<map>
 				<entry key="1">
@@ -83,7 +84,7 @@
 		</property>
 	</bean>
 
-	<bean id="|R|Administração|PermissõesInterno| | |I|" class="br.com.simnetwork.view.DialogIA"
+	<bean id="|R|Administração|PermissõesInterno| |A|I|" class="br.com.simnetwork.view.DialogIA"
 		scope="prototype">
 		<property name="currentStep" value="1" />
 		<property name="steps">
@@ -107,7 +108,8 @@
 						<property name="condicao" value="opcaoPermissao" />
 						<property name="opcoes">
 							<map>
-								<entry key="Permitir" value="|R|Testes|Mensagem Simples 2|B| | |" />
+								<entry key="Permitir"
+									value="|R|Administração|PermissõesInterno - Permitir| |A|I|" />
 								<entry key="Denegar" value="|R|Testes|Mensagem Simples 2|B| | |" />
 								<entry key="Consultar" value="|R|Testes|Mensagem Simples 2|B| | |" />
 							</map>
@@ -119,45 +121,54 @@
 	</bean>
 
 
-
-
-
-	<bean id="|R|Testes|Mensagem Simples 2|B| | |" class="br.com.simnetwork.view.DialogIA"
-		scope="prototype">
+	<bean id="|R|Administração|PermissõesInterno - Permitir| |A|I|"
+		class="br.com.simnetwork.view.DialogIA" scope="prototype">
 		<property name="currentStep" value="1" />
-		<property name="steps">
-			<map>
-				<entry key="1">
-					<bean parent="stepSimpleMessage">
-						<property name="mensagemBot" value="Teste de Mensagem Simples 2" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-	
-	
-	<bean id="|R|Testes|Bug|B| | |" class="br.com.simnetwork.view.DialogIA"
-		scope="prototype">
-		<property name="currentStep" value="1" />
+		<property name="customTable" value="UsuarioRota" />
 		<property name="steps">
 			<map>
 				<entry key="1">
 					<bean parent="stepSetList">
 						<property name="mensagemBot"
-							value="Selecione qual opção de permissão deseja utilizar" />
-						<property name="chaveDado" value="opcaoPermissao" />
-						<property name="listaEstatica">
-							<list>
-								<value>Permitir</value>
-								<value>Denegar</value>
-								<value>Consultar</value>
-							</list>
+							value="Selecione o usuário que deseja dar permissão" />
+						<property name="chaveDado" value="usuario" />
+						<property name="listaDinamica" ref="dynamicListUsuarioSemPermissao" />
+						<property name="dependenciasListaDinamica" value="listUsuariosSemPermissao"></property>
+					</bean>
+				</entry>
+				<entry key="2">
+					<bean parent="stepSetList">
+						<property name="mensagemBot"
+							value="Selecione o grupo da Rota que deseja liberar" />
+						<property name="chaveDado" value="grupoRota" />
+						<property name="listaDinamica" ref="dynamicListRotaGrupoMenuBloqueado" />
+						<property name="dependenciasListaDinamica" value="listGrupoRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="3">
+					<bean parent="stepSetList">
+						<property name="mensagemBot" value="Selecione a Rota que deseja liberar" />
+						<property name="chaveDado" value="rota" />
+						<property name="listaDinamica" ref="dynamicListRotaMenuBloqueado" />
+						<property name="dependenciasListaDinamica" value="listRotaOutroUsuario"></property>
+					</bean>
+				</entry>
+				<entry key="4">
+					<bean parent="stepConfirmation">
+						<property name="labels">
+							<map>
+								<entry key="usuario" value="Usuário" />
+								<entry key="grupoRota" value="Grupo da Rota" />
+								<entry key="rota" value="Rota" />
+							</map>
 						</property>
 					</bean>
 				</entry>
 			</map>
 		</property>
 	</bean>
+
+	
+
 
 </beans>

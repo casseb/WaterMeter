@@ -30,4 +30,6 @@ public interface Dialog {
 	
 	public void setMensagemUsuario(String mensagemUsuario);
 	
+	public String getCustomTable();
+	
 }

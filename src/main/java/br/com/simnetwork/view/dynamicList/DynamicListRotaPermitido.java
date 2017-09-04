@@ -5,11 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
+import br.com.simnetwork.model.service.RotaService;
 
 @Service("dynamicListRotaPermitido")
 @Scope("prototype")
@@ -18,6 +21,10 @@ public class DynamicListRotaPermitido implements DynamicList{
 	private List<String> list = new LinkedList<String>();
 	private Usuario usuario;
 	private String grupoRota;
+	@Autowired
+	private Acesso access;
+	@Autowired
+	private RotaService rotaService;
 
 	@Override
 	public void prepareList(Object... object) {
@@ -27,11 +34,21 @@ public class DynamicListRotaPermitido implements DynamicList{
 			usuario = (Usuario) object[0];
 			grupoRota = (String) object[1];
 			
-			List<Rota> rotas = usuario.getRotasPermitidas().stream().collect(Collectors.toList());
+			List<Rota> rotasGrupo = rotaService.listarRotaporGrupoRota(grupoRota);
 			
-			for (Rota rota : rotas) {
-				if(rota.getRotaPK().getRotaGrupo().equals(grupoRota) && !rota.getInvisivel()) {
-					list.add(rota.getRotaPK().getNome());
+			for(Rota rotaPermitida : usuario.getRotasPermitidas()) {
+				for(Rota rotaGrupo : rotasGrupo) {
+					if(rotaPermitida.getBeanName().equals(rotaGrupo.getBeanName())) {
+						list.add(rotaPermitida.getRotaPK().getNome());
+					}
+				}
+			}
+			
+			if(usuario.getBotId().equals(access.getAdminTelegram())) {
+				for(Rota rota : rotaService.listarRotaporGrupoRota(grupoRota)) {
+					if(rota.getAdmin() && !rota.getInvisivel()) {
+						list.add(rota.getRotaPK().getNome());
+					}
 				}
 			}
 			

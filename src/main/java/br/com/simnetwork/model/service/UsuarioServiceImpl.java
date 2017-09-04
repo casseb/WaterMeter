@@ -1,8 +1,10 @@
 package br.com.simnetwork.model.service;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
+import br.com.simnetwork.model.repository.RotaRepository;
 import br.com.simnetwork.model.repository.UsuarioRepository;
 
 @Service("usuarioService")
@@ -18,6 +21,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepo;
+	@Autowired
+	private RotaService rotaService;
 
 	public UsuarioServiceImpl() {
 		super();
@@ -32,17 +37,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	@Transactional
 	public void criarUsuario(String botId, String apelido) {
-		RotaService rotaService = App.getCon().getBean("rotaService", RotaService.class);
-		Usuario usuario = new Usuario();
-		usuario.setBotId(botId);
-		apelido = Utils.firstUpper(apelido);
-		usuario.setApelido(apelido);
-		usuario.setLiberado(1);
-
-		List<Rota> rotasBasicasList = rotaService.listarRotasBasicas();
-		if (!(rotasBasicasList.isEmpty() || rotasBasicasList == null)) {
-			Set<Rota> rotasBasicas = new HashSet<>(rotasBasicasList);
-			usuario.setRotasPermitidas(rotasBasicas);
+		Usuario usuario = usuarioRepo.findByBotId(botId);
+		if(usuario == null) {
+			usuario = new Usuario();
+			usuario.setBotId(botId);
+			apelido = Utils.firstUpper(apelido);
+			usuario.setApelido(apelido);
+			usuario.setLiberado(1);
+		}else {
+			usuario.setApelido(apelido);
 		}
 
 		usuarioRepo.save(usuario);
@@ -93,6 +96,50 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuario.setRotasPermitidas(currentRotas);
 			usuarioRepo.save(usuario);
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<Usuario> localizarTodosUsuarios() {
+		List<Usuario> resultado = new LinkedList<>();
+		for(Usuario usuario: usuarioRepo.findAll()) {
+			resultado.add(usuario);
+		}
+		return resultado;
+	}
+
+	@Override
+	@Transactional
+	public List<Usuario> localizarUsuarioComPermissoesDisponiveis() {
+		List<Usuario> resultado = new LinkedList<>();
+		List<Rota> rotasMenu = rotaService.listarRotasVisiveisMenu();
+		for(Usuario usuario : usuarioRepo.findAll()) {
+			for(Rota rotaVisivel : rotasMenu) {
+				if(!usuario.getRotasPermitidas().contains(rotaVisivel)) {
+					resultado.add(usuario);
+					break;
+				}
+			}
+		}
+		return resultado;
+	}
+
+	@Override
+	public List<Rota> listarRotasBloqueadas(Usuario usuario) {
+		List<Rota> resultado = new LinkedList<>();
+		boolean tem;
+		for(Rota rotaMenu : rotaService.listarRotasVisiveisMenu()) {
+			tem = false;
+			for(Rota rotaDisponivel : usuario.getRotasPermitidas()) {
+				if(rotaMenu.getBeanName().equals(rotaDisponivel.getBeanName())){
+					tem = true;
+				}
+			}
+			if(!tem) {
+				resultado.add(rotaMenu);
+			}
+		}
+		return resultado;
 	}
 
 }

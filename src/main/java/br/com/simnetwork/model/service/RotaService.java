@@ -7,7 +7,7 @@ public interface RotaService {
 	
 	public List<Rota> listarRotasBasicas();
 	
-	public List<Rota> listasRotasAdm();
+	public List<Rota> listarRotasAdm();
 	
 	public void salvarRota(Rota rota);
 	
@@ -19,5 +19,10 @@ public interface RotaService {
 	
 	public Rota localizarRotaByBean(String bean);
 	
+	public List<Rota> listarRotasVisiveisMenu();
+	
+	public List<Rota> listarRotasInvisiveisMenu();
+	
+	public List<Rota> listarRotaporGrupoRota(String rotaGrupo);
 	
 }

@@ -30,16 +30,13 @@ public class RotaServiceImpl implements RotaService {
 
 	@Override
 	@Transactional
-	public List<Rota> listasRotasAdm() {
+	public List<Rota> listarRotasAdm() {
 		return rotaRepo.findByAdmin(1);
 	}
 
 	@Override
 	@Transactional
 	public Rota AtualizarRotaByBean(String grupo, String rota, String compl1, String compl2, String compl3) {
-
-		boolean replicarTodos = false;
-		boolean replicarAdm = false;
 
 		if (grupo != null && rota != null) {
 
@@ -69,13 +66,11 @@ public class RotaServiceImpl implements RotaService {
 
 			if (complements.contains("B")) {
 				rotaNova.setBasico(true);
-				replicarTodos = true;
 			} else {
 				rotaNova.setBasico(false);
 			}
 			if (complements.contains("A")) {
 				rotaNova.setAdmin(true);
-				replicarAdm = true;
 			} else {
 				rotaNova.setAdmin(false);
 			}
@@ -86,16 +81,6 @@ public class RotaServiceImpl implements RotaService {
 			}
 			
 			this.salvarRota(rotaNova);
-			
-			if (replicarTodos) {
-				usuarioService.darPermissaoTodos(rotaNova);
-			}
-
-			if (replicarAdm) {
-				Acesso acesso = App.getCon().getBean("access", Acesso.class);
-				usuarioService.darPermissao(usuarioService.localizarUsuarioPorTelegram(acesso.getAdminTelegram()),
-						rotaNova);
-			}
 			
 			return rotaNova;
 
@@ -171,6 +156,36 @@ public class RotaServiceImpl implements RotaService {
 			return null;
 		}
 		
+	}
+
+	@Override
+	@Transactional
+	public List<Rota> listarRotasVisiveisMenu() {
+		List<Rota> resultado = new LinkedList<>();
+		for(Rota rota : rotaRepo.findAll()) {
+			if(!rota.getAdmin() && !rota.getBasico() && !rota.getInvisivel()) {
+				resultado.add(rota);
+			}
+		}
+		return resultado;
+	}
+
+	@Override
+	@Transactional
+	public List<Rota> listarRotasInvisiveisMenu() {
+		List<Rota> resultado = new LinkedList<>();
+		for(Rota rota : rotaRepo.findAll()) {
+			if(rota.getAdmin() || rota.getBasico() || rota.getInvisivel()) {
+				resultado.add(rota);
+			}
+		}
+		return resultado;
+	}
+
+	@Override
+	@Transactional
+	public List<Rota> listarRotaporGrupoRota(String rotaGrupo) {
+		return rotaRepo.findByRotaPKRotaGrupo(rotaGrupo);
 	}
 
 

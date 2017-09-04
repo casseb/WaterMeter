@@ -41,6 +41,7 @@ public class DialogStepSetString implements DialogStep {
 				}
 
 				dialog.getComplements().put(chaveDado, dialog.getMensagemUsuario());
+				dialog.setCurrentTypeFinish(DialogTypeFinish.FINALIZADOSTEP);
 
 			}
 
@@ -55,6 +56,7 @@ public class DialogStepSetString implements DialogStep {
 		} catch (Exception e) {
 			Acesso access = App.getCon().getBean("access", Acesso.class);
 			if (usuarioService.localizarUsuarioPorTelegram(botId) != null) {
+				bot.sendMessage(botId, "Ocorreu algo inesperado, peço que tente novamente e contate o administrador do sistema.");
 				bot.sendMessage(access.getAdminTelegram(), "Ocorreu o seguinte erro para o usuário: "
 						+ usuarioService.localizarUsuarioPorTelegram(botId).getApelido() + " \n" + e.getMessage());
 			} else {

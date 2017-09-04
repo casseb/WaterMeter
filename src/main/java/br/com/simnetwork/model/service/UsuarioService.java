@@ -1,5 +1,7 @@
 package br.com.simnetwork.model.service;
 
+import java.util.List;
+
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 
@@ -21,5 +23,9 @@ public interface UsuarioService {
 	
 	public void darPermissao(Usuario usuario, Rota rota);
 	
+	public List<Usuario> localizarTodosUsuarios();
+
+	public List<Usuario> localizarUsuarioComPermissoesDisponiveis();
 	
+	public List<Rota> listarRotasBloqueadas(Usuario usuario);
 }

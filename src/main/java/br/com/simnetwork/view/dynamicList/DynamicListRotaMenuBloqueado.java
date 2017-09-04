@@ -13,40 +13,36 @@ import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.service.RotaService;
+import br.com.simnetwork.model.service.UsuarioService;
 
-@Service("dynamicListRotaGrupoPermitido")
+@Service("dynamicListRotaMenuBloqueado")
 @Scope("prototype")
-public class DynamicListRotaGrupoPermitido implements DynamicList {
+public class DynamicListRotaMenuBloqueado implements DynamicList{
 
 	private List<String> list = new LinkedList<String>();
 	private Usuario usuario;
+	private String grupoRota;
 	@Autowired
 	private Acesso access;
 	@Autowired
 	private RotaService rotaService;
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	public void prepareList(Object... object) {
 
-		if (object[0] instanceof Usuario) {
+		if (object[0] instanceof Usuario && object[1] instanceof String) {
 
 			usuario = (Usuario) object[0];
-			List<Rota> rotas = usuario.getRotasPermitidas().stream().collect(Collectors.toList());
+			grupoRota = (String) object[1];
+
 			
-			for (Rota rota : rotas) {
-				list.add(rota.getRotaPK().getRotaGrupo());
+			for(Rota rotaBloq : usuarioService.listarRotasBloqueadas(usuario)) {
+				if(rotaBloq.getRotaPK().getRotaGrupo().equals(grupoRota)) {
+					list.add(rotaBloq.getRotaPK().getNome());
+				}	
 			}
-			
-			for (Rota rota : rotaService.listarRotasBasicas()) {
-				list.add(rota.getRotaPK().getRotaGrupo());
-			}
-			
-			if(usuario.getBotId().equals(access.getAdminTelegram())) {
-				for (Rota rota : rotaService.listarRotasAdm()) {
-					list.add(rota.getRotaPK().getRotaGrupo());
-				}
-			}
-			
 			
 			list = new LinkedList<String>(new HashSet<>(list));
 
@@ -67,9 +63,18 @@ public class DynamicListRotaGrupoPermitido implements DynamicList {
 		this.usuario = usuario;
 	}
 
+	public String getGrupoRota() {
+		return grupoRota;
+	}
+
+	public void setGrupoRota(String grupoRota) {
+		this.grupoRota = grupoRota;
+	}
+
 	public void setList(List<String> list) {
 		this.list = list;
 	}
 	
 	
+
 }

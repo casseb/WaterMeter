@@ -24,7 +24,6 @@ public class DialogIA implements Dialog {
 	private boolean lastStep = false;
 	private String customTable;
 	private String mensagemUsuario = "Inicial";
-	private boolean aguardar = false;
 
 	public DialogIA() {
 		super();
@@ -34,35 +33,40 @@ public class DialogIA implements Dialog {
 		this.steps = steps;
 	}
 
+	// Retorno False para não executar o próximo passo
+	// Retorno true para executar o próximo passo
 	@Override
 	public boolean action(String botId, String mensagemUsuario) {
 
 		this.mensagemUsuario = mensagemUsuario;
-		
-		if (this.currentTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)) {
+
+		if (this.currentTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)
+				|| this.currentTypeFinish.equals(DialogTypeFinish.ERRO)
+				|| this.currentTypeFinish.equals(DialogTypeFinish.CANCELADO)) {
 			return false;
-			
+
 		}
 
-		if (!aguardar) {
-			if (this.currentTypeFinish.equals(DialogTypeFinish.FINALIZADOSTEP)) {
+		if (this.currentTypeFinish.equals(DialogTypeFinish.FINALIZADOSTEP)) {
 
-				this.currentStep++;
-				this.currentTypeFinish = DialogTypeFinish.INICIOSTEP;
-				if (this.steps.get(currentStep) != null) {
-					return true;
-				} else {
-					this.currentTypeFinish = DialogTypeFinish.FINALIZADO;
-				}
+			this.currentStep++;
+			this.currentTypeFinish = DialogTypeFinish.INICIOSTEP;
+			if (this.steps.get(currentStep) != null) {
+				return true;
 			} else {
+				this.currentTypeFinish = DialogTypeFinish.FINALIZADO;
+				return false;
+			}
+		} else {
 
-				if (this.currentTypeFinish.equals(DialogTypeFinish.INICIOSTEP) || 
-						this.currentTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)) {
-					return true;
-				}
+			if (this.currentTypeFinish.equals(DialogTypeFinish.INICIOSTEP)
+					|| this.currentTypeFinish.equals(DialogTypeFinish.AGUARDANDODADO)
+					|| this.currentTypeFinish.equals(DialogTypeFinish.CONTEUDOINVALIDO)) {
+
+				return true;
 			}
 		}
-		
+
 		return false;
 
 	}
