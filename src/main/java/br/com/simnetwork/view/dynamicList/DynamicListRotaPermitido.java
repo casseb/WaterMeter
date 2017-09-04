@@ -3,6 +3,8 @@ package br.com.simnetwork.view.dynamicList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -33,14 +35,17 @@ public class DynamicListRotaPermitido implements DynamicList{
 			grupoRota = (String) object[1];
 			
 			List<Rota> rotasGrupo = rotaService.listarRotaporGrupoRota(grupoRota);
+			List<Rota> rotasPermitidas = usuario.getRotasPermitidas().stream().collect(Collectors.toList());
+			rotasPermitidas.addAll(rotaService.listarRotasBasicas());
 			
-			for(Rota rotaPermitida : usuario.getRotasPermitidas()) {
+			for(Rota rotaPermitida : rotasPermitidas) {
 				for(Rota rotaGrupo : rotasGrupo) {
 					if(rotaPermitida.getBeanName().equals(rotaGrupo.getBeanName())) {
 						list.add(rotaPermitida.getRotaPK().getNome());
 					}
 				}
 			}
+			
 			
 			if(usuario.getBotId().equals(access.getAdminTelegram())) {
 				for(Rota rota : rotaService.listarRotaporGrupoRota(grupoRota)) {
