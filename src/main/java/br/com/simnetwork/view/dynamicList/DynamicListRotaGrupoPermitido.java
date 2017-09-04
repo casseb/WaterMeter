@@ -38,7 +38,9 @@ public class DynamicListRotaGrupoPermitido implements DynamicList {
 			}
 			
 			for (Rota rota : rotaService.listarRotasBasicas()) {
-				list.add(rota.getRotaPK().getRotaGrupo());
+				if(!rota.getInvisivel()) {
+					list.add(rota.getRotaPK().getRotaGrupo());
+				}	
 			}
 			
 			if(usuario.getBotId().equals(access.getAdminTelegram())) {
