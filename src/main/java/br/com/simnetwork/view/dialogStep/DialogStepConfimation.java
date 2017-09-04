@@ -4,16 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
-import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;
-import br.com.simnetwork.model.service.UsuarioService;
 import br.com.simnetwork.view.Dialog;
 import br.com.simnetwork.view.DialogTypeFinish;
 
@@ -26,7 +23,6 @@ public class DialogStepConfimation implements DialogStep {
 	@Autowired
 	private Bot bot;
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void action(String botId, Dialog dialog) {
 

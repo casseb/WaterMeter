@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.rota.RotaPK;
@@ -18,8 +17,6 @@ public class RotaServiceImpl implements RotaService {
 
 	@Autowired
 	private RotaRepository rotaRepo;
-	@Autowired
-	private UsuarioService usuarioService;
 
 	@Override
 	@Transactional

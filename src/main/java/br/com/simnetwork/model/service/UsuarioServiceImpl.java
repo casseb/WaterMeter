@@ -4,16 +4,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.model.repository.RotaRepository;
 import br.com.simnetwork.model.repository.UsuarioRepository;
 
 @Service("usuarioService")

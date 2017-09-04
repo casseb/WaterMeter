@@ -3,9 +3,6 @@ package br.com.simnetwork.view;
 import java.util.Map;
 
 import org.json.JSONObject;
-import org.json.simple.JSONArray;
-
-import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.view.dialogStep.DialogStep;
 
 public interface Dialog {

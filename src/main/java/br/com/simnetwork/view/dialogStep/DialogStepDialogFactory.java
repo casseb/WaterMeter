@@ -3,15 +3,12 @@ package br.com.simnetwork.view.dialogStep;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.debug.Debug;
-import br.com.simnetwork.model.entity.basico.rota.Rota;
-import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;
 import br.com.simnetwork.model.service.RotaService;

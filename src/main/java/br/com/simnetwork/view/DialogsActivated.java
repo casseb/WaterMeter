@@ -1,7 +1,5 @@
 package br.com.simnetwork.view;
 
-import java.util.Map;
-
 public interface DialogsActivated {
 	
 	public void prepareDialogActived(String mensagemUsuario);

@@ -4,14 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import br.com.simnetwork.model.entity.basico.debug.Debug;
-import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.service.Bot;
-import br.com.simnetwork.model.service.UsuarioService;
 import br.com.simnetwork.view.dialogStep.DialogStep;
 
 public class DialogIA implements Dialog {

@@ -3,16 +3,12 @@ package br.com.simnetwork.view.dynamicList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import br.com.simnetwork.model.entity.acesso.Acesso;
 import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
-import br.com.simnetwork.model.service.RotaService;
 import br.com.simnetwork.model.service.UsuarioService;
 
 @Service("dynamicListRotaMenuBloqueado")
@@ -22,10 +18,6 @@ public class DynamicListRotaMenuBloqueado implements DynamicList{
 	private List<String> list = new LinkedList<String>();
 	private Usuario usuario;
 	private String grupoRota;
-	@Autowired
-	private Acesso access;
-	@Autowired
-	private RotaService rotaService;
 	@Autowired
 	private UsuarioService usuarioService;
 

@@ -3,16 +3,15 @@ package br.com.simnetwork.view.dynamicList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import br.com.simnetwork.model.entity.basico.rota.Rota;
 import br.com.simnetwork.model.entity.basico.usuario.Usuario;
 import br.com.simnetwork.model.service.UsuarioService;
 
 @Service("dynamicListUsuarioSemPermissao")
+@Scope("prototype")
 public class DynamicListUsuarioSemPermissao implements DynamicList{
 
 	private List<String> list = new LinkedList<String>();
@@ -26,6 +25,8 @@ public class DynamicListUsuarioSemPermissao implements DynamicList{
 			list.add(usuario.getApelido());
 		}
 		
+		
+		list = new LinkedList<String>(new HashSet<>(list));
 	}
 
 	@Override

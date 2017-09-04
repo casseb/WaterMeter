@@ -2,12 +2,9 @@ package br.com.simnetwork.controller;
 
 import br.com.simnetwork.model.entity.basico.debug.Debug;
 import br.com.simnetwork.model.entity.framework.App;
-import br.com.simnetwork.model.entity.framework.Configuracao;
 import br.com.simnetwork.view.DialogsActivated;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.*;
 
 public class TelegramResponse {

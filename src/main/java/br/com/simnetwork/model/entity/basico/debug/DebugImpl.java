@@ -16,9 +16,8 @@ public class DebugImpl implements Debug {
 	private Configuracao config;
 	@Autowired
 	private Acesso acesso;
-	
+	@SuppressWarnings("unused")
 	private String message;
-
 	
 	
 	public DebugImpl() {

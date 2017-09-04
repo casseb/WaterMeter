@@ -3,11 +3,7 @@ package br.com.simnetwork.view;
 import static spark.Spark.port;
 import static spark.Spark.post;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import br.com.simnetwork.controller.TelegramResponse;
-import br.com.simnetwork.model.entity.basico.Utils;
 import br.com.simnetwork.model.entity.framework.App;
 import br.com.simnetwork.model.entity.framework.Configuracao;
 import br.com.simnetwork.model.service.RotaService;
