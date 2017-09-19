@@ -57,26 +57,5 @@
 	<tx:annotation-driven />
 
 
-	<!-- Instâncias Globais Personalizadas -->
-
-	<bean id="access" class="br.com.simnetwork.model.entity.acesso.Acesso">
-
-		<property name="tokenTelegram"
-			value="388217062:AAF0Kg9uDtkWGKDkX9M8eQM6tah9j-brOMA" />
-		<property name="adminTelegram" value="336050938" />
-		<property name="boxUsername" value="Test_CasseBot" />
-		<property name="boxIdUsername" value="2029208618" />
-
-	</bean>
-	
-	<bean id="config" class="br.com.simnetwork.model.entity.framework.Configuracao">
-		<property name="debug" value="false" />
-	</bean>
-
-	<bean id="telegramBot" class="br.com.simnetwork.model.service.TelegramBotImpl"
-		scope="prototype">
-		<constructor-arg ref="access" />
-	</bean>
-
 </beans>
  

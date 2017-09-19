@@ -1,4 +1,4 @@
-package br.com.simnetwork.model.entity.basico;
+package br.com.simnetwork.model.entity.framework;
 
 import java.util.LinkedList;
 import java.util.List;

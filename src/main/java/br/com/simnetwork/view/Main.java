@@ -5,10 +5,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Start.startEnvironment();
-		Start.startTelegramMethods();
 		Start.carregandoMapeamentoSpring();
-		Start.persistirRotas();
-		Start.conferindoConfiguracoes();
 		System.out.println("Concluido o carregamento da aplicação");
     }
 	
