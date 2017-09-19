@@ -14,18 +14,18 @@
 		id="dataSourceOnline">
 		<property value="org.postgresql.Driver" name="driverClassName" />
 		<property
-			value="jdbc:postgresql://ec2-23-21-220-188.compute-1.amazonaws.com:5432/d226npdt6jgknl"
+			value="jdbc:postgresql://ec2-184-72-247-126.compute-1.amazonaws.com:5432/d59oid06otgslm"
 			name="url" />
-		<property value="jfbefyvaagufnu" name="username" />
+		<property value="gjcryvwqqkhsad" name="username" />
 		<property
-			value="a0f7c0b854f5f8ed655719b906f79500921a3045a90935f27c982722e766a031"
+			value="674666c6e76361e81659a2a7a86c6d2dfc80f639994db08d6b6b8bc70897f9c1"
 			name="password" />
 	</bean>
 
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSourceLocal">
 		<property value="org.postgresql.Driver" name="driverClassName" />
-		<property value="jdbc:postgresql://localhost:5432/Test_CasseBot"
+		<property value="jdbc:postgresql://localhost:5432/WaterMeter"
 			name="url" />
 		<property value="postgres" name="username" />
 		<property value="1234" name="password" />
@@ -33,12 +33,12 @@
 
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-		id="entityManagerFactory" p:dataSource-ref="dataSourceOnline"
+		id="entityManagerFactory" p:dataSource-ref="dataSourceLocal"
 		p:packagesToScan="br.com.simnetwork.model.entity">
 
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property value="false" name="generateDdl" />
+				<property value="true" name="generateDdl" />
 				<property value="true" name="showSql" />
 				<property value="org.hibernate.dialect.PostgreSQLDialect"
 					name="databasePlatform" />
